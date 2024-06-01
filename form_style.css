@@ -1,0 +1,124 @@
+/* CSS for Student Form Dashboard */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    /* background: url('C:\xampp\htdocs\actual'); */
+}
+
+.caption {
+    background-color: #2ad9e2;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.time-section {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+
+#back-button:hover {
+    background-color: #45a049;
+}
+
+
+button[type="log-back-button"] {
+    padding: 10px 20px;
+    background-color: rgb(77, 207, 183);
+    color: white;
+    border: none;
+    margin-left: 80%;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[type="log-back-button"]:hover {
+    background-color: #45a049;
+}
+
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"], input[type="date"], textarea {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+button[id="log-back-button"]{
+    padding: 10px 20px;
+    margin-left: 80%;
+    background-color: rgb(77, 207, 183);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[id="log-back-button"]:hover{
+    background-color:rgb(50, 182, 129); ;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: rgb(77, 155, 207);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[type="back-button"] {
+    padding: 10px 20px;
+    background-color: rgb(77, 207, 183);
+    color: white;
+    border: none;
+    margin-left: 80%;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button[type="back-button"]:hover {
+    background-color:rgb(50, 182, 129);
+}
+
+button[type="submit"]:hover {
+    background-color:rgb(56, 126, 172);
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 600px) {
+    .dashboard {
+        width: 90%;
+    }
+}

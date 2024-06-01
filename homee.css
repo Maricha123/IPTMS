@@ -1,0 +1,155 @@
+/* General Styles */
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 17px;
+    color: rgb(34, 27, 27);
+    /* background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.75)), url(soma.svg); */
+    background-size: cover;
+    background-position: 50%;
+    overflow-x: hidden;
+    background-repeat: no repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+   
+}
+ 
+.main{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.inst{
+    margin-bottom: 30px;
+    width: 60%;
+    height: fit-content;
+    border-radius:10px ;
+    shape-outside: 10px;
+    box-shadow: 0 0 10px rgba(4, 4, 9, 0.1);
+}
+
+.caption {
+    justify-content: center;
+    text-align: center;
+    height: fit-content;
+    width: 60%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius:10px ;
+    shape-outside: 10px;
+    box-shadow: 0 0 10px rgba(4, 4, 9, 0.1);
+    /* background-color: rgb(49, 10, 68); */
+    
+}
+
+.dashboard {
+    width: 58%;
+    height: fit-content;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.time-section {
+    
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: whitesmoke;
+    display: block;
+    padding: 10px;
+    border-radius: 100px; /* This creates a circular shape */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Circular shapes with different background colors */
+li:nth-child(1) a {
+    background-color: rgb(77, 155, 207);
+}
+
+li:nth-child(2) a {
+    background-color:rgb(77, 155, 207); /* Blue */
+}
+
+li:nth-child(3) a {
+    background-color:rgb(77, 155, 207); /* Green */
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 600px) {
+    .dashboard {
+        width: 90%;
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .details,
+    .login-container {
+        width: 90%;
+        margin: 20px auto;
+    }
+}
+
+/* CSS for screens smaller than 480px */
+@media only screen and (max-width: 480px) {
+    .container {
+        max-width: 300px;
+    }
+}
+
+/* CSS for screens smaller than 360px (typical width of many mobile phones) */
+@media only screen and (max-width: 360px) {
+    body {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+
+    .heading h1 {
+        font-size: 24px; /* Adjust heading font size for smaller screens */
+    }
+
+    .heading h2 {
+        font-size: 18px; /* Adjust subheading font size for smaller screens */
+    }
+
+    .details,
+    .login-container {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .container input,
+    .container button {
+        font-size: 14px; /* Adjust input and button font size for smaller screens */
+    }
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form Dashboard</title>
+    <link rel="stylesheet" href="form_style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Add a new div for displaying current time, date, and day -->
+        <div class="time-section">
+            <p id="currentDateTime"></p>
+        </div>
+
+        <marquee behavior="alternate" direction="left"><h1 style="color: rgb(40, 6, 83)">Student Weekly Report</h1></marquee>
+        
+        <form action="submits.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="uploadedFile">
+            <button type="submit" name="uploadBtn">Upload File</button>
+            <br>
+
+            <label for="weekNo">Week Number:</label>
+            <input type="text" id="weekNo" name="weekNo"><br>
+
+            <label for="work">Works:</label>
+            <textarea id="work" name="work" rows="4"></textarea><br>
+
+            <label for="problems">Problems:</label>
+            <textarea id="problems" name="problems" rows="4"></textarea><br>
+
+            <button type="submit">Submit</button>
+            <button id="log-back-button" type="button" onclick="goBack()">Back</button>
+    
+        </form>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function updateDateTime() {
+            const currentDateTimeElement = document.getElementById('currentDateTime');
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi' };
+
+            // Display the time, date, and day
+            const currentDateTime = now.toLocaleString('en-US', options);
+            currentDateTimeElement.textContent = currentDateTime;
+        }
+
+        // Update current time, date, and day every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial update
+        updateDateTime();
+    </script>
+</body>
+</html>

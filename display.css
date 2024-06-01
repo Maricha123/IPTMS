@@ -1,0 +1,48 @@
+/* General Styles */
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 17px;
+    color: rgb(34, 27, 27);
+    /* background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.75)), url(soma.svg); */
+    background-size: cover;
+    background-position: 50%;
+    overflow-x: hidden;
+    background-repeat: no repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.data-table {
+    margin: 0 auto; /* Center the table */
+    width: 80%; /* Adjust as needed */
+}
+
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.center-message {
+    text-align: center;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+
+.data-table th {
+    background-color: rgb(77, 155, 207);
+}
+
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+    .data-table {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+}
