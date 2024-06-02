@@ -14,10 +14,11 @@ h2 {
 table {
     width: 100%;
     border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(4, 4, 9, 0.3);
 }
 
 thead th {
-    background-color: rgb(50, 118, 162);
+    background-color: rgb(79, 179, 212);
     color: white;
     font-weight: bold;
     padding: 10px;

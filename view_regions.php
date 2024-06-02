@@ -2,20 +2,11 @@
 session_start();
 include 'db.php';
 
-// Fetch supervisors with their assigned regions and emails
-$sql = "SELECT supervisors.supervisor_name, supervisors.supervisor_email, regions.region_name 
-        FROM supervisors 
-        LEFT JOIN regions ON supervisors.region_id = regions.region_id";
-$result = $conn->query($sql);
+// Fetch regions from the database
+$sql_regions = "SELECT * FROM regions";
+$result_regions = $conn->query($sql_regions);
 
-$supervisor_regions = array();
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $supervisor_regions[] = $row;
-    }
-}
-
+// Close the database connection
 $conn->close();
 ?>
 
@@ -24,7 +15,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Supervisors</title>
+    <title>View Regions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -56,7 +47,7 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <span class="brand-text font-weight-light">View Supervisors</span>
+                <span class="brand-text font-weight-light">Regions</span>
             </a>
 
             <!-- Sidebar -->
@@ -64,14 +55,14 @@ $conn->close();
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -86,7 +77,7 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Supervisors and Their Assigned Regions</h1>
+                            <h1 class="m-0">Regions Added</h1>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
@@ -103,19 +94,24 @@ $conn->close();
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Supervisor</th>
-                                                <th>Email</th>
-                                                <th>Assigned Region</th>
+                                                <th>No:</th>
+                                                <th>Region Name:</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($supervisor_regions as $supervisor_region): ?>
+                                            <?php if ($result_regions->num_rows > 0): ?>
+                                                <?php $count = 1; ?>
+                                                <?php while ($row = $result_regions->fetch_assoc()): ?>
+                                                    <tr>
+                                                        <td><?php echo $count++; ?></td>
+                                                        <td><?php echo $row['region_name']; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
                                                 <tr>
-                                                    <td><?php echo $supervisor_region['supervisor_name']; ?></td>
-                                                    <td><?php echo $supervisor_region['supervisor_email']; ?></td>
-                                                    <td><?php echo $supervisor_region['region_name'] ?? 'Not Assigned'; ?></td>
+                                                    <td colspan="2">No regions found</td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>

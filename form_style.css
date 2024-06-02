@@ -13,6 +13,7 @@ body {
     color: white;
     padding: 20px;
     text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard {
@@ -30,23 +31,25 @@ body {
 }
 
 h1 {
-    color: #333;
+    color: orange;
     margin-bottom: 20px;
+    
 }
 
 form {
     margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 
 #back-button:hover {
-    background-color: #45a049;
+    background-color: #0eacb8;
 }
 
 
 button[type="log-back-button"] {
     padding: 10px 20px;
-    background-color: rgb(77, 207, 183);
+    background-color: rgb(6, 90, 247);
     color: white;
     border: none;
     margin-left: 80%;
@@ -55,7 +58,7 @@ button[type="log-back-button"] {
 }
 
 button[type="log-back-button"]:hover {
-    background-color: #45a049;
+    background-color: rgb(54, 4, 254);
 }
 
 
@@ -78,7 +81,7 @@ input[type="text"], input[type="date"], textarea {
 button[id="log-back-button"]{
     padding: 10px 20px;
     margin-left: 80%;
-    background-color: rgb(77, 207, 183);
+    background-color: rgb(6, 90, 247);
     color: white;
     border: none;
     border-radius: 3px;
@@ -86,12 +89,12 @@ button[id="log-back-button"]{
 }
 
 button[id="log-back-button"]:hover{
-    background-color:rgb(50, 182, 129); ;
+    background-color: rgb(12, 77, 199) ;
 }
 
 button[type="submit"] {
     padding: 10px 20px;
-    background-color: rgb(77, 155, 207);
+    background-color: rgb(6, 90, 247);
     color: white;
     border: none;
     border-radius: 3px;
@@ -100,7 +103,7 @@ button[type="submit"] {
 
 button[type="back-button"] {
     padding: 10px 20px;
-    background-color: rgb(77, 207, 183);
+    background-color: rgb(6, 90, 247);
     color: white;
     border: none;
     margin-left: 80%;
@@ -109,13 +112,12 @@ button[type="back-button"] {
 }
 
 button[type="back-button"]:hover {
-    background-color:rgb(50, 182, 129);
+    background-color: rgb(9, 78, 207);
 }
 
 button[type="submit"]:hover {
-    background-color:rgb(56, 126, 172);
+    background-color: rgb(10, 75, 195);
 }
-
 /* Media Query for smaller screens */
 @media screen and (max-width: 600px) {
     .dashboard {

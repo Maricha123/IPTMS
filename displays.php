@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="display.css"> <!-- Update the CSS file name -->
 </head>
 <body>
+    
+    
     <?php include 'display_student.php'; ?>
 </body>
+
 </html>
+    
+    

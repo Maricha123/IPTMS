@@ -37,6 +37,10 @@ if ($result_supervisor_info->num_rows > 0) {
     $result_students = null;
 }
 
+// Fetch user profile information from the database based on the logged-in user ID
+$sql_profile = "SELECT * FROM users WHERE UserID = '$userId'";
+$result_profile = $conn->query($sql_profile);
+
 $conn->close();
 ?>
 
@@ -49,6 +53,13 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <style>
+        /* Define dark mode styles */
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -59,10 +70,11 @@ $conn->close();
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
+    
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="supdash.php" class="nav-link">Home</a>
+                    
                 </li>
-                
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -73,14 +85,13 @@ $conn->close();
             <a href="#" class="brand-link">
                 <span class="brand-text font-weight-light">Supervisor Dashboard</span>
             </a>
-            
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
-                        <a href="view_profile.php" class="d-block"><?php echo $username; ?></a>
+                        <a href="#" class="d-block"><?php echo $username; ?></a>
                     </div>
                 </div>
 
@@ -124,72 +135,60 @@ $conn->close();
                     <div class="row">
 
                         <div class="col-lg-3 col-6">
-                                <!-- small box -->
-                                <div class="small-box bg-info" >
-                                    <div class="inner" style="background-color:orange">
-                                        <h3><?php echo ($result_students !== null) ? $result_students->num_rows : 0; ?></h3>
-                                        <p >Students</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="fas fa-user-graduate"></i>
-                                    </div>
+                            <!-- small box -->
+                            
+                        </div>
+                    </div><!-- /.container-fluid -->
+
+                    <!-- Profile Section -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
+                                <div class="card-body p-0">
+                                    <?php if ($result_profile->num_rows > 0): ?>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php while ($row = $result_profile->fetch_assoc()): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['Name']; ?></td>
+                                                        <td><?php echo $row['Email']; ?></td>
+                                                        <td><?php echo $row['Role']; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            </tbody>
+                                        </table>
+                                    <?php else: ?>
+                                        <p>No profile found for this user.</p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                            <!-- ./col -->
                         </div>
-                        <!-- /.row -->
-                        <div class="row">
-                            <div class="col-12">
-                                <?php
-                                if ($result_students !== null && $result_students->num_rows > 0) {
-                                    echo "<div class='card'>";
-                                    echo "<div class='card-header'><h3 class='card-title'>Students</h3></div>";
-                                    echo "<div class='card-body p-0'>";
-                                    echo "<ul class='products-list product-list-in-card pl-2 pr-2'>";
-                                    $counter = 1;
-                                    while ($row_student = $result_students->fetch_assoc()) {
-                                        echo "<li class='item'>";
-                                        echo "<div class='product-info'>";
-                                        echo "<a href='displays.php?student_id={$row_student['UserID']}' class='product-title'>{$counter}. {$row_student['name']}</a>";
-                                        echo "</div>";
-                                        echo "</li>";
-                                        $counter++;
-                                    }
-                                    echo "</ul>";
-                                    echo "</div>";
-                                    echo "</div>";
-                                } else {
-                                    echo "<p>No students found for the assigned region.</p>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                    </div><!-- /.container-fluid -->
+                    </div>
+                    
                 </section>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
 
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
-
             <!-- Main Footer -->
-            <!-- Main Footer -->
-<footer class="main-footer">
-    <div class="float-right d-none d-sm-inline">
-        <!-- Theme switch toggle button -->
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="themeSwitch">
-            <label class="form-check-label" for="themeSwitch">Dark Mode</label>
-        </div>
-    </div>
-    <strong>IPTMS &copy; 2024.</strong> All rights reserved.
-</footer>
->
+            <footer class="main-footer">
+                <div class="float-right d-none d-sm-inline">
+                    <!-- Theme switch toggle button -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="themeSwitch">
+                        <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+                    </div>
+                </div>
+                <strong>IPTMS &copy; 2024.</strong> All rights reserved.
+            </footer>
         </div>
         <!-- ./wrapper -->
 
@@ -200,45 +199,31 @@ $conn->close();
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <script>
-            function updateDateTime() {
-                const currentDateTimeElement = document.getElementById('currentDateTime');
-                const now = new Date();
-                const options = {
-                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', 
-                    hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi'
-                };
-                const currentDateTime = now.toLocaleString('en-US', options);
-                currentDateTimeElement.textContent = `${currentDateTime}`;
-            }
-            setInterval(updateDateTime, 1000);
-            updateDateTime();
+            $(document).ready(function(){
+                // Check if the theme preference is stored in local storage
+                var currentTheme = localStorage.getItem('theme');
+
+                // If theme preference exists, apply it
+                if(currentTheme) {
+                    $('body').addClass(currentTheme);
+                    if(currentTheme === 'dark-mode') {
+                        $('#themeSwitch').prop('checked', true);
+                    }
+                }
+
+                // Toggle theme when switch is clicked
+                $('#themeSwitch').change(function() {
+                    if ($(this).is(':checked')) {
+                        $('body').addClass('dark-mode');
+                        localStorage.setItem('theme', 'dark-mode');
+                    } else {
+                        $('body').removeClass('dark-mode');
+                        localStorage.setItem('theme', '');
+                    }
+                });
+            });
         </script>
 
-<script>
-    $(document).ready(function(){
-        // Check if the theme preference is stored in local storage
-        var currentTheme = localStorage.getItem('theme');
-
-        // If theme preference exists, apply it
-        if(currentTheme) {
-            $('body').addClass(currentTheme);
-            if(currentTheme === 'dark-mode') {
-                $('#themeSwitch').prop('checked', true);
-            }
-        }
-
-        // Toggle theme when switch is clicked
-        $('#themeSwitch').change(function() {
-            if ($(this).is(':checked')) {
-                $('body').addClass('dark-mode');
-                localStorage.setItem('theme', 'dark-mode');
-            } else {
-                $('body').removeClass('dark-mode');
-                localStorage.setItem('theme', '');
-            }
-        });
-    });
-</script>
-
+        
     </body>
 </html>

@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 // Database connection details
@@ -40,60 +39,146 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="homee.css">
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+   
 </head>
-<body>
-    <div class="main">
-        <div class="caption">
-       <b><p> Hello <?php echo $username; ?>, Our aim is to make sure that you are able to:</p></b> 
-        
-            <h4>* Fill arrival form. <br> * Fill daily logbook & report. </h4>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <h5><a class="nav-link" href="view_studentsprofile.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
 
-    </div>
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="homee.php" class="brand-link">
+            <i class="fas fa-user-graduate"></i>
+                <span class="brand-text font-weight-light">Student Dashboard</span>
+                
+            </a>
 
-    <div class="inst"> 
-        <marquee behavior="alternate" direction="left"><b><i style="color:red">*INSTRUCTIONS!*</i></u</b></marquee> 
-            <h4>1. You have to fill the arrival form only once. 
-            <br>2. Fill the arrival form when you are in the area of ipt.
-            <br>3. You have to fill logbook averyday you attend in ipt area.
-            <br>4. Submit the documents in logbook form or report form whenever neccessary.
-        </h4>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px" >
+                            <a href="forms.php" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p >Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px" >
+                            <a href="logbook.html" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Logbook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="report.html" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>Report</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
 
-    </div>  
-    
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0" style="color:orange">Welcome <?php echo $username; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
 
-    <!-- <div style="width: 10px;"></div> -->
-    <div class="dashboard">
-        <!-- Add a new div for displaying current time, date, and day -->
-        <div class="time-section" >
-           <b><p id="currentDateTime"></p></b> 
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Instructions</h5>
+                                    <p class="card-text">1. You have to fill the arrival form only once.</p>
+                                    <p class="card-text">2. Fill the arrival form when you are in the area of ipt.</p>
+                                    <p class="card-text">3. You have to fill logbook every day you attend in ipt area.</p>
+                                    <p class="card-text">4. Submit the documents in logbook form or report form whenever necessary.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content -->
         </div>
+        <!-- /.content-wrapper -->
 
-    <ul>
-        <li><a href="forms.php">Student Arrival Form</a></li>
-        <li><a href="logbook.html">Logbook</a></li>
-        <li><a href="report.html">Report</a></li>
-    </ul>
-
+        <!-- Main Footer -->
+        <footer class="main-footer">
+                <div class="float-right d-none d-sm-inline">
+                    <!-- Theme switch toggle button -->
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="themeSwitch">
+                        <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+                    </div>
+                </div>
+                <strong>IPTMS &copy; 2024.</strong> All rights reserved.
+            </footer>
     </div>
-    
-    <!-- Include JavaScript for updating current time, date, and day -->
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     <script>
-        function updateDateTime() {
-            const currentDateTimeElement = document.getElementById('currentDateTime');
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi' };
+        $(document).ready(function(){
+                // Check if the theme preference is stored in local storage
+                var currentTheme = localStorage.getItem('theme');
 
-            // Display the time, date, and day
-            const currentDateTime = new Date().toLocaleString('en-US', options);
-            currentDateTimeElement.textContent = `${currentDateTime}`;
-        }
+                // If theme preference exists, apply it
+                if(currentTheme) {
+                    $('body').addClass(currentTheme);
+                    if(currentTheme === 'dark-mode') {
+                        $('#themeSwitch').prop('checked', true);
+                    }
+                }
 
-        // Update current time, date, and day every second
-        setInterval(updateDateTime, 1000);
-
-        // Initial update
-        updateDateTime();
+                // Toggle theme when switch is clicked
+                $('#themeSwitch').change(function() {
+                    if ($(this).is(':checked')) {
+                        $('body').addClass('dark-mode');
+                        localStorage.setItem('theme', 'dark-mode');
+                    } else {
+                        $('body').removeClass('dark-mode');
+                        localStorage.setItem('theme', '');
+                    }
+                });
+            });
     </script>
 </body>
 </html>

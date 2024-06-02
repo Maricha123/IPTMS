@@ -17,27 +17,32 @@ body {
 .data-table {
     margin: 0 auto; /* Center the table */
     width: 80%; /* Adjust as needed */
+    box-shadow: 0 0 10px rgba(4, 4, 9, 0.3);
 }
 
 .data-table table {
     width: 100%;
     border-collapse: collapse;
+    
 }
 
 .data-table th, .data-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    box-shadow: 0 0 10px rgba(4, 4, 9, 0.1);
 }
 
 .center-message {
     text-align: center;
     margin-top: 20px; /* Adjust margin as needed */
+    
 }
 
 
 .data-table th {
-    background-color: rgb(77, 155, 207);
+    background-color: rgb(89, 196, 221);
+    
 }
 
 /* Media Queries */

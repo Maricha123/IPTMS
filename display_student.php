@@ -1,18 +1,15 @@
-
 <?php
 include 'db.php';
 
 if (isset($_GET['student_id'])) {
     $UserID = $_GET['student_id'];
 
-   // Retrieve and display the student's form
+    // Retrieve and display the student's form
     $formQuery = "SELECT * FROM student_form WHERE UserID = ?";
     $formStmt = $conn->prepare($formQuery);
     $formStmt->bind_param("i", $UserID);
     $formStmt->execute();
     $formResult = $formStmt->get_result();
-
-    // Store form data in a variable
     $formData = $formResult->fetch_assoc();
 
     // Retrieve and display the student's logbook
@@ -29,106 +26,217 @@ if (isset($_GET['student_id'])) {
     $reportStmt->execute();
     $reportResult = $reportStmt->get_result();
 
-    // Display form data in a table
-    if ($formResult->num_rows > 0) {
-        echo "<div class='data-table'>";
-        echo "<table>";
-        echo "<tr><th colspan='2'>Student Form</th></tr>";
-        echo "<tr><td>Name</td><td>{$formData['name']}</td></tr>";
-        echo "<tr><td>Registration Number</td><td>{$formData['registration_number']}</td></tr>";
-        echo "<tr><td>Academic Year</td><td>{$formData['academic_year']}</td></tr>";
-        echo "<tr><td>Region</td><td>{$formData['region']}</td></tr>";
-        echo "<tr><td>District</td><td>{$formData['district']}</td></tr>";
-        echo "<tr><td>Organization</td><td>{$formData['organization']}</td></tr>";
-        echo "<tr><td>SupervisorName</td><td>{$formData['supervisor_name']}</td></tr>";
-        echo "<tr><td>SupervisorNumber</td><td>{$formData['supervisor_number']}</td></tr>";
-        echo "<td>{$formData['uploaded_at']}<td>submitted_time</td></td>"; // Display the date submitted
-        echo "</table>";
-        echo "</div>";
-    } else {
-    echo "<div class='center-message'>";
-    echo "<p>No form data found for the student.</p>";
-    echo "</div>";
-}
+    // Retrieve and display the student's files
+    $fileQuery = "SELECT * FROM file_uploads WHERE UserID = ?";
+    $fileStmt = $conn->prepare($fileQuery);
+    $fileStmt->bind_param("i", $UserID);
+    $fileStmt->execute();
+    $fileResult = $fileStmt->get_result();
 
-    // Display logbook data in a table
-    if ($logbookResult->num_rows > 0) {
-        echo "<div class='data-table'>";
-        echo "<table>";
-        echo "<tr><th colspan='3'>Student Logbook</th></tr>";
-        echo "<tr><th>Date</th><th>Workspace</th><th>Submitted_time</th></tr>";
-        while ($logbookRow = $logbookResult->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>{$logbookRow['date']}</td>";
-            echo "<td>{$logbookRow['workspace']}</td>";
-            // echo "<td><a href='view_file.php?type=logbook&logbook_id={$logbookRow['logbook_id']}'>View File</a></td>"; // Update 'logbook_id' to the correct column name
-            echo "<td>{$logbookRow['uploaded_at']}</td>"; // Display the date submitted
-            echo "</tr>";
-        }
-        echo "</table>";
-        echo "</div>";
-    } else {
-        echo "<div class='center-message'>";
-        echo "<p>No logbook data found for the student.</p>";
-        echo "</div>";
-    }
-
-    // Display report data in a table
-    if ($reportResult->num_rows > 0) {
-        echo "<div class='data-table'>";
-        echo "<table>";
-        echo "<tr><th colspan='4' >Student Report</th></tr>";
-        echo "<tr><th>Week Number</th><th>Works</th><th>Problems</th><th>Submitted_time</th></tr>";
-        while ($reportRow = $reportResult->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>{$reportRow['week_number']}</td>";
-            echo "<td>{$reportRow['works']}</td>";
-            echo "<td>{$reportRow['problems']}</td>";
-            // echo "<td><a href='view_file.php?type=report&report_id={$reportRow['report_id']}'>View File</a></td>"; // Update 'report_id' to the correct column name
-            echo "<td>{$reportRow['uploaded_at']}</td>"; // Display the date submitted
-            echo "</tr>";
-        }
-        echo "</table>";
-        echo "</div>";
-    } else {
-        echo "<div class='center-message'>";
-        echo "<p>No report data found for the student.</p>";
-        echo "</div>";
-    }
-
-    // Close the prepared statements
-    $formStmt->close();
-    $logbookStmt->close();
-    $reportStmt->close();
+    // Close the database connection
+    $conn->close();
 } else {
     echo "<p>Invalid request. Please select a student.</p>";
+    exit;
 }
- // Retrieve and display the student's files
- $fileQuery = "SELECT * FROM file_uploads WHERE UserID = ?";
- $fileStmt = $conn->prepare($fileQuery);
- $fileStmt->bind_param("i", $UserID);
- $fileStmt->execute();
- $fileResult = $fileStmt->get_result();
-
- // Display files data in a table
- if ($fileResult->num_rows > 0) {
-     echo "<div class='data-table'>";
-     echo "<table>";
-     echo "<tr><th colspan='3'>Student Files</th></tr>";
-     echo "<tr><th>File Name</th><th>Submitted Time</th><th>Action</th></tr>";
-     while ($fileRow = $fileResult->fetch_assoc()) {
-         echo "<tr>";
-         echo "<td>{$fileRow['file_name']}</td>";
-         echo "<td>{$fileRow['time_submitted']}</td>";
-         echo "<td><a href='view_file.php?id={$fileRow['id']}'>Download</a></td>";
-         echo "</tr>";
-     }
-     echo "</table>";
-     echo "</div>";
- } else {
-    echo "<div class='center-message'>";
-    echo "<p>No file found for the student.</p>";
-    echo "</div>";
- }
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <style>
+        .data-table {
+            margin: 20px 0;
+        }
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data-table th, .data-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        .center-message {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="supdash.php" class="nav-link">Home</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="#" class="brand-link">
+                <span class="brand-text font-weight-light">Supervisor Dashboard</span>
+            </a>
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-user-graduate"></i>
+                                <p> <?php echo $username; ?></p>
+                            </a>
+                        </li>
+                        <!-- Add other menu items here -->
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Student Details</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Student Form -->
+                    <?php if ($formResult->num_rows > 0): ?>
+                        <div class="data-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th colspan="2">Student Form</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Name</td><td><?php echo $formData['name']; ?></td></tr>
+                                    <tr><td>Registration Number</td><td><?php echo $formData['registration_number']; ?></td></tr>
+                                    <tr><td>Academic Year</td><td><?php echo $formData['academic_year']; ?></td></tr>
+                                    <tr><td>Region</td><td><?php echo $formData['region']; ?></td></tr>
+                                    <tr><td>District</td><td><?php echo $formData['district']; ?></td></tr>
+                                    <tr><td>Organization</td><td><?php echo $formData['organization']; ?></td></tr>
+                                    <tr><td>Supervisor Name</td><td><?php echo $formData['supervisor_name']; ?></td></tr>
+                                    <tr><td>Supervisor Number</td><td><?php echo $formData['supervisor_number']; ?></td></tr>
+                                    <tr><td>Submitted Time</td><td><?php echo $formData['uploaded_at']; ?></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <div class="center-message">
+                            <p>No form data found for the student.</p>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Student Logbook -->
+                    <?php if ($logbookResult->num_rows > 0): ?>
+                        <div class="data-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th colspan="3">Student Logbook</th></tr>
+                                    <tr><th>Date</th><th>Workspace</th><th>Submitted Time</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($logbookRow = $logbookResult->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><?php echo $logbookRow['date']; ?></td>
+                                            <td><?php echo $logbookRow['workspace']; ?></td>
+                                            <td><?php echo $logbookRow['uploaded_at']; ?></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <div class="center-message">
+                            <p>No logbook data found for the student.</p>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Student Report -->
+                    <?php if ($reportResult->num_rows > 0): ?>
+                        <div class="data-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th colspan="4">Student Report</th></tr>
+                                    <tr><th>Week Number</th><th>Works</th><th>Problems</th><th>Submitted Time</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($reportRow = $reportResult->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><?php echo $reportRow['week_number']; ?></td>
+                                            <td><?php echo $reportRow['works']; ?></td>
+                                            <td><?php echo $reportRow['problems']; ?></td>
+                                            <td><?php echo $reportRow['uploaded_at']; ?></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <div class="center-message">
+                            <p>No report data found for the student.</p>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Student Files -->
+                    <?php if ($fileResult->num_rows > 0): ?>
+                        <div class="data-table">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr><th colspan="3">Student Files</th></tr>
+                                    <tr><th>File Name</th><th>Submitted Time</th><th>Action</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($fileRow = $fileResult->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><?php echo $fileRow['file_name']; ?></td>
+                                            <td><?php echo $fileRow['time_submitted']; ?></td>
+                                            <td><a href="view_file.php?id=<?php echo $fileRow['id']; ?>">Download</a></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <div class="center-message">
+                            <p>No files found for the student.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+   
+       
+</body>
+</html>

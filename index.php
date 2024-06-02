@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="heading">
-        <h1>INDUSTRIALPRACTICAL TRAINING MANAGEMENT SYSTEM</h1>
+        <h1>INDUSTRIAL PRACTICAL TRAINING MANAGEMENT SYSTEM</h1>
         <h2>(IPTMS)</h2>
     </div>
 
