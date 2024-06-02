@@ -33,6 +33,19 @@ if (isset($_GET['student_id'])) {
     $fileStmt->execute();
     $fileResult = $fileStmt->get_result();
 
+    // Handle message submission
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
+        $message = $_POST['message'];
+        $messageQuery = "INSERT INTO messages (UserID, message) VALUES (?, ?)";
+        $messageStmt = $conn->prepare($messageQuery);
+        $messageStmt->bind_param("is", $UserID, $message);
+        if ($messageStmt->execute()) {
+            echo "<p>Message sent successfully.</p>";
+        } else {
+            echo "<p>Failed to send message.</p>";
+        }
+    }
+
     // Close the database connection
     $conn->close();
 } else {
@@ -227,6 +240,19 @@ if (isset($_GET['student_id'])) {
                             <p>No files found for the student.</p>
                         </div>
                     <?php endif; ?>
+
+                    <!-- Message Form -->
+                    <div class="message-form">
+                        <h2>Comments</h2>
+                        <form method="POST" action="">
+                            <div class="form-group">
+                                <label for="message">Message:</label>
+                                <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" name="sendMessage" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+
                 </div>
             </section>
         </div>
@@ -236,7 +262,5 @@ if (isset($_GET['student_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/jquery/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-   
-       
 </body>
 </html>

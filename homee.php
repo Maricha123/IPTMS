@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 // Database connection details
 $servername = "localhost"; // or your server name
 $username = "root"; // your database username
@@ -31,6 +32,10 @@ if ($result->num_rows > 0) {
     $username = "Guest"; // Default to Guest if user not found
 }
 
+// Fetch messages for the logged-in user
+$messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
+$messagesResult = $conn->query($messageQuery);
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -43,7 +48,8 @@ $conn->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-   
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -55,6 +61,33 @@ $conn->close();
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" role="button">
+                        <i class="far fa-bell"></i>
+                        <?php if ($messagesResult->num_rows > 0): ?>
+                            <span class="badge badge-warning navbar-badge"><?php echo $messagesResult->num_rows; ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header"><?php echo $messagesResult->num_rows; ?> Messages</span>
+                        <div class="dropdown-divider"></div>
+                        <?php if ($messagesResult->num_rows > 0): ?>
+                            <?php while($messageRow = $messagesResult->fetch_assoc()): ?>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <?php echo htmlspecialchars($messageRow['message']); ?>
+                                    <span class="float-right text-muted text-sm"><?php echo date('Y-m-d H:i', strtotime($messageRow['sent_at'])); ?></span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-envelope mr-2"></i> No new messages
+                            </a>
+                        <?php endif; ?>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <h5><a class="nav-link" href="view_studentsprofile.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
                 </li>
@@ -66,9 +99,8 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="homee.php" class="brand-link">
-            <i class="fas fa-user-graduate"></i>
+                <i class="fas fa-user-graduate"></i>
                 <span class="brand-text font-weight-light">Student Dashboard</span>
-                
             </a>
 
             <!-- Sidebar -->
@@ -76,13 +108,13 @@ $conn->close();
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px" >
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="forms.php" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
-                                <p >Arrival Form</p>
+                                <p>Arrival Form</p>
                             </a>
                         </li>
-                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px" >
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
                             <a href="logbook.html" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>Logbook</p>
@@ -124,13 +156,37 @@ $conn->close();
                                 <div class="card-body">
                                     <h5 class="card-title">Instructions</h5>
                                     <p class="card-text">1. You have to fill the arrival form only once.</p>
-                                    <p class="card-text">2. Fill the arrival form when you are in the area of ipt.</p>
-                                    <p class="card-text">3. You have to fill logbook every day you attend in ipt area.</p>
+                                    <p class="card-text">2. Fill the arrival form when you are in the area of IPT.</p>
+                                    <p class="card-text">3. You have to fill logbook every day you attend in IPT area.</p>
                                     <p class="card-text">4. Submit the documents in logbook form or report form whenever necessary.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Messages from Supervisor -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Messages from Supervisor</h5>
+                                    <?php if ($messagesResult->num_rows > 0): ?>
+                                        <ul class="list-group">
+                                            <?php while($messageRow = $messagesResult->fetch_assoc()): ?>
+                                                <li class="list-group-item">
+                                                    <strong><?php echo date('Y-m-d H:i', strtotime($messageRow['sent_at'])); ?>:</strong>
+                                                    <?php echo htmlspecialchars($messageRow['message']); ?>
+                                                </li>
+                                            <?php endwhile; ?>
+                                        </ul>
+                                    <?php else: ?>
+                                        <p>No messages from the supervisor.</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!-- /.content -->
@@ -139,46 +195,48 @@ $conn->close();
 
         <!-- Main Footer -->
         <footer class="main-footer">
-                <div class="float-right d-none d-sm-inline">
-                    <!-- Theme switch toggle button -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="themeSwitch">
-                        <label class="form-check-label" for="themeSwitch">Dark Mode</label>
-                    </div>
+            <div class="float-right d-none d-sm-inline">
+                <!-- Theme switch toggle button -->
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="themeSwitch">
+                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
                 </div>
-                <strong>IPTMS &copy; 2024.</strong> All rights reserved.
-            </footer>
+            </div>
+            <strong>IPTMS &copy; 2024.</strong> All rights reserved.
+        </footer>
     </div>
     <!-- ./wrapper -->
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     <script>
         $(document).ready(function(){
-                // Check if the theme preference is stored in local storage
-                var currentTheme = localStorage.getItem('theme');
+            // Check if the theme preference is stored in local storage
+            var currentTheme = localStorage.getItem('theme');
 
-                // If theme preference exists, apply it
-                if(currentTheme) {
-                    $('body').addClass(currentTheme);
-                    if(currentTheme === 'dark-mode') {
-                        $('#themeSwitch').prop('checked', true);
-                    }
+            // If theme preference exists, apply it
+            if(currentTheme) {
+                $('body').addClass(currentTheme);
+                if(currentTheme === 'dark-mode') {
+                    $('#themeSwitch').prop('checked', true);
                 }
+            }
 
-                // Toggle theme when switch is clicked
-                $('#themeSwitch').change(function() {
-                    if ($(this).is(':checked')) {
-                        $('body').addClass('dark-mode');
-                        localStorage.setItem('theme', 'dark-mode');
-                    } else {
-                        $('body').removeClass('dark-mode');
-                        localStorage.setItem('theme', '');
-                    }
-                });
+            // Toggle theme when switch is clicked
+            $('#themeSwitch').change(function() {
+                if ($(this).is(':checked')) {
+                    $('body').addClass('dark-mode');
+                    localStorage.setItem('theme', 'dark-mode');
+                } else {
+                    $('body').removeClass('dark-mode');
+                    localStorage.setItem('theme', '');
+                }
             });
+        });
     </script>
 </body>
 </html>
