@@ -68,7 +68,7 @@
                     <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i> -->
 
                     <div class="input-container">
-                        <input type="password" id="password" name="password" class="input" placeholder="Confirm password" required style="border-radius: 10px;">
+                        <input type="password" id="confirm_password" name="password" class="input" placeholder="Confirm password" required style="border-radius: 10px;">
                         <i class="fa fa-lock"></i>
                     </div>
                 

@@ -77,7 +77,7 @@
     </div>
 
     <div id="foot">
-        <h2><b><p><i>@2024 IPTMS</i></p></b></h2>
+        <h3><b><p><i>IPTMS &copy; 2024</i></p></b></h3>
     </div>
     
 </body>
