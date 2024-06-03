@@ -140,38 +140,52 @@ $conn->close();
                         </div>
                     </div><!-- /.container-fluid -->
 
-                    <!-- Profile Section -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
-                                <div class="card-body p-0">
-                                    <?php if ($result_profile->num_rows > 0): ?>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Role</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php while ($row = $result_profile->fetch_assoc()): ?>
-                                                    <tr>
-                                                        <td><?php echo $row['Name']; ?></td>
-                                                        <td><?php echo $row['Email']; ?></td>
-                                                        <td><?php echo $row['Role']; ?></td>
-                                                    </tr>
-                                                <?php endwhile; ?>
-                                            </tbody>
-                                        </table>
-                                    <?php else: ?>
-                                        <p>No profile found for this user.</p>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
+                   <!-- Profile Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
+            <div class="card-body p-0">
+                <?php if ($result_profile->num_rows > 0): ?>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $result_profile->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo $row['Name']; ?></td>
+                                    <td><?php echo $row['Email']; ?></td>
+                                    <td><?php echo $row['Role']; ?></td>
+                                    
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                    <!-- Form to change email and details -->
+                    <form action="update_profile.php" method="POST" class="mt-3">
+                        <div class="form-group">
+                            <label for="new_email">Change Email:</label>
+                            <input type="email" class="form-control" id="new_email" name="new_email" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="new_name">Change Name:</label>
+                            <input type="text" class="form-control" id="new_name" name="new_name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="update_profile">Update Profile</button>
+                    </form>
+                <?php else: ?>
+                    <p>No profile found for this user.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
                     
                 </section>
                 <!-- /.content -->

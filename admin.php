@@ -42,6 +42,13 @@ $result_supervisor_options = $conn->query($sql_supervisor_options);
 $sql_region_options = "SELECT * FROM regions";
 $result_region_options = $conn->query($sql_region_options);
 
+// Count total number of students
+$sql_total_students = "SELECT COUNT(*) AS total_students FROM users WHERE Role = 'student'";
+$result_total_students = $conn->query($sql_total_students);
+$row_total_students = $result_total_students->fetch_assoc();
+$total_students = $row_total_students['total_students'];
+
+
 // Function to generate random password
 function generateRandomPassword($length = 3) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -154,8 +161,8 @@ function generateRandomPassword($length = 3) {
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                        <h2 style="text-align:center">Welcome <?php echo $username; ?></h2>
+                    <div class="col-sm-6">
+                            <h1 class="m-0" >Welcome <?php echo $username; ?></h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -184,12 +191,24 @@ function generateRandomPassword($length = 3) {
                         </div>
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-warning">
-                                <div class="inner">
+                                <div class="inner" style="color:white">
                                     <h3><?php echo $total_supervisors; ?></h3>
                                     <p>Supervisors</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-user-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-6" >
+                            <div class="small-box bg-warning" >
+                                <div class="inner" style="background-color:#0eacb8; color:white" >
+                                    <h3><?php echo $total_students; ?></h3>
+                                    <p>Students</p>
+                                </div>
+                                <div class="icon">
+                                <i class="fas fa-user-graduate"></i>
                                 </div>
                             </div>
                         </div>
@@ -213,27 +232,7 @@ function generateRandomPassword($length = 3) {
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Add Supervisor</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form action="admin.php" method="POST">
-                                        <div class="form-group">
-                                            <label for="supervisor_name">Supervisor Name:</label>
-                                            <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="supervisor_email">Supervisor Email:</label>
-                                            <input type="email" class="form-control" id="supervisor_email" name="supervisor_email" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary" name="add_supervisor">Add Supervisor</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
+                        
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
@@ -245,7 +244,7 @@ function generateRandomPassword($length = 3) {
                                             <label for="supervisor_id">Select Supervisor:</label>
                                             <select class="form-control" id="supervisor_id" name="supervisor_id" required>
                                                 <?php while ($row = $result_supervisor_options->fetch_assoc()): ?>
-                                                    <option value="<?php echo $row['supervisor_id']; ?>"><?php echo $row['supervisor_name']; ?></option>
+                                                    <option value="<?php echo $row['supervisor_id']; ?>"><?php echo $row['supervisor_email']; ?></option>
                                                 <?php endwhile; ?>
                                             </select>
                                         </div>
@@ -262,6 +261,38 @@ function generateRandomPassword($length = 3) {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Add Supervisor</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action="admin.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="supervisor_name">Supervisor Name:</label>
+                                            <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="supervisor_email">Supervisor Email:</label>
+                                            <input type="email" class="form-control" id="supervisor_email" name="supervisor_email" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="Year">Year:</label>
+                                            <input type="year" class="form-control" id="year" name="year" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Contact">Contact:</label>
+                                            <input type="number" class="form-control" id="contact" name="contact" required>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary" name="add_supervisor">Add Supervisor</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -338,6 +369,8 @@ if(isset($_POST['add_region'])) {
 if(isset($_POST['add_supervisor'])) {
     $supervisor_name = $_POST['supervisor_name'];
     $supervisor_email = $_POST['supervisor_email'];
+    $year=$_POST['year'];
+    $contact=$_POST['contact'];
     
     // Check if the supervisor with the same email already exists
     $check_sql = "SELECT * FROM users WHERE Email = '$supervisor_email'";
@@ -353,7 +386,7 @@ if(isset($_POST['add_supervisor'])) {
         $sql = "INSERT INTO users (Name, Email, Password, Role) VALUES ('$supervisor_name', '$supervisor_email', '$hashed_password', 'supervisor')";
         if ($conn->query($sql) === TRUE) {
             // Also insert the supervisor into the supervisors table
-            $sql_supervisor = "INSERT INTO supervisors (supervisor_name, supervisor_email) VALUES ('$supervisor_name', '$supervisor_email')";
+            $sql_supervisor = "INSERT INTO supervisors (supervisor_name, supervisor_email, year, contact) VALUES ('$supervisor_name', '$supervisor_email', '$year', '$contact')";
             if ($conn->query($sql_supervisor) === TRUE) {
                 // Send email with temporary password
                 $mail = new PHPMailer(true);
@@ -404,7 +437,7 @@ if(isset($_POST['assign_supervisor'])) {
         // Update the supervisor's region in the database
         $sql = "UPDATE supervisors SET region_id = '$region_id' WHERE supervisor_id = '$supervisor_id'";
         if ($conn->query($sql) === TRUE) {
-            header("location: admin.php");
+         
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }

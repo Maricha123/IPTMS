@@ -57,7 +57,7 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                       
+                        <!-- Menu items can be added here -->
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -88,11 +88,17 @@
                     <marquee behavior="alternate" direction="right" class="marquee-header">Student Daily Logbook</marquee>
                     <div class="card">
                         <div class="card-body">
+                            <!-- Form for uploading a file -->
                             <form action="submits.php" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="uploadedFile" class="form-label">Upload File:</label>
-                                    <input type="file" name="uploadedFile" class="form-control" required>
+                                    <input type="file" name="uploadedFile" class="form-control">
                                 </div>
+                                <button type="submit" name="uploadBtn" class="btn btn-primary">Upload File</button>
+                            </form>
+
+                            <!-- Form for submitting logbook data -->
+                            <form action="submits.php" method="post">
                                 <div class="form-group">
                                     <label for="date" class="form-label">Date:</label>
                                     <input type="date" id="date" name="date" class="form-control" required>
@@ -101,7 +107,6 @@
                                     <label for="workspace" class="form-label">Workspace:</label>
                                     <textarea id="workspace" name="workspace" rows="4" class="form-control" required></textarea>
                                 </div>
-                                <button type="submit" name="uploadBtn" class="btn btn-primary">Upload File</button>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
                             </form>

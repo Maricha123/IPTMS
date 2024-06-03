@@ -3,7 +3,7 @@ session_start();
 include 'db.php';
 
 // Fetch supervisors with their assigned regions and emails
-$sql = "SELECT supervisors.supervisor_name, supervisors.supervisor_email, regions.region_name 
+$sql = "SELECT supervisors.supervisor_name, supervisors.supervisor_email, year, contact, regions.region_name 
         FROM supervisors 
         LEFT JOIN regions ON supervisors.region_id = regions.region_id";
 $result = $conn->query($sql);
@@ -105,6 +105,8 @@ $conn->close();
                                             <tr>
                                                 <th>Supervisor</th>
                                                 <th>Email</th>
+                                                <th>Year</th>
+                                                <th>Contact</th>
                                                 <th>Assigned Region</th>
                                             </tr>
                                         </thead>
@@ -113,6 +115,8 @@ $conn->close();
                                                 <tr>
                                                     <td><?php echo $supervisor_region['supervisor_name']; ?></td>
                                                     <td><?php echo $supervisor_region['supervisor_email']; ?></td>
+                                                    <td><?php echo $supervisor_region['year']; ?></td>
+                                                    <td><?php echo $supervisor_region['contact']; ?></td>
                                                     <td><?php echo $supervisor_region['region_name'] ?? 'Not Assigned'; ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -138,3 +142,4 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 </body>
 </html>
+ 
