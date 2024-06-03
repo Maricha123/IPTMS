@@ -50,7 +50,7 @@ $total_students = $row_total_students['total_students'];
 
 
 // Function to generate random password
-function generateRandomPassword($length = 3) {
+function generateRandomPassword($length = 8) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $password = '';
     for ($i = 0; $length > $i; $i++) {

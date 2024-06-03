@@ -23,10 +23,8 @@ $sql = "SELECT Name FROM users WHERE UserID = '$userId'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    // Output data of each row
-    while($row = $result->fetch_assoc()) {
-        $username = $row["Name"];
-    }
+    $row = $result->fetch_assoc();
+    $username = $row["Name"];
 } else {
     $username = "Guest"; // Default to Guest if user not found
 }
@@ -34,6 +32,35 @@ if ($result->num_rows > 0) {
 // Fetch messages for the logged-in user
 $messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
 $messagesResult = $conn->query($messageQuery);
+
+// Fetch the region assigned to the student from the arrival form
+$regionQuery = "SELECT region FROM student_form WHERE UserID = '$userId'";
+$regionResult = $conn->query($regionQuery);
+
+if ($regionResult->num_rows > 0) {
+    $regionRow = $regionResult->fetch_assoc();
+    $regionName = $regionRow['region'];
+
+    // Fetch the supervisor assigned to this region
+    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact FROM supervisors WHERE region_id = (SELECT region_id FROM regions WHERE region_name = '$regionName')";
+    $supervisorResult = $conn->query($supervisorQuery);
+
+    if ($supervisorResult->num_rows > 0) {
+        $supervisorRow = $supervisorResult->fetch_assoc();
+        $supervisorName = $supervisorRow['supervisor_name'];
+        $supervisorEmail = $supervisorRow['supervisor_email'];
+        $supervisorContact = $supervisorRow['contact'];
+    } else {
+        $supervisorName = "Not Assigned";
+        $supervisorEmail = "N/A";
+        $supervisorContact = "N/A";
+    }
+} else {
+    $regionName = null;
+    $supervisorName = "Not Assigned";
+    $supervisorEmail = "N/A";
+    $supervisorContact = "N/A";
+}
 
 $conn->close();
 ?>
@@ -74,7 +101,6 @@ $conn->close();
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header"><?php echo $messagesResult->num_rows; ?> Messages</span>
                         <div class="dropdown-divider"></div>
-                     
                         <a href="view_massage.php" class="dropdown-item dropdown-footer">See All Messages</a>
                     </div>
                 </li>
@@ -95,8 +121,6 @@ $conn->close();
 
             <!-- Sidebar -->
             <div class="sidebar">
-              
-        
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
@@ -117,14 +141,12 @@ $conn->close();
                                 <p>Report</p>
                             </a>
                         </li>
-
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_logbook.php" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-book"></i>
                                 <p>View Logbooks</p>
                             </a>
                         </li>
-
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_report.php" class="nav-link">
                                 <i class="nav-icon fas fa-file-alt"></i>
@@ -133,7 +155,6 @@ $conn->close();
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
@@ -161,7 +182,6 @@ $conn->close();
                                 <div class="card-body">
                                     <h5 class="card-title">Instructions</h5>
                                     <p class="card-text">1. You have to fill the arrival form only once.</p>
-                                    <p class="card-text">2. Fill the arrival form when you are
                                     <p class="card-text">2. Fill the arrival form when you are in the area of IPT.</p>
                                     <p class="card-text">3. You have to fill out the logbook every day you attend the IPT area.</p>
                                     <p class="card-text">4. Submit the documents in the logbook form or report form whenever necessary.</p>
@@ -170,10 +190,19 @@ $conn->close();
                         </div>
                     </div>
 
-
-                    <!-- Logbooks Section -->
-
-
+                    <!-- Supervisor Details Section -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body" style="background-color:#0eacb8">
+                                    <h5 class="card-title" style="color:white">Your Supervisor</h5>
+                                    <p class="card-text" style="color:white">Supervisor Name: <?php echo $supervisorName; ?></p>
+                                    <p class="card-text" style="color:white">Supervisor Email: <?php echo $supervisorEmail; ?></p>
+                                    <p class="card-text" style="color:white">Supervisor Contact: <?php echo $supervisorContact; ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.content -->
