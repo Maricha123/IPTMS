@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Generate unique token
         $token = bin2hex(random_bytes(12));
         $expiry = date("Y-m-d H:i:s", strtotime('+5 hour'));
-        $resetLink = "http://localhost/actual/reset_passwords.php?token=" . $token;
+        $resetLink = "http://localhost/IPTMS/reset_passwords.php?token=" . $token;
 
         // Insert token into password_resets table
         $sql = "INSERT INTO password_resets (email, token, expiry) VALUES (?, ?, ?)";

@@ -49,6 +49,7 @@ $row_total_students = $result_total_students->fetch_assoc();
 $total_students = $row_total_students['total_students'];
 
 
+
 // Function to generate random password
 function generateRandomPassword($length = 8) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -473,5 +474,8 @@ if(isset($_POST['assign_supervisor'])) {
                         localStorage.setItem('theme', '');
                     }
                 });
-            });
+                // Function to fetch and update counts
+      
+    });
+            
     </script>

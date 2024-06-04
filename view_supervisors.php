@@ -2,10 +2,12 @@
 session_start();
 include 'db.php';
 
+
 // Fetch supervisors with their assigned regions and emails
-$sql = "SELECT supervisors.supervisor_name, supervisors.supervisor_email, year, contact, regions.region_name 
+$sql = "SELECT supervisors.supervisor_id, supervisors.supervisor_name, supervisors.supervisor_email, year, contact, regions.region_name, users.UserID 
         FROM supervisors 
-        LEFT JOIN regions ON supervisors.region_id = regions.region_id";
+        LEFT JOIN regions ON supervisors.region_id = regions.region_id
+        LEFT JOIN users ON supervisors.supervisor_email = users.email";
 $result = $conn->query($sql);
 
 $supervisor_regions = array();
@@ -18,7 +20,6 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +30,6 @@ $conn->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <style>
-        /* Define dark mode styles */
         .dark-mode {
             background-color: #333;
             color: #fff;
@@ -38,9 +38,7 @@ $conn->close();
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -50,50 +48,37 @@ $conn->close();
                 </li>
             </ul>
         </nav>
-        <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
             <a href="#" class="brand-link">
                 <span class="brand-text font-weight-light">View Supervisors</span>
             </a>
 
-            <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                                <p>Dashboard</p>
                             </a>
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0">Supervisors and Their Assigned Regions</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.content-header -->
 
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -108,6 +93,7 @@ $conn->close();
                                                 <th>Year</th>
                                                 <th>Contact</th>
                                                 <th>Assigned Region</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -118,6 +104,13 @@ $conn->close();
                                                     <td><?php echo $supervisor_region['year']; ?></td>
                                                     <td><?php echo $supervisor_region['contact']; ?></td>
                                                     <td><?php echo $supervisor_region['region_name'] ?? 'Not Assigned'; ?></td>
+                                                    <td>
+                                                        <form method="post" action="delete_supervisor.php" onsubmit="return confirm('Are you sure you want to delete this supervisor?');">
+                                                            <input type="hidden" name="supervisor_id" value="<?php echo $supervisor_region['supervisor_id']; ?>">
+                                                            <input type="hidden" name="UserID" value="<?php echo $supervisor_region['UserID']; ?>">
+                                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -128,13 +121,9 @@ $conn->close();
                     </div>
                 </div>
             </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
     </div>
-    <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
@@ -142,4 +131,3 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 </body>
 </html>
- 
