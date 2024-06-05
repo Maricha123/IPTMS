@@ -203,8 +203,8 @@ function generateRandomPassword($length = 8) {
                         </div>
 
                         <div class="col-lg-4 col-6" >
-                            <div class="small-box bg-warning" >
-                                <div class="inner" style="background-color:#0eacb8; color:white" >
+                            <div class="small-box bg-green" >
+                                <div class="inner"  >
                                     <h3><?php echo $total_students; ?></h3>
                                     <p>Students</p>
                                 </div>
@@ -218,9 +218,9 @@ function generateRandomPassword($length = 8) {
                     
 <div class="row">
 <div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-red">
-<span class="info-box-icon"><i class="fas fa-map-marker-alt"></i></span>
-<div class="info-box-content">
+<div class="info-box bg-yellow" style="margin-top:30px">
+<span class="info-box-icon" ><i class="fas fa-map-marker-alt" style="color:white"></i></span>
+<div class="info-box-content" >
 <span class="info-box-text">Manage Regions</span>
 
 <div class="inner">
@@ -234,7 +234,7 @@ function generateRandomPassword($length = 8) {
 </div>
 </div>
 <div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-success">
+<div class="info-box bg-red" style="margin-top:30px">
 <span class="info-box-icon"><i class="fas fa-user-plus"></i></span>
 <div class="info-box-content">
 <span class="info-box-text">Manage Supervisors</span>
@@ -243,14 +243,8 @@ function generateRandomPassword($length = 8) {
 <a href="manage supervisor.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Supervisor</button></a>
 </div>
 
-
-
 </div>
-
-
 </div>
-
-
 </div>
                         </div>
 

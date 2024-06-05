@@ -310,24 +310,6 @@ function generateRandomPassword($length = 8) {
 <?php
 include 'db.php';
 
-// Check if the form for adding a region is submitted
-if(isset($_POST['add_region'])) {
-    $region_name = $_POST['region_name'];
-    // Check if the region already exists
-    $check_sql = "SELECT * FROM regions WHERE region_name = '$region_name'";
-    $check_result = $conn->query($check_sql);
-    if($check_result->num_rows == 0) {
-        // Insert the region into the database
-        $sql = "INSERT INTO regions (region_name) VALUES ('$region_name')";
-        if ($conn->query($sql) === TRUE) {
-            
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "<script>alert('Region already exists!');</script>";
-    }
-}
 
 // Check if the form for adding a supervisor is submitted
 if(isset($_POST['add_supervisor'])) {
