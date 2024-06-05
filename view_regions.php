@@ -46,7 +46,7 @@ $conn->close();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="" class="brand-link">
                 <span class="brand-text font-weight-light">Regions</span>
             </a>
 
@@ -55,14 +55,16 @@ $conn->close();
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                    <li class="nav-item">
+                            <a href="view_supervisors.php" class="nav-link">
+                            <i class="fas fa-user-plus"></i>
+                                <p style="color:#0eacb8;">SUPERVISORS</p>
                             </a>
-                        </li> -->
+                            <a href="view_regions.php" class="nav-link">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p style="color:#0eacb8;">REGIONS</p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -96,6 +98,7 @@ $conn->close();
                                             <tr>
                                                 <th>No:</th>
                                                 <th>Region Name:</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,11 +108,19 @@ $conn->close();
                                                     <tr>
                                                         <td><?php echo $count++; ?></td>
                                                         <td><?php echo $row['region_name']; ?></td>
+                                                        <td>
+                                                            <form action="delete_regions.php" method="post" style="display:inline;">
+                                                                <input type="hidden" name="region_id" value="<?php echo $row['region_id']; ?>">
+                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this region?');">
+                                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
                                                 <?php endwhile; ?>
                                             <?php else: ?>
                                                 <tr>
-                                                    <td colspan="2">No regions found</td>
+                                                    <td colspan="3">No regions found</td>
                                                 </tr>
                                             <?php endif; ?>
                                         </tbody>

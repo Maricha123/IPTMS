@@ -124,6 +124,9 @@ function generateRandomPassword($length = 8) {
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color:#0eacb8"></i></a>
                 </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="admin.php" class="nav-link" style="color:#0eacb8">Home</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -144,7 +147,7 @@ function generateRandomPassword($length = 8) {
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="view_supervisors.php" class="nav-link">
-                            <i class="fas fa-user"></i>
+                            <i class="fas fa-user-plus"></i>
                                 <p style="color:#0eacb8;">SUPERVISORS</p>
                             </a>
                             <a href="view_regions.php" class="nav-link">
@@ -163,7 +166,7 @@ function generateRandomPassword($length = 8) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                     <div class="col-sm-6">
-                            <h1 class="m-0" >Welcome <?php echo $username; ?></h1>
+                            <h1 class="m-0" >Manage Supervisors </h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -179,79 +182,79 @@ function generateRandomPassword($length = 8) {
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-4 col-6">
-                            <div class="small-box bg-info">
-                                <div class="inner">
-                                    <h3><?php echo $total_regions; ?></h3>
-                                    <p>Total Regions</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-6">
+                       
+                        <div class="col-lg-12 col-6">
                             <div class="small-box bg-warning">
                                 <div class="inner" style="color:white">
                                     <h3><?php echo $total_supervisors; ?></h3>
                                     <p>Supervisors</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-user"></i>
+                                    <i class="fas fa-user-plus"></i>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-4 col-6" >
-                            <div class="small-box bg-warning" >
-                                <div class="inner" style="background-color:#0eacb8; color:white" >
-                                    <h3><?php echo $total_students; ?></h3>
-                                    <p>Students</p>
-                                </div>
-                                <div class="icon">
-                                <i class="fas fa-user-graduate"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     
-<div class="row">
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-red">
-<span class="info-box-icon"><i class="fas fa-map-marker-alt"></i></span>
-<div class="info-box-content">
-<span class="info-box-text">Manage Regions</span>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Assign Supervisor to Region</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action="admin.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="supervisor_id">Select Supervisor:</label>
+                                            <select class="form-control" id="supervisor_id" name="supervisor_id" required>
+                                                <?php while ($row = $result_supervisor_options->fetch_assoc()): ?>
+                                                    <option value="<?php echo $row['supervisor_id']; ?>"><?php echo $row['supervisor_email']; ?></option>
+                                                <?php endwhile; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="region_id">Select Region:</label>
+                                            <select class="form-control" id="region_id" name="region_id" required>
+                                                <?php while ($row = $result_region_options->fetch_assoc()): ?>
+                                                    <option value="<?php echo $row['region_id']; ?>"><?php echo $row['region_name']; ?></option>
+                                                <?php endwhile; ?>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" name="assign_supervisor">Assign Supervisor</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
-<div class="inner">
-<a href="manage regions.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Region</button></a>
-</div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Add Supervisor</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action="admin.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="supervisor_name">Supervisor Name:</label>
+                                            <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="supervisor_email">Supervisor Email:</label>
+                                            <input type="email" class="form-control" id="supervisor_email" name="supervisor_email" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="Year">Year:</label>
+                                            <input type="year" class="form-control" id="year" name="year" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Contact">Contact:</label>
+                                            <input type="number" class="form-control" id="contact" name="contact" required>
+                                        </div>
 
-
-
-</div>
-
-</div>
-</div>
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-success">
-<span class="info-box-icon"><i class="fas fa-user-plus"></i></span>
-<div class="info-box-content">
-<span class="info-box-text">Manage Supervisors</span>
-
-<div class="inner">
-<a href="manage supervisor.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Supervisor</button></a>
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
+                                        <button type="submit" class="btn btn-primary" name="add_supervisor">Add Supervisor</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
 

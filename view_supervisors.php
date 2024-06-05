@@ -50,17 +50,21 @@ $conn->close();
         </nav>
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="#" class="brand-link">
+            <a href="" class="brand-link">
                 <span class="brand-text font-weight-light">View Supervisors</span>
             </a>
 
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
+                    <li class="nav-item">
+                            <a href="view_supervisors.php" class="nav-link">
+                            <i class="fas fa-user-plus"></i>
+                                <p style="color:#0eacb8;">SUPERVISORS</p>
+                            </a>
+                            <a href="view_regions.php" class="nav-link">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p style="color:#0eacb8;">REGIONS</p>
                             </a>
                         </li>
                     </ul>

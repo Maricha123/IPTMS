@@ -82,28 +82,24 @@ $conn->close();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <span class="brand-text font-weight-light">Supervisor Dashboard</span>
+            <a href="" class="brand-link">
+                <span class="brand-text font-weight-light">Profile</span>
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="info">
-                        <a href="#" class="d-block"><?php echo $username; ?></a>
-                    </div>
-                </div>
+           
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Students
-                                </p>
+                    <li class="nav-item">
+                            <a href="view_supervisors.php" class="nav-link">
+                            <i class="fas fa-user-plus"></i>
+                                <p style="color:#0eacb8;">SUPERVISORS</p>
+                            </a>
+                            <a href="view_regions.php" class="nav-link">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p style="color:#0eacb8;">REGIONS</p>
                             </a>
                         </li>
                         <!-- Add other menu items here -->
@@ -145,7 +141,7 @@ $conn->close();
     <div class="col-12">
         <div class="card">
             <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
-            <div class="card-body p-0">
+            <div class="card-body">
                 <?php if ($result_profile->num_rows > 0): ?>
                     <table class="table table-bordered">
                         <thead>

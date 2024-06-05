@@ -124,6 +124,9 @@ function generateRandomPassword($length = 8) {
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color:#0eacb8"></i></a>
                 </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="admin.php" class="nav-link" style="color:#0eacb8">Home</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -144,7 +147,7 @@ function generateRandomPassword($length = 8) {
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="view_supervisors.php" class="nav-link">
-                            <i class="fas fa-user"></i>
+                            <i class="fas fa-user-plus"></i>
                                 <p style="color:#0eacb8;">SUPERVISORS</p>
                             </a>
                             <a href="view_regions.php" class="nav-link">
@@ -163,7 +166,7 @@ function generateRandomPassword($length = 8) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                     <div class="col-sm-6">
-                            <h1 class="m-0" >Welcome <?php echo $username; ?></h1>
+                            <h1 class="m-0" >Manage Regions</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -179,9 +182,9 @@ function generateRandomPassword($length = 8) {
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-4 col-6">
+                        <div class="col-lg-6 col-">
                             <div class="small-box bg-info">
-                                <div class="inner">
+                                <div class="inner" style="background-color:green">
                                     <h3><?php echo $total_regions; ?></h3>
                                     <p>Total Regions</p>
                                 </div>
@@ -190,75 +193,39 @@ function generateRandomPassword($length = 8) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-6">
-                            <div class="small-box bg-warning">
-                                <div class="inner" style="color:white">
-                                    <h3><?php echo $total_supervisors; ?></h3>
-                                    <p>Supervisors</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-6" >
-                            <div class="small-box bg-warning" >
-                                <div class="inner" style="background-color:#0eacb8; color:white" >
-                                    <h3><?php echo $total_students; ?></h3>
-                                    <p>Students</p>
-                                </div>
-                                <div class="icon">
-                                <i class="fas fa-user-graduate"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        
 
                     
-<div class="row">
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-red">
-<span class="info-box-icon"><i class="fas fa-map-marker-alt"></i></span>
-<div class="info-box-content">
-<span class="info-box-text">Manage Regions</span>
-
-<div class="inner">
-<a href="manage regions.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Region</button></a>
-</div>
-
-
-
-</div>
-
-</div>
-</div>
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-success">
-<span class="info-box-icon"><i class="fas fa-user-plus"></i></span>
-<div class="info-box-content">
-<span class="info-box-text">Manage Supervisors</span>
-
-<div class="inner">
-<a href="manage supervisor.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Supervisor</button></a>
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-                        </div>
-
+                      
 
                     </div>
+                    <div class="inner">
+                        
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Add Region</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action="admin.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="region_name">Region Name:</label>
+                                            <input type="text" class="form-control" id="region_name" name="region_name" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" name="add_region">Add Region</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
+        
+    </div>
+
         <!-- /.content-wrapper -->
         <footer class="main-footer">
                 <div class="float-right d-none d-sm-inline">
@@ -270,8 +237,6 @@ function generateRandomPassword($length = 8) {
                 </div>
                 <strong>IPTMS &copy; 2024.</strong> All rights reserved.
             </footer>
-    </div>
-
     <script>
         document.getElementById("viewProfileBtn").addEventListener("click", function() {
             var profileDetails = document.getElementById("profileDetails");
