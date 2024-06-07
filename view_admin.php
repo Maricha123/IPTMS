@@ -82,8 +82,8 @@ $conn->close();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="" class="brand-link">
-                <span class="brand-text font-weight-light">Profile</span>
+            <a href="admin.php" class="brand-link">
+                <span class="brand-text font-weight-light">Admin Dashboard</span>
             </a>
 
             <!-- Sidebar -->
@@ -142,6 +142,7 @@ $conn->close();
         <div class="card">
             <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
             <div class="card-body">
+                
                 <?php if ($result_profile->num_rows > 0): ?>
                     <table class="table table-bordered">
                         <thead>

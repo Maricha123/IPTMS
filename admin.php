@@ -136,7 +136,7 @@ function generateRandomPassword($length = 8) {
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="" class="brand-link">
+            <a href="admin.php" class="brand-link">
                 <span class="brand-text font-weight-light">Admin Dashboard</span>
             </a>
             <div class="sidebar">
@@ -218,8 +218,8 @@ function generateRandomPassword($length = 8) {
                     
 <div class="row">
 <div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-yellow" style="margin-top:30px">
-<span class="info-box-icon" ><i class="fas fa-map-marker-alt" style="color:white"></i></span>
+<div class="info-box bg-" style="margin-top:30px">
+<span class="info-box-icon" style="background-color:orange" ><i class="fas fa-map-marker-alt"></i></span>
 <div class="info-box-content" >
 <span class="info-box-text">Manage Regions</span>
 
@@ -234,8 +234,8 @@ function generateRandomPassword($length = 8) {
 </div>
 </div>
 <div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-red" style="margin-top:30px">
-<span class="info-box-icon"><i class="fas fa-user-plus"></i></span>
+<div class="info-box bg- " style="margin-top:30px">
+<span class="info-box-icon" style="background-color:green"><i class="fas fa-user-plus"></i></span>
 <div class="info-box-content">
 <span class="info-box-text">Manage Supervisors</span>
 
