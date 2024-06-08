@@ -56,14 +56,40 @@
 
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="forms.php" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
+                            <a href="logbook.html" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Logbook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="report.html" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>Report</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_logbook.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Logbooks</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>View Reports</p>
+                            </a>
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
@@ -80,15 +106,60 @@
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
-            <!-- /.content-header -->
+            <!--            // Update hidden input fields
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+            alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
+        }
 
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="time-section">
+        // Function to handle errors in geolocation
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function updateDateTime() {
+            const currentDateTimeElement = document.getElementById('currentDateTime');
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi' };
+
+            // Display the time, date, and day
+            const currentDateTime = new Date().toLocaleString('en-US', options);
+            currentDateTimeElement.textContent = `${currentDateTime}`;
+        }
+
+        // Update current time, date, and day every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial update
+        updateDateTime();
+    </script>
+</body>
+</html>
+ Main content -->
+            <section class="content" >
+                <div class="container-fluid" >
+                    <div class="time-section" >
                         <p id="currentDateTime"></p>
                     </div>
                     <marquee behavior="alternate" direction="right" class="marquee-header">Student Arrival Form</marquee>
+                <h3 style="color: red">*Remember to fetch the location before submitting the form*</h3>
                     <div class="card">
                         <div class="card-body">
                             <form id="studentForm" action="submits.php" method="post" enctype="multipart/form-data">
@@ -135,6 +206,11 @@
                                     <label for="supervisorNo" class="form-label">Onsite Supervisor Number:</label>
                                     <input type="text" id="supervisorNo" name="supervisorNo" class="form-control" required>
                                 </div>
+                                <!-- Hidden fields for latitude and longitude -->
+                                <input type="hidden" id="latitude" name="latitude">
+                                <input type="hidden" id="longitude" name="longitude">
+                                <!-- Button to fetch location -->
+                                <button type="button" class="btn btn-primary" onclick="getLocation()">Fetch Location</button>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
                             </form>
@@ -155,6 +231,44 @@
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script>
+        // Function to get user's geolocation
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Function to show position and update hidden input fields
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            // Update hidden input fields
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+          
+            alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
+        }
+
+        // Function to handle errors in geolocation
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
         function goBack() {
             window.history.back();
         }

@@ -7,8 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Assuming you have stored user_id in the session during login or registration
     $UserID = $_SESSION['user_id'];
-    
-    // Handle file upload
+
+    // Handle file upload if a file is selected
     if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
         // Process file upload
         $fileName = $_FILES['uploadedFile']['name'];
@@ -25,12 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
         header("Location: homee.php");
         exit();
-    } else {
-        echo "Error uploading file.";
     }
 
-    // Form submission for Student Form
-    if (isset($_POST['name'], $_POST['regNo'], $_POST['academicYear'], $_POST['region'], $_POST['district'], $_POST['organization'], $_POST['supervisorName'], $_POST['supervisorNo'])) {
+    // Check if all fields are filled out for the Student Form
+    if (isset($_POST['name'], $_POST['regNo'], $_POST['academicYear'], $_POST['region'], $_POST['district'], $_POST['organization'], $_POST['supervisorName'], $_POST['supervisorNo'], $_POST['latitude'], $_POST['longitude'])) {
         // Retrieve form data
         $name = $_POST['name'];
         $regNo = $_POST['regNo'];
@@ -40,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $organization = $_POST['organization'];
         $supervisorName = $_POST['supervisorName'];
         $supervisorNo = $_POST['supervisorNo'];
+        $latitude = $_POST['latitude'];
+        $longitude = $_POST['longitude'];
 
         // Check if the registration number already exists
         $checkQuery = "SELECT * FROM student_form WHERE registration_number = ?";
@@ -53,12 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Registration number already exists. Please use a different registration number.";
         } else {
             // Insert into student_form table
-            $insertQuery = "INSERT INTO student_form (UserID, name, registration_number, academic_year, region, district, organization, supervisor_name, supervisor_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO student_form (UserID, name, registration_number, academic_year, region, district, organization, supervisor_name, supervisor_number, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insertQuery);
-            $stmt->bind_param("issssssss", $UserID, $name, $regNo, $academicYear, $region, $district, $organization, $supervisorName, $supervisorNo);
+            $stmt->bind_param("issssssssss", $UserID, $name, $regNo, $academicYear, $region, $district, $organization, $supervisorName, $supervisorNo, $latitude, $longitude);
             $stmt->execute();
             $stmt->close();
-            echo "Student form submitted successfully";
             header("Location: homee.php");
             exit();
         }
@@ -66,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->close();
     }
 
-    // Form submission for Logbook
+    // Handle form submission for Logbook
     if (isset($_POST["date"], $_POST["workspace"]) && !empty($_POST["date"]) && !empty($_POST["workspace"])) {
         // Sanitize user input to prevent SQL injection or other attacks
         $date = htmlspecialchars($_POST["date"]);
@@ -88,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
 
-    // Form submission for Report Form
+    // Handle form submission for Report Form
     if (isset($_POST["weekNo"], $_POST["work"], $_POST["problems"]) && !empty($_POST["weekNo"]) && !empty($_POST["work"]) && !empty($_POST["problems"])) {
         // Sanitize user input to prevent SQL injection or other attacks
         $weekNo = htmlspecialchars($_POST["weekNo"]);
@@ -118,4 +117,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: homee.php");
     exit();
 }
-?>

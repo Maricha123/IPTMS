@@ -114,8 +114,8 @@ if (isset($_GET['student_id'])) {
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user-graduate"></i>
-                                <p> <?php echo $username; ?></p>
+                                <i class="nav-icon"></i>
+                                <p> </p>
                             </a>
                         </li>
                         <!-- Add other menu items here -->
@@ -147,15 +147,47 @@ if (isset($_GET['student_id'])) {
                                     <tr><th colspan="2">Student Form</th></tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>Name</td><td><?php echo $formData['name']; ?></td></tr>
-                                    <tr><td>Registration Number</td><td><?php echo $formData['registration_number']; ?></td></tr>
-                                    <tr><td>Academic Year</td><td><?php echo $formData['academic_year']; ?></td></tr>
-                                    <tr><td>Region</td><td><?php echo $formData['region']; ?></td></tr>
-                                    <tr><td>District</td><td><?php echo $formData['district']; ?></td></tr>
-                                    <tr><td>Organization</td><td><?php echo $formData['organization']; ?></td></tr>
-                                    <tr><td>Supervisor Name</td><td><?php echo $formData['supervisor_name']; ?></td></tr>
-                                    <tr><td>Supervisor Number</td><td><?php echo $formData['supervisor_number']; ?></td></tr>
-                                    <tr><td>Submitted Time</td><td><?php echo $formData['uploaded_at']; ?></td></tr>
+                                <tr>
+                                   <td>Name</td>
+                                   <td><?php echo $formData['name']; ?></td>
+                                </tr>
+                                <tr>
+                                   <td>Registration Number</td>
+                                   <td><?php echo $formData['registration_number']; ?></td>
+                                </tr>
+                                <tr>
+                                   <td>Academic Year</td>
+                                   <td><?php echo $formData['academic_year']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Region</td>
+                                    <td><?php echo $formData['region']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>District</td>
+                                    <td><?php echo $formData['district']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Organization</td>
+                                    <td><?php echo $formData['organization']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Supervisor Name</td>
+                                    <td><?php echo $formData['supervisor_name']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Supervisor Number</td>
+                                    <td><?php echo $formData['supervisor_number']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Location</td>
+                                    <td><a href="view_location.php?lat=<?php echo $formData['latitude']; ?>&lng=<?php echo $formData['longitude']; ?>">View Location</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Submitted Time</td>
+                                    <td><?php echo $formData['uploaded_at']; ?></td>
+                                </tr>
+
                                 </tbody>
                             </table>
                         </div>

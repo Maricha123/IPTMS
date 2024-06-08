@@ -213,45 +213,39 @@ function generateRandomPassword($length = 8) {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    
-<div class="row">
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg-" style="margin-top:30px">
-<span class="info-box-icon" style="background-color:orange" ><i class="fas fa-map-marker-alt"></i></span>
-<div class="info-box-content" >
-<span class="info-box-text">Manage Regions</span>
-
-<div class="inner">
-<a href="manage regions.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Region</button></a>
-</div>
-
-
-
-</div>
-
-</div>
-</div>
-<div class="col-md-3 col-sm-6 col-12">
-<div class="info-box bg- " style="margin-top:30px">
-<span class="info-box-icon" style="background-color:green"><i class="fas fa-user-plus"></i></span>
-<div class="info-box-content">
-<span class="info-box-text">Manage Supervisors</span>
-
-<div class="inner">
-<a href="manage supervisor.php"> <button type="submit" class="btn btn-primary" name="add_region">Add Supervisor</button></a>
-</div>
-
-</div>
-</div>
-</div>
+                        <div class="col-md-3 col-sm-6 col-12" style="margin:center">
+                        <div class="info-box bg-" style="margin-top:40px">
+                            <span class="info-box-icon" style="background-color:orange">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Manage Regions</span>
+                                <div class="inner">
+                                    <a href="manage regions.php">
+                                        <button type="submit" class="btn btn-primary" name="add_region">Region</button>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-
-
                     </div>
-                </div>
-            </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-" style="margin-top:40px">
+                            <span class="info-box-icon" style="background-color:green">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Manage Supervisors</span>
+                                <div class="inner">
+                                    <a href="manage supervisor.php">
+                                        <button type="submit" class="btn btn-primary" name="add_supervisor">Supervisor</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>       
+            </div> 
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">

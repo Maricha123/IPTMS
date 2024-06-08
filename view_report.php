@@ -78,9 +78,42 @@ $conn->close();
                 <i class="fas fa-user-graduate"></i>
                 <span class="brand-text font-weight-light">Student Dashboard</span>
             </a>
-
-            <!-- Sidebar -->
-            
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="forms.php" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
+                            <a href="logbook.html" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Logbook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="report.html" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>Report</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_logbook.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Logbooks</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>View Reports</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             <!-- /.sidebar -->
         </aside>
 
