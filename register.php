@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+
+$userId = $_SESSION['user_id'];
+
 // Check if there is a message in the session
 if (!empty($_SESSION['message'])) {
     $message = $_SESSION['message'];

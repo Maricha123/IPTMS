@@ -88,13 +88,13 @@ $conn->close();
                             </a>
                         </li>
                         <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
-                            <a href="logbook.html" class="nav-link">
+                            <a href="logbook.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>Logbook</p>
                             </a>
                         </li>
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
-                            <a href="report.html" class="nav-link">
+                            <a href="report.php" class="nav-link">
                                 <i class="nav-icon fas fa-file-alt"></i>
                                 <p>Report</p>
                             </a>

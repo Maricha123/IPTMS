@@ -117,3 +117,79 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: homee.php");
     exit();
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+    <script>
+        function fetchLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(setPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function setPosition(position) {
+            document.getElementById('latitude').value = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        function checkLocationAndSubmit() {
+            const lat = document.getElementById('latitude').value;
+            const lon = document.getElementById('longitude').value;
+            if (!lat || !lon) {
+                alert("Please allow location access to submit the form.");
+                return false;
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('submitBtn').disabled = true;
+            fetchLocation();
+        });
+    </script>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data" onsubmit="return checkLocationAndSubmit();">
+        <!-- Add your form fields here -->
+        <input type="text" id="latitude" name="latitude" hidden>
+        <input type="text" id="longitude" name="longitude" hidden>
+
+        <!-- Example fields for student form -->
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="regNo" placeholder="Registration Number" required>
+        <input type="text" name="academicYear" placeholder="Academic Year" required>
+        <input type="text" name="region" placeholder="Region" required>
+        <input type="text" name="district" placeholder="District" required>
+        <input type="text" name="organization" placeholder="Organization" required>
+        <input type="text" name="supervisorName" placeholder="Supervisor Name" required>
+        <input type="text" name="supervisorNo" placeholder="Supervisor Number" required>
+
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+</body>
+</html>
