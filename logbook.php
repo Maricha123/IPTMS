@@ -35,6 +35,25 @@ $userId = $_SESSION['user_id'];
             font-weight: bold;
         }
     </style>
+
+    <!-- Include TinyMCE script -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#workspace',
+            height: 300,  // specify the height of the editor
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size: 14px }'
+        });
+    </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -138,10 +157,27 @@ $userId = $_SESSION['user_id'];
                                     <label for="date" class="form-label">Date:</label>
                                     <input type="date" id="date" name="date" class="form-control" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="workspace" class="form-label">Workspace:</label>
-                                    <textarea id="workspace" name="workspace" rows="4" class="form-control" required></textarea>
-                                </div>
+                                <!-- Place the first <script> tag in your HTML's <head> -->
+<script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    mergetags_list: [
+      { value: 'First.Name', title: 'First Name' },
+      { value: 'Email', title: 'Email' },
+    ],
+    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+  });
+</script>
+<textarea>
+ 
+</textarea>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
                             </form>
