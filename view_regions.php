@@ -2,6 +2,10 @@
 session_start();
 include 'db.php';
 
+
+// Fetch regions from the database
+$sql_regions_list = "SELECT * FROM regions";
+$result_regions_list = $conn->query($sql_regions_list);
 // Fetch regions from the database
 $sql_regions = "SELECT * FROM regions";
 $result_regions = $conn->query($sql_regions);

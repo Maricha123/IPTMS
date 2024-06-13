@@ -37,7 +37,6 @@ $logbooksResult = $conn->query($logbooksQuery);
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +55,8 @@ $conn->close();
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-             <!-- Left navbar links -->
-             <ul class="navbar-nav">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
@@ -67,6 +66,7 @@ $conn->close();
             </ul>
         </nav>
         <!-- /.navbar -->
+
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
@@ -132,13 +132,13 @@ $conn->close();
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                   
                                     <?php if ($logbooksResult->num_rows > 0): ?>
                                         <ul class="list-group">
                                             <?php while($logbookRow = $logbooksResult->fetch_assoc()): ?>
                                                 <li class="list-group-item">
                                                     <strong><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></strong>
                                                     <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
+                                                    <a href="see_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>
@@ -155,14 +155,13 @@ $conn->close();
         </div>
         <!-- /.content-wrapper -->
 
-
         <!-- Main Footer -->
         <footer class="main-footer">
             <strong>IPTMS &copy; 2024.</strong> All rights reserved.
         </footer>
     </div>
     <!-- ./wrapper -->
-</div>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->

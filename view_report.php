@@ -145,7 +145,9 @@ $conn->close();
                                             <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
                                                 <li class="list-group-item">
                                                     <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
-                                                    <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
+                                                    <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
+                                                    class="btn btn-primary btn-sm float-right" download>Download</a>
+                                                    <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>

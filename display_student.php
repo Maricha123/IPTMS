@@ -4,7 +4,8 @@ include 'db.php';
 if (isset($_GET['student_id'])) {
     $UserID = $_GET['student_id'];
 
-    // Retrieve and display the student's form
+    // Queries to retrieve data from the database
+    // Using prepared statements to prevent SQL injection
     $formQuery = "SELECT * FROM student_form WHERE UserID = ?";
     $formStmt = $conn->prepare($formQuery);
     $formStmt->bind_param("i", $UserID);
@@ -12,21 +13,18 @@ if (isset($_GET['student_id'])) {
     $formResult = $formStmt->get_result();
     $formData = $formResult->fetch_assoc();
 
-    // Retrieve and display the student's logbook
     $logbookQuery = "SELECT * FROM Logbooks WHERE UserID = ?";
     $logbookStmt = $conn->prepare($logbookQuery);
     $logbookStmt->bind_param("i", $UserID);
     $logbookStmt->execute();
     $logbookResult = $logbookStmt->get_result();
 
-    // Retrieve and display the student's report
     $reportQuery = "SELECT * FROM Reports WHERE UserID = ?";
     $reportStmt = $conn->prepare($reportQuery);
     $reportStmt->bind_param("i", $UserID);
     $reportStmt->execute();
     $reportResult = $reportStmt->get_result();
 
-    // Retrieve and display the student's files
     $fileQuery = "SELECT * FROM file_uploads WHERE UserID = ?";
     $fileStmt = $conn->prepare($fileQuery);
     $fileStmt->bind_param("i", $UserID);
@@ -46,14 +44,12 @@ if (isset($_GET['student_id'])) {
         }
     }
 
-    // Close the database connection
     $conn->close();
 } else {
     echo "<p>Invalid request. Please select a student.</p>";
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,35 +145,35 @@ if (isset($_GET['student_id'])) {
                                 <tbody>
                                 <tr>
                                    <td>Name</td>
-                                   <td><?php echo $formData['name']; ?></td>
+                                   <td><?php echo htmlspecialchars($formData['name']); ?></td>
                                 </tr>
                                 <tr>
                                    <td>Registration Number</td>
-                                   <td><?php echo $formData['registration_number']; ?></td>
+                                   <td><?php echo htmlspecialchars($formData['registration_number']); ?></td>
                                 </tr>
                                 <tr>
                                    <td>Academic Year</td>
-                                   <td><?php echo $formData['academic_year']; ?></td>
+                                   <td><?php echo htmlspecialchars($formData['academic_year']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Region</td>
-                                    <td><?php echo $formData['region']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['region']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>District</td>
-                                    <td><?php echo $formData['district']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['district']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Organization</td>
-                                    <td><?php echo $formData['organization']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['organization']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Supervisor Name</td>
-                                    <td><?php echo $formData['supervisor_name']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['supervisor_name']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Supervisor Number</td>
-                                    <td><?php echo $formData['supervisor_number']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['supervisor_number']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Location</td>
@@ -185,9 +181,8 @@ if (isset($_GET['student_id'])) {
                                 </tr>
                                 <tr>
                                     <td>Submitted Time</td>
-                                    <td><?php echo $formData['uploaded_at']; ?></td>
+                                    <td><?php echo htmlspecialchars($formData['uploaded_at']); ?></td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -208,9 +203,9 @@ if (isset($_GET['student_id'])) {
                                 <tbody>
                                     <?php while ($logbookRow = $logbookResult->fetch_assoc()): ?>
                                         <tr>
-                                            <td><?php echo $logbookRow['date']; ?></td>
-                                            <td><?php echo $logbookRow['workspace']; ?></td>
-                                            <td><?php echo $logbookRow['uploaded_at']; ?></td>
+                                            <td><?php echo htmlspecialchars($logbookRow['date']); ?></td>
+                                            <td><?php echo htmlspecialchars($logbookRow['workspace']); ?></td>
+                                            <td><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
@@ -233,10 +228,10 @@ if (isset($_GET['student_id'])) {
                                 <tbody>
                                     <?php while ($reportRow = $reportResult->fetch_assoc()): ?>
                                         <tr>
-                                            <td><?php echo $reportRow['week_number']; ?></td>
-                                            <td><?php echo $reportRow['works']; ?></td>
-                                            <td><?php echo $reportRow['problems']; ?></td>
-                                            <td><?php echo $reportRow['uploaded_at']; ?></td>
+                                            <td><?php echo htmlspecialchars($reportRow['week_number']); ?></td>
+                                            <td><?php echo htmlspecialchars($reportRow['works']); ?></td>
+                                            <td><?php echo htmlspecialchars($reportRow['problems']); ?></td>
+                                            <td><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></td>
                                         </tr>
                                     <?php endwhile; ?>
                                 </tbody>
@@ -249,29 +244,34 @@ if (isset($_GET['student_id'])) {
                     <?php endif; ?>
 
                     <!-- Student Files -->
-                    <?php if ($fileResult->num_rows > 0): ?>
-                        <div class="data-table">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr><th colspan="3">Student Files</th></tr>
-                                    <tr><th>File Name</th><th>Submitted Time</th><th>Action</th></tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($fileRow = $fileResult->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><?php echo $fileRow['file_name']; ?></td>
-                                            <td><?php echo $fileRow['time_submitted']; ?></td>
-                                            <td><a href="view_file.php?id=<?php echo $fileRow['id']; ?>">Download</a></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php else: ?>
-                        <div class="center-message">
-                            <p>No files found for the student.</p>
-                        </div>
-                    <?php endif; ?>
+                    <!-- Student Files -->
+<?php if ($fileResult->num_rows > 0): ?>
+    <div class="data-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr><th colspan="3">Student Files</th></tr>
+                <tr><th>File Name</th><th>Submitted Time</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <?php while ($fileRow = $fileResult->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($fileRow['file_name']); ?></td>
+                        <td><?php echo htmlspecialchars($fileRow['time_submitted']); ?></td>
+                        <td>
+                            <a href="see_studentdoc.php?id=<?php echo $fileRow['id']; ?>" class="btn btn-info btn-sm">View</a>
+                            <a href="view_file.php?id=<?php echo $fileRow['id']; ?>" class="btn btn-primary btn-sm">Download</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="center-message">
+        <p>No files found for the student.</p>
+    </div>
+<?php endif; ?>
+
 
                     <!-- Message Form -->
                     <div class="message-form">

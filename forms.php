@@ -159,7 +159,7 @@
                         <p id="currentDateTime"></p>
                     </div>
                     <marquee behavior="alternate" direction="right" class="marquee-header">Student Arrival Form</marquee>
-                <h3 style="color: red">*Remember to fetch the location before submitting the form*</h3>
+                <h3 style="color: red">*Remember to fetch the location before submitting the form</h3>
                     <div class="card">
                         <div class="card-body">
                             <form id="studentForm" action="submits.php" method="post" enctype="multipart/form-data">
@@ -176,24 +176,62 @@
                                     <input type="text" id="academicYear" name="academicYear" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="region" class="form-label">Region:</label>
-                                    <select id="region" name="region" class="form-control" required>
-                                        <option value="" disabled selected>Select Region</option>
-                                        <?php
-                                            include 'db.php';
-                                            $sql = "SELECT * FROM regions";
-                                            $result = $conn->query($sql);
-                                            while($row = $result->fetch_assoc()) {
-                                                echo "<option value='" . $row['region_name'] . "'>" . $row['region_name'] . "</option>";
-                                            }
-                                            $conn->close();
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="district" class="form-label">District:</label>
-                                    <input type="text" id="district" name="district" class="form-control" required>
-                                </div>
+    <label for="region" class="form-label">Region:</label>
+    <select id="region" name="region" class="form-control" required onchange="fetchDistricts()">
+        <option value="" disabled selected>Select Region</option>
+        <?php
+        include 'db.php'; // Assuming this file connects to your database
+        $sql = "SELECT * FROM regions";
+        $result = $conn->query($sql);
+        while ($row = $result->fetch_assoc()) {
+            echo "<option value='" . $row['region_id'] . "'>" . $row['region_name'] . "</option>";
+        }
+        $conn->close();
+        ?>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="district" class="form-label">District:</label>
+    <select id="district" name="district" class="form-control" required>
+        <option value="" disabled selected>Select District</option>
+    </select>
+</div>
+
+<script>
+    function fetchDistricts() {
+        var regionId = document.getElementById("region").value;
+        var districtSelect = document.getElementById("district");
+
+        // Clear previous options
+        districtSelect.innerHTML = "<option value='' disabled selected>Loading...</option>";
+
+        // Make AJAX request
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "get_districts.php?region_id=" + regionId, true);
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                var districts = JSON.parse(xhr.responseText);
+
+                // Clear previous options again (in case AJAX was fast)
+                districtSelect.innerHTML = "";
+
+                // Populate districts dropdown
+                districts.forEach(function (district) {
+                    var option = document.createElement("option");
+                    option.text = district.district_name;
+                    option.value = district.district_id;
+                    districtSelect.add(option);
+                });
+            } else {
+                // Handle errors here
+                districtSelect.innerHTML = "<option value='' disabled selected>Error loading districts</option>";
+            }
+        };
+        xhr.send();
+    }
+</script>
+
                                 <div class="form-group">
                                     <label for="organization" class="form-label">Organization:</label>
                                     <input type="text" id="organization" name="organization" class="form-control" required>
@@ -206,9 +244,15 @@
                                     <label for="supervisorNo" class="form-label">Onsite Supervisor Number:</label>
                                     <input type="text" id="supervisorNo" name="supervisorNo" class="form-control" required>
                                 </div>
-                                <!-- Hidden fields for latitude and longitude -->
-                                <input type="hidden" id="latitude" name="latitude">
-                                <input type="hidden" id="longitude" name="longitude">
+                                <div class="form-group">
+    <label for="latitude" class="form-label">Latitude:</label>
+    <input type="text" id="latitude" name="latitude" class="form-control" readonly>
+</div>
+<div class="form-group">
+    <label for="longitude" class="form-label">Longitude:</label>
+    <input type="text" id="longitude" name="longitude" class="form-control" readonly>
+</div>
+
                                 <!-- Button to fetch location -->
                                 <button type="button" class="btn btn-primary" onclick="getLocation()">Fetch Location</button>
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -240,16 +284,18 @@
             }
         }
 
-        // Function to show position and update hidden input fields
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            // Update hidden input fields
-            document.getElementById("latitude").value = latitude;
-            document.getElementById("longitude").value = longitude;
-          
-            alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
-        }
+        
+        // Function to show position and update visible input fields
+    function showPosition(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    
+    // Update visible input fields
+    document.getElementById("latitude").value = latitude;
+    document.getElementById("longitude").value = longitude;
+    
+    alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
+}
 
         // Function to handle errors in geolocation
         function showError(error) {
@@ -289,5 +335,8 @@
         // Initial update
         updateDateTime();
     </script>
+
+
+
 </body>
 </html>

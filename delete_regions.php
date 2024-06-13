@@ -33,6 +33,6 @@ if (isset($_POST['region_id'])) {
 $conn->close();
 
 // Redirect back to view_regions.php
-header("Location: view_regions.php");
+header("Location: manage regions.php");
 exit();
 ?>
