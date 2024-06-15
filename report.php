@@ -118,7 +118,7 @@ $userId = $_SESSION['user_id'];
                     <div class="time-section">
                         <p id="currentDateTime"></p>
                     </div>
-                    <marquee behavior="alternate" direction="right" class="marquee-header">Student Weekly Report</marquee>
+                    <h3>Student Weekly Report</h3> 
                     <div class="card">
                         <div class="card-body">
                             <!-- Form for uploading a file -->
@@ -140,10 +140,10 @@ $userId = $_SESSION['user_id'];
                                     <label for="work" class="form-label">Works:</label>
                                     <textarea id="work" name="work" rows="4" class="form-control" required></textarea>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="problems" class="form-label">Problems:</label>
                                     <textarea id="problems" name="problems" rows="4" class="form-control" required></textarea>
-                                </div>
+                                </div> -->
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
                             </form>

@@ -24,7 +24,7 @@ if ($result_supervisor_info->num_rows > 0) {
         // Fetch students who have chosen the supervisor's assigned region
         $sql_students = "SELECT * 
                          FROM student_form
-                         WHERE region = (SELECT region_name FROM regions WHERE region_id = '$supervisor_region_id')";
+                         WHERE region = (SELECT region_id FROM regions WHERE region_id = '$supervisor_region_id')";
 
         $result_students = $conn->query($sql_students);
     } else {

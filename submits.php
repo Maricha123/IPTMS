@@ -65,38 +65,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->close();
     }
 
-    // Handle form submission for Logbook
-    if (isset($_POST["date"], $_POST["workspace"]) && !empty($_POST["date"]) && !empty($_POST["workspace"])) {
-        // Sanitize user input to prevent SQL injection or other attacks
-        $date = htmlspecialchars($_POST["date"]);
-        $workspace = htmlspecialchars($_POST["workspace"]);
+ // Handle form submission for Logbook
+ if (isset($_POST["date"], $_POST["workspace"]) && !empty($_POST["date"]) && !empty($_POST["workspace"])) {
+    // Sanitize user input to prevent SQL injection or other attacks
+    $date = htmlspecialchars($_POST["date"]);
+    $workspace = $_POST["workspace"]; // TinyMCE content is already HTML encoded
 
-        // Prepare and bind SQL statement for logbook
-        $stmt = $conn->prepare("INSERT INTO logbooks (UserID, date, workspace) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $UserID, $date, $workspace);
+    // Prepare and bind SQL statement for logbook
+    $stmt = $conn->prepare("INSERT INTO logbooks (UserID, date, workspace) VALUES (?, ?, ?)");
+    $stmt->bind_param("iss", $UserID, $date, $workspace);
 
-        // Execute the statement
-        if ($stmt->execute() === TRUE) {
-            echo "Logbook entry submitted successfully.";
-            header("Location: homee.php");
-            exit();
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
+    // Execute the statement
+    if ($stmt->execute() === TRUE) {
+        echo "Logbook entry submitted successfully.";
+        header("Location: homee.php");
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
         $stmt->close();
     }
 
     // Handle form submission for Report Form
-    if (isset($_POST["weekNo"], $_POST["work"], $_POST["problems"]) && !empty($_POST["weekNo"]) && !empty($_POST["work"]) && !empty($_POST["problems"])) {
+    if (isset($_POST["weekNo"], $_POST["work"]) && !empty($_POST["weekNo"]) && !empty($_POST["work"])) {
         // Sanitize user input to prevent SQL injection or other attacks
         $weekNo = htmlspecialchars($_POST["weekNo"]);
         $work = htmlspecialchars($_POST["work"]);
-        $problems = htmlspecialchars($_POST["problems"]);
+       
 
         // Prepare and bind SQL statement for report form with file
-        $stmt = $conn->prepare("INSERT INTO reports (UserID, week_number, works, problems) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $UserID, $weekNo, $work, $problems);
+        $stmt = $conn->prepare("INSERT INTO reports (UserID, week_number, works) VALUES (?, ?, ?)");
+        $stmt->bind_param("iss", $UserID, $weekNo, $work);
 
         // Execute the statement
         if ($stmt->execute() === TRUE) {
@@ -173,23 +172,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </head>
-<body>
-    <form method="POST" enctype="multipart/form-data" onsubmit="return checkLocationAndSubmit();">
-        <!-- Add your form fields here -->
-        <input type="text" id="latitude" name="latitude" hidden>
-        <input type="text" id="longitude" name="longitude" hidden>
-
-        <!-- Example fields for student form -->
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="text" name="regNo" placeholder="Registration Number" required>
-        <input type="text" name="academicYear" placeholder="Academic Year" required>
-        <input type="text" name="region" placeholder="Region" required>
-        <input type="text" name="district" placeholder="District" required>
-        <input type="text" name="organization" placeholder="Organization" required>
-        <input type="text" name="supervisorName" placeholder="Supervisor Name" required>
-        <input type="text" name="supervisorNo" placeholder="Supervisor Number" required>
-
-        <button type="submit" id="submitBtn">Submit</button>
-    </form>
-</body>
-</html>

@@ -139,7 +139,7 @@ $userId = $_SESSION['user_id'];
                     <div class="time-section">
                         <p id="currentDateTime"></p>
                     </div>
-                    <marquee behavior="alternate" direction="right" class="marquee-header">Student Daily Logbook</marquee>
+                    <h3>Student Daily Logbook</h3>
                     <div class="card">
                         <div class="card-body">
                             <!-- Form for uploading a file -->

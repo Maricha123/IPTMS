@@ -25,7 +25,7 @@ if ($result_supervisor_info->num_rows > 0) {
         $sql_students_locations = "
             SELECT name, latitude, longitude 
             FROM student_form 
-            WHERE region = (SELECT region_name FROM regions WHERE region_id = '$supervisor_region_id')
+            WHERE region = (SELECT region_id FROM regions WHERE region_id = '$supervisor_region_id')
         ";
 
         $result_students_locations = $conn->query($sql_students_locations)->fetch_all(MYSQLI_ASSOC);

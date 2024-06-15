@@ -158,7 +158,7 @@
                     <div class="time-section" >
                         <p id="currentDateTime"></p>
                     </div>
-                    <marquee behavior="alternate" direction="right" class="marquee-header">Student Arrival Form</marquee>
+                    <h3 style="background-color:#f8d775; color: black; text-align:center"> Student Arrival Form</h3>
                 <h3 style="color: red">*Remember to fetch the location before submitting the form</h3>
                     <div class="card">
                         <div class="card-body">

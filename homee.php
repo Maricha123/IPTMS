@@ -42,7 +42,7 @@ if ($regionResult->num_rows > 0) {
     $regionName = $regionRow['region'];
 
     // Fetch the supervisor assigned to this region
-    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact FROM supervisors WHERE region_id = (SELECT region_id FROM regions WHERE region_name = '$regionName')";
+    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact FROM supervisors WHERE region_id = (SELECT region_id FROM regions WHERE region_id = '$regionName')";
     $supervisorResult = $conn->query($supervisorQuery);
 
     if ($supervisorResult->num_rows > 0) {
