@@ -193,29 +193,73 @@ if (isset($_GET['student_id'])) {
                     <?php endif; ?>
 
                     <!-- Student Logbook -->
-                    <?php if ($logbookResult->num_rows > 0): ?>
-                        <div class="data-table">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr><th colspan="3">Student Logbook</th></tr>
-                                    <tr><th>Date</th><th>Workspace</th><th>Submitted Time</th></tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($logbookRow = $logbookResult->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($logbookRow['date']); ?></td>
-                                            <td><?php echo htmlspecialchars($logbookRow['workspace']); ?></td>
-                                            <td><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php else: ?>
-                        <div class="center-message">
-                            <p>No logbook data found for the student.</p>
-                        </div>
-                    <?php endif; ?>
+<?php if ($logbookResult->num_rows > 0): ?>
+    <div class="data-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr><th colspan="3">Student Logbook</th></tr>
+                <tr><th>Date</th><th>Submitted Time</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <?php while ($logbookRow = $logbookResult->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($logbookRow['date']); ?></td>
+                        <td><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></td>
+                        <td>
+                        <a href="see_studentlogbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-info btn-sm">View</a>
+                            <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm">Download</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="center-message">
+        <p>No logbook data found for the student.</p>
+    </div>
+<?php endif; ?>
+
+<!-- Student Report -->
+<?php if ($reportResult->num_rows > 0): ?>
+    <div class="data-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr><th colspan="3">Student Report</th></tr>
+                <tr><th>Week Number</th><th>Submitted Time</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <?php while ($reportRow = $reportResult->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($reportRow['week_number']); ?></td>
+                        <td><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></td>
+                        <td>
+                        <a href="see_studentreport.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm">View</a>
+                            <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-primary btn-sm">Download</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="center-message">
+        <p>No report data found for the student.</p>
+    </div>
+<?php endif; ?>
+
+<script>
+    function viewLogbookDetails(student_id) {
+        // Example AJAX call to fetch and display logbook details
+        alert("Implement AJAX call to fetch and display logbook details for student ID: " + student_id);
+    }
+
+    function viewReportDetails(student_id) {
+        // Example AJAX call to fetch and display report details
+        alert("Implement AJAX call to fetch and display report details for student ID: " + student_id);
+    }
+</script>
+
 
                     <!-- Student Report -->
                     <?php if ($reportResult->num_rows > 0): ?>
@@ -296,3 +340,37 @@ if (isset($_GET['student_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 </body>
 </html>
+
+<!-- Add this script section in your HTML -->
+<script>
+    function viewLogbookDetails(student_id) {
+        fetch('fetch_logbook_details.php?student_id=' + student_id)
+            .then(response => response.json())
+            .then(data => {
+                // Example: Display logbook details in a modal or another section
+                console.log(data); // Output the data to console for testing
+                // Replace alert with actual code to display data
+                alert('Logbook details retrieved. Check console for details.');
+            })
+            .catch(error => {
+                console.error('Error fetching logbook details:', error);
+                alert('Failed to fetch logbook details. Check console for error.');
+            });
+    }
+
+    function viewReportDetails(student_id) {
+        fetch('fetch_report_details.php?student_id=' + student_id)
+            .then(response => response.json())
+            .then(data => {
+                // Example: Display report details in a modal or another section
+                console.log(data); // Output the data to console for testing
+                // Replace alert with actual code to display data
+                alert('Report details retrieved. Check console for details.');
+            })
+            .catch(error => {
+                console.error('Error fetching report details:', error);
+                alert('Failed to fetch report details. Check console for error.');
+            });
+    }
+</script>
+

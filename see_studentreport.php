@@ -15,28 +15,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if report_id is provided as a GET parameter
-if (isset($_GET['id'])) {
-    $fileId = $_GET['id'];
+// Check if logbook_id is provided as a GET parameter
+if (isset($_GET['report_id'])) {
+    $reportId = $_GET['report_id'];
 
-    // Fetch report details based on report_id
-    $sql = "SELECT id, file_name, file_content, time_submitted FROM file_uploads WHERE id = ?";
+    // Fetch logbook details based on logbook_id
+    $sql = "SELECT report_id, week_number, works, uploaded_at FROM reports WHERE report_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $fileId);
+    $stmt->bind_param("i", $reportId);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Report found, display details
-        $report = $result->fetch_assoc();
+        // Logbook found, display details
+        $logbook = $result->fetch_assoc();
     } else {
-        // Report not found, handle error (redirect or display message)
-        echo "Report not found.";
+        // Logbook not found, handle error (redirect or display message)
+        echo "report not found.";
         exit;
     }
 } else {
-    // report_id parameter not provided, handle error (redirect or display message)
-    echo "Report ID not provided.";
+    // logbook_id parameter not provided, handle error (redirect or display message)
+    echo "report ID not provided.";
     exit;
 }
 
@@ -48,7 +48,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Report</title>
+    <title>View Logbook</title>
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <!-- Font Awesome -->
@@ -89,7 +89,7 @@ $conn->close();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="homee.php" class="brand-link">
+            <a href="#" class="brand-link">
                 <span class="brand-text font-weight-light">Student Dashboard</span>
             </a>
             <!-- Sidebar -->
@@ -141,7 +141,7 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0" style="color:orange">Student's Documents</h1>
+                            <h1 class="m-0" style="color:orange">Student's Logbook</h1>
                         </div>
                     </div>
                 </div>
@@ -155,11 +155,9 @@ $conn->close();
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Report Details</h5>
-                                    <p><strong>File Name:</strong> <?php echo htmlspecialchars($report['file_name']); ?></p>
-                                    <p><strong>File Content:</strong> <?php echo htmlspecialchars($report['file_content']); ?></p>
-                                    <p><strong>Time Submitted:</strong> <?php echo htmlspecialchars($report['time_submitted']); ?></p>
-                                    <a href="view_file.php?id=<?php echo $report['id']; ?>" class="btn btn-primary">Download</a>
+                                <p><strong>Week Number:</strong> <?php echo htmlspecialchars($logbook['week_number']); ?></p>
+                                    <p><strong>Workspace:</strong> <?php echo htmlspecialchars($logbook['works']); ?></p>
+                                    <p><strong>Uploaded At:</strong> <?php echo htmlspecialchars($logbook['uploaded_at']); ?></p>
                                 </div>
                             </div>
                         </div>

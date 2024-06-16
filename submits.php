@@ -65,25 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->close();
     }
 
- // Handle form submission for Logbook
- if (isset($_POST["date"], $_POST["workspace"]) && !empty($_POST["date"]) && !empty($_POST["workspace"])) {
-    // Sanitize user input to prevent SQL injection or other attacks
-    $date = htmlspecialchars($_POST["date"]);
-    $workspace = $_POST["workspace"]; // TinyMCE content is already HTML encoded
+ // Handle logbook data submission
+ if (isset($_POST['date']) && isset($_POST['content'])) {
+    $date = $_POST['date'];
+    $content = $_POST['content'];
 
-    // Prepare and bind SQL statement for logbook
     $stmt = $conn->prepare("INSERT INTO logbooks (UserID, date, workspace) VALUES (?, ?, ?)");
-    $stmt->bind_param("iss", $UserID, $date, $workspace);
+    $stmt->bind_param("sss", $UserID, $date, $content);
 
-    // Execute the statement
-    if ($stmt->execute() === TRUE) {
-        echo "Logbook entry submitted successfully.";
-        header("Location: homee.php");
-        exit();
+    if ($stmt->execute()) {
+        echo "<script>alert('Successfully!');</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
-        $stmt->close();
+
+    $stmt->close();
     }
 
     // Handle form submission for Report Form
