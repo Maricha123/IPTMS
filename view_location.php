@@ -14,9 +14,10 @@
 <body>
     <h1>Location Details</h1>
     <?php
-        // Retrieve latitude and longitude from the URL parameters
+        // Retrieve latitude, longitude, and name from the URL parameters
         $lat = $_GET['lat'];
         $lng = $_GET['lng'];
+        $name = $_GET['name'];
     ?>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -29,7 +30,7 @@
         }).addTo(map);
 
         L.marker([<?php echo $lat; ?>, <?php echo $lng; ?>]).addTo(map)
-            .bindPopup('Student Location')
+            .bindPopup('<?php echo htmlspecialchars($name); ?>\'s Location')
             .openPopup();
     </script>
 </body>

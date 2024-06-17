@@ -177,7 +177,11 @@ if (isset($_GET['student_id'])) {
                                 </tr>
                                 <tr>
                                     <td>Location</td>
-                                    <td><a href="view_location.php?lat=<?php echo $formData['latitude']; ?>&lng=<?php echo $formData['longitude']; ?>">View Location</a></td>
+                                    <tr>
+    <td>Location</td>
+    <td><a href="view_location.php?lat=<?php echo $formData['latitude']; ?>&lng=<?php echo $formData['longitude']; ?>&name=<?php echo urlencode($formData['name']); ?>">View Location</a></td>
+</tr>
+
                                 </tr>
                                 <tr>
                                     <td>Submitted Time</td>
