@@ -35,6 +35,25 @@ $userId = $_SESSION['user_id'];
             font-weight: bold;
         }
     </style>
+    <script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+    // Initialize TinyMCE
+    tinymce.init({
+        selector: 'textarea#content', // Replace 'content' with the id or class of your textarea
+        height: 300,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size: 14px }'
+    });
+</script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -137,8 +156,9 @@ $userId = $_SESSION['user_id'];
                                     <input type="text" id="weekNo" name="weekNo" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="work" class="form-label">Works:</label>
-                                    <textarea id="work" name="work" rows="4" class="form-control" required></textarea>
+                                    <label for="content" class="form-label">Content:</label>
+                                    <textarea id="content" name="content"></textarea>
+
                                 </div>
                                 <!-- <div class="form-group">
                                     <label for="problems" class="form-label">Problems:</label>

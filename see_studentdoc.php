@@ -160,6 +160,7 @@ $conn->close();
                                     <p><strong>File Content:</strong> <?php echo htmlspecialchars($report['file_content']); ?></p>
                                     <p><strong>Time Submitted:</strong> <?php echo htmlspecialchars($report['time_submitted']); ?></p>
                                     <a href="view_file.php?id=<?php echo $report['id']; ?>" class="btn btn-primary">Download</a>
+                                    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
                                 </div>
                             </div>
                         </div>

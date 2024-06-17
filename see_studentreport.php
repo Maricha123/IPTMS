@@ -158,6 +158,8 @@ $conn->close();
                                 <p><strong>Week Number:</strong> <?php echo htmlspecialchars($logbook['week_number']); ?></p>
                                     <p><strong>Workspace:</strong> <?php echo htmlspecialchars($logbook['works']); ?></p>
                                     <p><strong>Uploaded At:</strong> <?php echo htmlspecialchars($logbook['uploaded_at']); ?></p>
+                                    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -83,15 +83,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Handle form submission for Report Form
-    if (isset($_POST["weekNo"], $_POST["work"]) && !empty($_POST["weekNo"]) && !empty($_POST["work"])) {
+
+    if (isset($_POST["weekNo"], $_POST["content"]) && !empty($_POST["weekNo"]) && !empty($_POST["content"])) {
         // Sanitize user input to prevent SQL injection or other attacks
-        $weekNo = htmlspecialchars($_POST["weekNo"]);
-        $work = htmlspecialchars($_POST["work"]);
+        $weekNo = $_POST["weekNo"];
+        $content = $_POST["content"];
        
 
         // Prepare and bind SQL statement for report form with file
         $stmt = $conn->prepare("INSERT INTO reports (UserID, week_number, works) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $UserID, $weekNo, $work);
+        $stmt->bind_param("iss", $UserID, $weekNo, $content);
 
         // Execute the statement
         if ($stmt->execute() === TRUE) {
@@ -105,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     } else {
         // If any field is not set or empty, display an error message
-        echo "All fields are required for the Report Form.";
+        header("Location: homee.php");
     }
 } else {
     // If the form is not submitted, redirect to the home page
