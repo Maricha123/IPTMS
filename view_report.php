@@ -160,6 +160,38 @@ $conn->close();
                     </div>
                 </div>
             </div>
+            <!-- Existing Code -->
+
+<!-- Add this button to generate the final report -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="generate_final_report.php" class="btn btn-success mb-3">Generate Final Report</a>
+                        <?php if ($reportsResult->num_rows > 0): ?>
+                            <ul class="list-group">
+                                <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
+                                    <li class="list-group-item">
+                                        <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
+                                        <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
+                                        class="btn btn-primary btn-sm float-right" download>Download</a>
+                                        <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
+                                    </li>
+                                <?php endwhile; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p>No reports submitted.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
