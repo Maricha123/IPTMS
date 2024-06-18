@@ -148,6 +148,10 @@ $conn->close();
                                                     <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
                                                     class="btn btn-primary btn-sm float-right" download>Download</a>
                                                     <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
+                                                    <form action="delete_report.php" method="post" class="float-right mr-2">
+                    <input type="hidden" name="report_id" value="<?php echo $reportRow['report_id']; ?>">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</button>
+                </form>
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>
@@ -171,19 +175,20 @@ $conn->close();
                     <div class="card-body">
                         <a href="generate_final_report.php" class="btn btn-success mb-3">Generate Final Report</a>
                         <?php if ($reportsResult->num_rows > 0): ?>
-                            <ul class="list-group">
-                                <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
-                                    <li class="list-group-item">
-                                        <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
-                                        <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
-                                        class="btn btn-primary btn-sm float-right" download>Download</a>
-                                        <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
-                                    </li>
-                                <?php endwhile; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p>No reports submitted.</p>
-                        <?php endif; ?>
+    <ul class="list-group">
+        <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
+            <li class="list-group-item">
+                <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
+                <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
+                <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
+               
+            </li>
+        <?php endwhile; ?>
+    </ul>
+<?php else: ?>
+    <p>No reports submitted.</p>
+<?php endif; ?>
+
                     </div>
                 </div>
             </div>

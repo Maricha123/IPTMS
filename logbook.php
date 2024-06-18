@@ -37,7 +37,7 @@ $userId = $_SESSION['user_id'];
     </style>
 
     <!-- Include TinyMCE script -->
-    <script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <script>
     // Initialize TinyMCE
@@ -56,7 +56,6 @@ $userId = $_SESSION['user_id'];
         content_style: 'body { font-family: Arial, Helvetica, sans-serif; font-size: 14px }'
     });
 </script>
-
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -154,19 +153,26 @@ $userId = $_SESSION['user_id'];
                             </form>
 
                             <!-- Form for submitting logbook data -->
-                            <form action="submits.php" method="post">
-                                <div class="form-group">
-                                    <label for="date" class="form-label">Date:</label>
-                                    <input type="date" id="date" name="date" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="content" class="form-label">Content:</label>
-                                    <textarea id="content" name="content"></textarea>
+                            <!-- Form for submitting logbook data -->
+<form action="submits.php" method="post">
+    <div class="form-group">
+        <label for="date" class="form-label">Date:</label>
+        <input type="date" id="date" name="date" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="content" class="form-label">Content:</label>
+        <textarea id="content" name="content"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+</form>
 
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
-                            </form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,13 @@
 <?php
 session_start();
 
-$userId = $_SESSION['user_id'];
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php"); // Redirect to login page if not logged in
+    exit();
+}
 
+$userId = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +40,7 @@ $userId = $_SESSION['user_id'];
             font-weight: bold;
         }
     </style>
-    <script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/umeplhvzfhtk7qrvosjkldjh9fi85qu0pjhievrrlt73vwcj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <script>
     // Initialize TinyMCE
@@ -202,7 +207,3 @@ $userId = $_SESSION['user_id'];
         setInterval(updateDateTime, 1000);
 
         // Initial update
-        updateDateTime();
-    </script>
-</body>
-</html>

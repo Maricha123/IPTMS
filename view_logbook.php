@@ -139,6 +139,10 @@ $conn->close();
                                                     <strong><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></strong>
                                                     <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
                                                     <a href="see_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
+                                                    <form action="delete_logbook.php" method="post" class="float-right mr-2">
+                    <input type="hidden" name="logbook_id" value="<?php echo $logbookRow['logbook_id']; ?>">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this logbook?');">Delete</button>
+                </form>
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>
