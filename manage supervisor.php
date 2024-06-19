@@ -213,13 +213,22 @@ function generateRandomPassword($length = 8) {
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="region_id">Select Region:</label>
-                                            <select class="form-control" id="region_id" name="region_id" required>
-                                                <?php while ($row = $result_region_options->fetch_assoc()): ?>
-                                                    <option value="<?php echo $row['region_id']; ?>"><?php echo $row['region_name']; ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
-                                        </div>
+    <label for="region_id">Select Region:</label>
+    <select class="form-control" id="region_id" name="region_id" required>
+        <option value="">Select a region</option>
+        <?php while ($row = $result_region_options->fetch_assoc()): ?>
+            <option value="<?php echo $row['region_id']; ?>"><?php echo $row['region_name']; ?></option>
+        <?php endwhile; ?>
+    </select>
+</div>
+<div class="form-group">
+    <label for="district_id">Select District:</label>
+    <select class="form-control" id="district_id" name="district_id" required>
+        <option value="">Select a district</option>
+        <!-- Options will be loaded dynamically -->
+    </select>
+</div>
+
                                         <button type="submit" class="btn btn-primary" name="assign_supervisor">Assign Supervisor</button>
                                     </form>
                                 </div>
@@ -305,18 +314,44 @@ function generateRandomPassword($length = 8) {
             });
         });
     </script>
+
+<script>
+$(document).ready(function() {
+    $('#region_id').change(function() {
+        var region_id = $(this).val();
+        if(region_id) {
+            $.ajax({
+                type: 'POST',
+                url: 'fetch_districts.php',
+                data: {region_id: region_id},
+                dataType: 'json',
+                success: function(response) {
+                    var districtDropdown = $('#district_id');
+                    districtDropdown.empty();
+                    districtDropdown.append('<option value="">Select a district</option>');
+                    $.each(response, function(index, district) {
+                        districtDropdown.append('<option value="'+district.district_id+'">'+district.district_name+'</option>');
+                    });
+                }
+            });
+        } else {
+            $('#district_id').empty().append('<option value="">Select a district</option>');
+        }
+    });
+});
+</script>
+
 </body>
 </html>
 <?php
 include 'db.php';
 
-
 // Check if the form for adding a supervisor is submitted
 if(isset($_POST['add_supervisor'])) {
     $supervisor_name = $_POST['supervisor_name'];
     $supervisor_email = $_POST['supervisor_email'];
-    $year=$_POST['year'];
-    $contact=$_POST['contact'];
+    $year = $_POST['year'];
+    $contact = $_POST['contact'];
     
     // Check if the supervisor with the same email already exists
     $check_sql = "SELECT * FROM users WHERE Email = '$supervisor_email'";
@@ -327,6 +362,8 @@ if(isset($_POST['add_supervisor'])) {
 
         // Hash the temporary password
         $hashed_password = password_hash($temp_password, PASSWORD_DEFAULT);
+
+        
         
         // Insert the supervisor into the users table with role as supervisor
         $sql = "INSERT INTO users (Name, Email, Password, Role) VALUES ('$supervisor_name', '$supervisor_email', '$hashed_password', 'supervisor')";
@@ -341,13 +378,13 @@ if(isset($_POST['add_supervisor'])) {
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'swalehemmary8991@gmail.com'; // SMTP username
-                    $mail->Password   = 'fgxlrggfdboivktz';       // SMTP password
+                    $mail->Username   = 'your_email@gmail.com'; // SMTP username
+                    $mail->Password   = 'your_password';       // SMTP password
                     $mail->SMTPSecure = 'tls';
                     $mail->Port       = 587;
 
                     // Recipient
-                    $mail->setFrom('swalehemmary8991@gmail.com', 'Admin');
+                    $mail->setFrom('your_email@gmail.com', 'Admin');
                     $mail->addAddress($supervisor_email, $supervisor_name);
 
                     // Content
@@ -375,26 +412,60 @@ if(isset($_POST['add_supervisor'])) {
 // Check if the form for assigning a supervisor to a region is submitted
 if(isset($_POST['assign_supervisor'])) {
     $supervisor_id = $_POST['supervisor_id'];
-    $region_id = $_POST['region_id'];
-    // Check if the supervisor is already assigned to the selected region
-    $check_sql = "SELECT * FROM supervisors WHERE supervisor_id = '$supervisor_id' AND region_id = '$region_id'";
+    $district_id = $_POST['district_id'];
+    
+    // Check if the supervisor is already assigned to the selected district
+    $check_sql = "SELECT * FROM supervisor_districts WHERE supervisor_id = '$supervisor_id' AND district_id = '$district_id'";
     $check_result = $conn->query($check_sql);
     if($check_result->num_rows == 0) {
-        // Update the supervisor's region in the database
-        $sql = "UPDATE supervisors SET region_id = '$region_id' WHERE supervisor_id = '$supervisor_id'";
+        // Insert the supervisor's district assignment into the database
+        $sql = "INSERT INTO supervisor_districts (supervisor_id, district_id) VALUES ('$supervisor_id', '$district_id')";
         if ($conn->query($sql) === TRUE) {
-         
+            echo "Supervisor assigned to district successfully.";
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
-        echo "<script>alert('Supervisor is already assigned to this region!');</script>";
+        echo "<script>alert('Supervisor is already assigned to this district!');</script>";
     }
 }
 
+if(isset($_POST['assign_supervisor'])) {
+    $supervisor_id = $_POST['supervisor_id'];
+    $district_id = $_POST['district_id'];
+    
+    // Check if the assignment already exists
+    $check_sql = "SELECT * FROM supervisor_districts WHERE supervisor_id = ? AND district_id = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ii", $supervisor_id, $district_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
 
+    if($check_result->num_rows == 0) {
+        // Insert assignment
+        $insert_sql = "INSERT INTO supervisor_districts (supervisor_id, district_id) VALUES (?, ?)";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("ii", $supervisor_id, $district_id);
+
+        if ($insert_stmt->execute()) {
+            echo "Supervisor assigned to district successfully.";
+        } else {
+            echo "Error: " . $insert_stmt->error;
+        }
+
+        $insert_stmt->close();
+    } else {
+        echo "<script>alert('Supervisor is already assigned to this district!');</script>";
+    }
+
+    $check_stmt->close();
+}
 
 ?>
+
+
+
+
 
 <script>
         $(document).ready(function(){

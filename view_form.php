@@ -32,7 +32,29 @@ if ($result->num_rows > 0) {
 }
 
 // Fetch arrival form for the logged-in user
-$formsQuery = "SELECT student_form_id, name, registration_number, academic_year, region, district, organization, supervisor_name, supervisor_number, uploaded_at FROM student_form WHERE UserID = '$userId' ORDER BY uploaded_at DESC";
+$formsQuery = "
+    SELECT 
+        sf.student_form_id, 
+        sf.name, 
+        sf.registration_number, 
+        sf.academic_year, 
+        r.region_name as region_name, 
+        d.district_name as district_name, 
+        sf.organization, 
+        sf.supervisor_name, 
+        sf.supervisor_number, 
+        sf.uploaded_at
+    FROM 
+        student_form sf
+    JOIN 
+        regions r ON sf.region = r.region_id
+    JOIN 
+        districts d ON sf.district = d.district_id
+    WHERE 
+        sf.UserID = '$userId'
+    ORDER BY 
+        sf.uploaded_at DESC
+";
 $formsResult = $conn->query($formsQuery);
 
 $conn->close();
@@ -147,17 +169,17 @@ $conn->close();
                                                    <p><strong>Name:</strong> <?php echo htmlspecialchars($formsRow['name']); ?></p>
                                                    <p><strong>RegNo:</strong> <?php echo htmlspecialchars($formsRow['registration_number']); ?></p>
                                                    <p><strong>Academic year:</strong> <?php echo htmlspecialchars($formsRow['academic_year']); ?></p>
-                                                   <p><strong>Region:</strong> <?php echo htmlspecialchars($formsRow['region']); ?></p>
-                                                   <p><strong>Districts:</strong> <?php echo htmlspecialchars($formsRow['district']); ?></p>
+                                                   <p><strong>Region:</strong> <?php echo htmlspecialchars($formsRow['region_name']); ?></p>
+                                                   <p><strong>District:</strong> <?php echo htmlspecialchars($formsRow['district_name']); ?></p>
                                                    <p><strong>Organization:</strong> <?php echo htmlspecialchars($formsRow['organization']); ?></p>
                                                    <p><strong>Supervisor Name:</strong> <?php echo htmlspecialchars($formsRow['supervisor_name']); ?></p>
                                                    
                                                     <a href="edit_form.php?student_form_id=<?php echo $formsRow['student_form_id']; ?>" class="btn btn-info btn-sm float-right mr-2">Edit</a>
                                                     
                                                     <form action="delete_form.php" method="post" class="float-right mr-2">
-                    <input type="hidden" name="student_form_id" value="<?php echo $formsRow['student_form_id']; ?>">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this form?');">Delete</button>
-                </form>
+                                                        <input type="hidden" name="student_form_id" value="<?php echo $formsRow['student_form_id']; ?>">
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this form?');">Delete</button>
+                                                    </form>
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>

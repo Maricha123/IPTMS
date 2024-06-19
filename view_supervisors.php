@@ -2,12 +2,16 @@
 session_start();
 include 'db.php';
 
-
-// Fetch supervisors with their assigned regions and emails
-$sql = "SELECT supervisors.supervisor_id, supervisors.supervisor_name, supervisors.supervisor_email, year, contact, regions.region_name, users.UserID 
+// Fetch supervisors with their assigned regions, districts, and emails
+$sql = "SELECT supervisors.supervisor_id, supervisors.supervisor_name, supervisors.supervisor_email, supervisors.year, supervisors.contact, regions.region_name, 
+               GROUP_CONCAT(districts.district_name SEPARATOR ', ') AS assigned_districts
         FROM supervisors 
         LEFT JOIN regions ON supervisors.region_id = regions.region_id
-        LEFT JOIN users ON supervisors.supervisor_email = users.email";
+        LEFT JOIN supervisor_districts ON supervisors.supervisor_id = supervisor_districts.supervisor_id
+        LEFT JOIN districts ON supervisor_districts.district_id = districts.district_id
+        LEFT JOIN users ON supervisors.supervisor_email = users.Email
+        GROUP BY supervisors.supervisor_id";
+
 $result = $conn->query($sql);
 
 $supervisor_regions = array();
@@ -20,6 +24,7 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,14 +62,14 @@ $conn->close();
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
+                        <li class="nav-item">
                             <a href="view_supervisors.php" class="nav-link">
-                            <i class="fas fa-user-plus"></i>
+                                <i class="fas fa-user-plus"></i>
                                 <p style="color:#0eacb8;">SUPERVISORS</p>
                             </a>
                             <a href="view_regions.php" class="nav-link">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <p style="color:#0eacb8;">REGIONS</p>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p style="color:#0eacb8;">REGIONS</p>
                             </a>
                         </li>
                     </ul>
@@ -77,7 +82,7 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Supervisors and Their Assigned Regions</h1>
+                            <h1 class="m-0">Supervisors and Their Assigned Regions and Districts</h1>
                         </div>
                     </div>
                 </div>
@@ -96,7 +101,8 @@ $conn->close();
                                                 <th>Email</th>
                                                 <th>Year</th>
                                                 <th>Contact</th>
-                                                <th>Assigned Region</th>
+                                                <th>Region</th>
+                                                <th>Districts</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -108,10 +114,10 @@ $conn->close();
                                                     <td><?php echo $supervisor_region['year']; ?></td>
                                                     <td><?php echo $supervisor_region['contact']; ?></td>
                                                     <td><?php echo $supervisor_region['region_name'] ?? 'Not Assigned'; ?></td>
+                                                    <td><?php echo $supervisor_region['assigned_districts'] ?? 'Not Assigned'; ?></td>
                                                     <td>
                                                         <form method="post" action="delete_supervisor.php" onsubmit="return confirm('Are you sure you want to delete this supervisor?');">
                                                             <input type="hidden" name="supervisor_id" value="<?php echo $supervisor_region['supervisor_id']; ?>">
-                                                            <input type="hidden" name="UserID" value="<?php echo $supervisor_region['UserID']; ?>">
                                                             <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
                                                         </form>
                                                     </td>

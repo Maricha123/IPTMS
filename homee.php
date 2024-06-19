@@ -33,16 +33,31 @@ if ($result->num_rows > 0) {
 $messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
 $messagesResult = $conn->query($messageQuery);
 
-// Fetch the region assigned to the student from the arrival form
-$regionQuery = "SELECT region FROM student_form WHERE UserID = '$userId'";
-$regionResult = $conn->query($regionQuery);
+// Fetch the districts assigned to the student from the arrival form
+$districtsQuery = "SELECT district FROM student_form WHERE UserID = '$userId'";
+$districtsResult = $conn->query($districtsQuery);
 
-if ($regionResult->num_rows > 0) {
-    $regionRow = $regionResult->fetch_assoc();
-    $regionName = $regionRow['region'];
+$supervisorName = "Not Assigned";
+$supervisorEmail = "N/A";
+$supervisorContact = "N/A";
 
-    // Fetch the supervisor assigned to this region
-    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact FROM supervisors WHERE region_id = (SELECT region_id FROM regions WHERE region_id = '$regionName')";
+if ($districtsResult->num_rows > 0) {
+    $districts = [];
+    while ($districtRow = $districtsResult->fetch_assoc()) {
+        $districts[] = $districtRow['district'];
+    }
+    
+    // Convert the districts array to a comma-separated string
+    $districtsStr = "'" . implode("', '", $districts) . "'";
+
+    // Fetch the supervisor assigned to these districts
+    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact 
+                        FROM supervisors 
+                        WHERE supervisor_id IN (
+                            SELECT supervisor_id 
+                            FROM supervisor_districts 
+                            WHERE district_id IN ($districtsStr)
+                        )";
     $supervisorResult = $conn->query($supervisorQuery);
 
     if ($supervisorResult->num_rows > 0) {
@@ -50,16 +65,7 @@ if ($regionResult->num_rows > 0) {
         $supervisorName = $supervisorRow['supervisor_name'];
         $supervisorEmail = $supervisorRow['supervisor_email'];
         $supervisorContact = $supervisorRow['contact'];
-    } else {
-        $supervisorName = "Not Assigned";
-        $supervisorEmail = "N/A";
-        $supervisorContact = "N/A";
     }
-} else {
-    $regionName = null;
-    $supervisorName = "Not Assigned";
-    $supervisorEmail = "N/A";
-    $supervisorContact = "N/A";
 }
 
 $conn->close();

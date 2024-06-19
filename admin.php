@@ -379,20 +379,52 @@ if(isset($_POST['add_supervisor'])) {
 if(isset($_POST['assign_supervisor'])) {
     $supervisor_id = $_POST['supervisor_id'];
     $region_id = $_POST['region_id'];
-    // Check if the supervisor is already assigned to the selected region
-    $check_sql = "SELECT * FROM supervisors WHERE supervisor_id = '$supervisor_id' AND region_id = '$region_id'";
+    $district_id = $_POST['district_id'];
+
+    // Check if the supervisor is already assigned to the selected region and district
+    $check_sql = "SELECT * FROM supervisors WHERE supervisor_id = '$supervisor_id' AND region_id = '$region_id' AND district_id = '$district_id'";
     $check_result = $conn->query($check_sql);
     if($check_result->num_rows == 0) {
-        // Update the supervisor's region in the database
-        $sql = "UPDATE supervisors SET region_id = '$region_id' WHERE supervisor_id = '$supervisor_id'";
+        // Update the supervisor's region and district in the database
+        $sql = "UPDATE supervisors SET region_id = '$region_id', district_id = '$district_id' WHERE supervisor_id = '$supervisor_id'";
         if ($conn->query($sql) === TRUE) {
-         
+            echo "Supervisor assigned successfully.";
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
-        echo "<script>alert('Supervisor is already assigned to this region!');</script>";
+        echo "<script>alert('Supervisor is already assigned to this region and district!');</script>";
     }
+}
+if(isset($_POST['assign_supervisor'])) {
+    $supervisor_id = $_POST['supervisor_id'];
+    $district_id = $_POST['district_id'];
+    
+    // Check if the assignment already exists
+    $check_sql = "SELECT * FROM supervisor_districts WHERE supervisor_id = ? AND district_id = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ii", $supervisor_id, $district_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    if($check_result->num_rows == 0) {
+        // Insert assignment
+        $insert_sql = "INSERT INTO supervisor_districts (supervisor_id, district_id) VALUES (?, ?)";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("ii", $supervisor_id, $district_id);
+
+        if ($insert_stmt->execute()) {
+            echo "Supervisor assigned to district successfully.";
+        } else {
+            echo "Error: " . $insert_stmt->error;
+        }
+
+        $insert_stmt->close();
+    } else {
+        echo "<script>alert('Supervisor is already assigned to this district!');</script>";
+    }
+
+    $check_stmt->close();
 }
 
 
