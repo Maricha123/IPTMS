@@ -40,5 +40,3 @@ if (isset($_POST['report_id']) && is_numeric($_POST['report_id'])) {
 header("Location: view_report.php");
 exit();
 
-$conn->close();
-?>

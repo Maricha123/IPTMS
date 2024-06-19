@@ -41,5 +41,5 @@ if (isset($_POST['student_form_id']) && is_numeric($_POST['student_form_id'])) {
 header("Location: view_form.php");
 exit();
 
-$conn->close();
-?>
+
+

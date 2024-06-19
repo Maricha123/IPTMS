@@ -41,5 +41,3 @@ if (isset($_POST['logbook_id']) && is_numeric($_POST['logbook_id'])) {
 header("Location: view_logbook.php");
 exit();
 
-$conn->close();
-?>
