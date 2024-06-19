@@ -32,6 +32,12 @@
         L.marker([<?php echo $lat; ?>, <?php echo $lng; ?>]).addTo(map)
             .bindPopup('<?php echo htmlspecialchars($name); ?>\'s Location')
             .openPopup();
+
+            function goBack() {
+            window.history.back();
+        }
     </script>
+
+<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
 </body>
 </html>

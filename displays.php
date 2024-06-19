@@ -6,12 +6,18 @@
     <title>Student Details</title>
     <link rel="stylesheet" href="display.css"> <!-- Update the CSS file name -->
 </head>
+<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
 <body>
     
     
     <?php include 'display_student.php'; ?>
+    
 </body>
-
+<script>
+    function goBack() {
+            window.history.back();
+        }
+</script>
 </html>
     
     

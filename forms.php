@@ -76,6 +76,13 @@
                                 <p>Report</p>
                             </a>
                         </li>
+                        
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_form.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Arrival Form</p>
+                            </a>
+                        </li>
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_logbook.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
@@ -275,18 +282,20 @@
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script>
-        // Function to get user's geolocation
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-
         
-        // Function to show position and update visible input fields
-    function showPosition(position) {
+        function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError, {
+            enableHighAccuracy: true, // Request high accuracy
+            timeout: 10000,           
+            maximumAge: 0             
+        });
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     
@@ -297,23 +306,22 @@
     alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
 }
 
-        // Function to handle errors in geolocation
-        function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
-            }
-        }
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+    }
+}
 
         function goBack() {
             window.history.back();

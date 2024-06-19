@@ -265,31 +265,6 @@ if (isset($_GET['student_id'])) {
 </script>
 
 
-                    <!-- Student Report -->
-                    <?php if ($reportResult->num_rows > 0): ?>
-                        <div class="data-table">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr><th colspan="4">Student Report</th></tr>
-                                    <tr><th>Week Number</th><th>Works</th><th>Problems</th><th>Submitted Time</th></tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($reportRow = $reportResult->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($reportRow['week_number']); ?></td>
-                                            <td><?php echo htmlspecialchars($reportRow['works']); ?></td>
-                                            <td><?php echo htmlspecialchars($reportRow['problems']); ?></td>
-                                            <td><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php else: ?>
-                        <div class="center-message">
-                            <p>No report data found for the student.</p>
-                        </div>
-                    <?php endif; ?>
 
                     <!-- Student Files -->
                     <!-- Student Files -->

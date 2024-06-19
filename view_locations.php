@@ -98,8 +98,11 @@ $conn->close();
                                     ?>
                                 </select>
                                 <button type="submit">Mark as Ready</button>
+                                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
                             </form>
+
                             <?php
+                            
                             if (!empty($result_students_locations)) {
                                 echo "<div class='card'>";
                                 echo "<div class='card-header'><h3 class='card-title'>Student Locations</h3></div>";
@@ -119,6 +122,7 @@ $conn->close();
                                 echo "<p>No student locations found for the assigned region.</p>";
                             }
                             ?>
+                            
                         </div>
                     </div>
                     <!-- /.row -->
@@ -136,6 +140,7 @@ $conn->close();
 
         <!-- Main Footer -->
         <footer class="main-footer">
+       
             <strong>IPTMS &copy; 2024.</strong> All rights reserved.
         </footer>
     </div>
@@ -171,6 +176,10 @@ $conn->close();
             }
         }
         ?>
+
+function goBack() {
+            window.history.back();
+        }
     </script>
 </body>
 </html>

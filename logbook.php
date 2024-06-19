@@ -102,6 +102,13 @@ $userId = $_SESSION['user_id'];
                                 <p>Report</p>
                             </a>
                         </li>
+                        
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_form.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Arrival Form</p>
+                            </a>
+                        </li>
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_logbook.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>

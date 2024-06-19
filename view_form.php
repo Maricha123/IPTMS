@@ -23,54 +23,26 @@ $sql = "SELECT Name FROM users WHERE UserID = '$userId'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $username = $row["Name"];
+    // Output data of each row
+    while($row = $result->fetch_assoc()) {
+        $username = $row["Name"];
+    }
 } else {
     $username = "Guest"; // Default to Guest if user not found
 }
 
-// Fetch messages for the logged-in user
-$messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
-$messagesResult = $conn->query($messageQuery);
-
-// Fetch the region assigned to the student from the arrival form
-$regionQuery = "SELECT region FROM student_form WHERE UserID = '$userId'";
-$regionResult = $conn->query($regionQuery);
-
-if ($regionResult->num_rows > 0) {
-    $regionRow = $regionResult->fetch_assoc();
-    $regionName = $regionRow['region'];
-
-    // Fetch the supervisor assigned to this region
-    $supervisorQuery = "SELECT supervisor_name, supervisor_email, contact FROM supervisors WHERE region_id = (SELECT region_id FROM regions WHERE region_id = '$regionName')";
-    $supervisorResult = $conn->query($supervisorQuery);
-
-    if ($supervisorResult->num_rows > 0) {
-        $supervisorRow = $supervisorResult->fetch_assoc();
-        $supervisorName = $supervisorRow['supervisor_name'];
-        $supervisorEmail = $supervisorRow['supervisor_email'];
-        $supervisorContact = $supervisorRow['contact'];
-    } else {
-        $supervisorName = "Not Assigned";
-        $supervisorEmail = "N/A";
-        $supervisorContact = "N/A";
-    }
-} else {
-    $regionName = null;
-    $supervisorName = "Not Assigned";
-    $supervisorEmail = "N/A";
-    $supervisorContact = "N/A";
-}
+// Fetch arrival form for the logged-in user
+$formsQuery = "SELECT student_form_id, name, registration_number, academic_year, region, district, organization, supervisor_name, supervisor_number, uploaded_at FROM student_form WHERE UserID = '$userId' ORDER BY uploaded_at DESC";
+$formsResult = $conn->query($formsQuery);
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>View Logbooks</title>
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <!-- Font Awesome -->
@@ -78,34 +50,18 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body class="hold-transition sidebar-mini">
+
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="homee.php" class="nav-link">Home</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#" role="button">
-                        <i class="far fa-bell"></i>
-                        <?php if ($messagesResult->num_rows > 0): ?>
-                            <span class="badge badge-warning navbar-badge"><?php echo $messagesResult->num_rows; ?></span>
-                        <?php endif; ?>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header"><?php echo $messagesResult->num_rows; ?> Messages</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="view_massage.php" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <h5><a class="nav-link" href="view_studentsprofile.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
                 </li>
             </ul>
         </nav>
@@ -115,11 +71,8 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="homee.php" class="brand-link">
-                <i class="fas fa-user-graduate"></i>
                 <span class="brand-text font-weight-light">Student Dashboard</span>
             </a>
-
-            <!-- Sidebar -->
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -141,7 +94,7 @@ $conn->close();
                                 <p>Report</p>
                             </a>
                         </li>
-
+                        
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_form.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
@@ -165,7 +118,6 @@ $conn->close();
             </div>
             <!-- /.sidebar -->
         </aside>
-
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -173,7 +125,7 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0" style="color:orange">Welcome <?php echo $username; ?></h1>
+                            <h1 class="m-0" style="color:orange">View Your Arrival Form</h1>
                         </div>
                     </div>
                 </div>
@@ -187,25 +139,31 @@ $conn->close();
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Instructions</h5>
-                                    <p class="card-text">1. You have to fill the arrival form only once.</p>
-                                    <p class="card-text">2. Fill the arrival form when you are in the area of IPT.</p>
-                                    <p class="card-text">3. You have to fill out the logbook every day you attend the IPT area.</p>
-                                    <p class="card-text">4. Submit the documents in the logbook form or report form whenever necessary.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Supervisor Details Section -->
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body" style="background-color:#0eacb8">
-                                    <h5 class="card-title" style="color:white">Your Supervisor</h5>
-                                    <p class="card-text" style="color:white">Supervisor Name: <?php echo $supervisorName; ?></p>
-                                    <p class="card-text" style="color:white">Supervisor Email: <?php echo $supervisorEmail; ?></p>
-                                    <p class="card-text" style="color:white">Supervisor Contact: <?php echo $supervisorContact; ?></p>
+                                    <?php if ($formsResult->num_rows > 0): ?>
+                                        <ul class="list-group">
+                                            <?php while($formsRow = $formsResult->fetch_assoc()): ?>
+                                                <li class="list-group-item">
+                                                   <p><strong>Time:</strong> <?php echo htmlspecialchars($formsRow['uploaded_at']); ?></p>
+                                                   <p><strong>Name:</strong> <?php echo htmlspecialchars($formsRow['name']); ?></p>
+                                                   <p><strong>RegNo:</strong> <?php echo htmlspecialchars($formsRow['registration_number']); ?></p>
+                                                   <p><strong>Academic year:</strong> <?php echo htmlspecialchars($formsRow['academic_year']); ?></p>
+                                                   <p><strong>Region:</strong> <?php echo htmlspecialchars($formsRow['region']); ?></p>
+                                                   <p><strong>Districts:</strong> <?php echo htmlspecialchars($formsRow['district']); ?></p>
+                                                   <p><strong>Organization:</strong> <?php echo htmlspecialchars($formsRow['organization']); ?></p>
+                                                   <p><strong>Supervisor Name:</strong> <?php echo htmlspecialchars($formsRow['supervisor_name']); ?></p>
+                                                   
+                                                    <a href="edit_form.php?student_form_id=<?php echo $formsRow['student_form_id']; ?>" class="btn btn-info btn-sm float-right mr-2">Edit</a>
+                                                    
+                                                    <form action="delete_form.php" method="post" class="float-right mr-2">
+                    <input type="hidden" name="student_form_id" value="<?php echo $formsRow['student_form_id']; ?>">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this form?');">Delete</button>
+                </form>
+                                                </li>
+                                            <?php endwhile; ?>
+                                        </ul>
+                                    <?php else: ?>
+                                        <p>No report submitted.</p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -218,13 +176,6 @@ $conn->close();
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-inline">
-                <!-- Theme switch toggle button -->
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="themeSwitch">
-                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
-                </div>
-            </div>
             <strong>IPTMS &copy; 2024.</strong> All rights reserved.
         </footer>
     </div>
@@ -234,32 +185,6 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            // Check if the theme preference is stored in local storage
-            var currentTheme = localStorage.getItem('theme');
 
-            // If theme preference exists, apply it
-            if(currentTheme) {
-                $('body').addClass(currentTheme);
-                if(currentTheme === 'dark-mode') {
-                    $('#themeSwitch').prop('checked', true);
-                }
-            }
-
-            // Toggle theme when switch is clicked
-            $('#themeSwitch').change(function() {
-                if ($(this).is(':checked')) {
-                    $('body').addClass('dark-mode');
-                    localStorage.setItem('theme', 'dark-mode');
-                } else {
-                    $('body').removeClass('dark-mode');
-                    localStorage.setItem('theme', '');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

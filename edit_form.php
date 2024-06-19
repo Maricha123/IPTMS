@@ -15,34 +15,58 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Assuming the user is already authenticated and their ID is stored in a session
-$userId = $_SESSION['user_id'];
-
-// Fetch the username from the database based on the user ID
-$sql = "SELECT Name FROM users WHERE UserID = '$userId'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // Output data of each row
-    while($row = $result->fetch_assoc()) {
-        $username = $row["Name"];
-    }
-} else {
-    $username = "Guest"; // Default to Guest if user not found
+// Check if form ID is provided
+if (!isset($_GET['student_form_id'])) {
+    die("Form ID is required.");
 }
 
-// Fetch logbooks for the logged-in user
-$logbooksQuery = "SELECT logbook_id, date, workspace, uploaded_at FROM logbooks WHERE UserID = '$userId' ORDER BY uploaded_at DESC";
-$logbooksResult = $conn->query($logbooksQuery);
+$student_form_id = $_GET['student_form_id'];
+
+// Fetch form data based on form ID
+$sql = "SELECT * FROM student_form WHERE student_form_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $student_form_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $form = $result->fetch_assoc();
+} else {
+    die("Form not found.");
+}
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'];
+    $registration_number = $_POST['registration_number'];
+    $academic_year = $_POST['academic_year'];
+    $region = $_POST['region'];
+    $district = $_POST['district'];
+    $organization = $_POST['organization'];
+    $supervisor_name = $_POST['supervisor_name'];
+    $supervisor_number = $_POST['supervisor_number'];
+
+    // Update the form data
+    $update_sql = "UPDATE student_form SET name = ?, registration_number = ?, academic_year = ?, region = ?, district = ?, organization = ?, supervisor_name = ?, supervisor_number = ? WHERE student_form_id = ?";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bind_param("ssssssssi", $name, $registration_number, $academic_year, $region, $district, $organization, $supervisor_name, $supervisor_number, $student_form_id);
+
+    if ($update_stmt->execute()) {
+        echo "<script>alert('Form updated successfully.'); window.location.href='view_form.php';</script>";
+    } else {
+        echo "Error updating form: " . $conn->error;
+    }
+}
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Logbooks</title>
+    <title>Edit Form</title>
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
     <!-- Font Awesome -->
@@ -94,13 +118,6 @@ $conn->close();
                                 <p>Report</p>
                             </a>
                         </li>
-                        
-                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
-                            <a href="view_form.php" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>View Arrival Form</p>
-                            </a>
-                        </li>
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_logbook.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
@@ -125,7 +142,7 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0" style="color:orange">View Logbooks</h1>
+                            <h1 class="m-0" style="color:orange">Edit Form</h1>
                         </div>
                     </div>
                 </div>
@@ -139,23 +156,41 @@ $conn->close();
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <?php if ($logbooksResult->num_rows > 0): ?>
-                                        <ul class="list-group">
-                                            <?php while($logbookRow = $logbooksResult->fetch_assoc()): ?>
-                                                <li class="list-group-item">
-                                                    <strong><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></strong>
-                                                    <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
-                                                    <a href="see_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
-                                                    <form action="delete_logbook.php" method="post" class="float-right mr-2">
-                    <input type="hidden" name="logbook_id" value="<?php echo $logbookRow['logbook_id']; ?>">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this logbook?');">Delete</button>
-                </form>
-                                                </li>
-                                            <?php endwhile; ?>
-                                        </ul>
-                                    <?php else: ?>
-                                        <p>No logbooks submitted.</p>
-                                    <?php endif; ?>
+                                    <form method="POST" action="">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($form['name']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="registration_number">Registration Number</label>
+                                            <input type="text" class="form-control" id="registration_number" name="registration_number" value="<?php echo htmlspecialchars($form['registration_number']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="academic_year">Academic Year</label>
+                                            <input type="text" class="form-control" id="academic_year" name="academic_year" value="<?php echo htmlspecialchars($form['academic_year']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="region">Region</label>
+                                            <input type="text" class="form-control" id="region" name="region" value="<?php echo htmlspecialchars($form['region']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="district">District</label>
+                                            <input type="text" class="form-control" id="district" name="district" value="<?php echo htmlspecialchars($form['district']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="organization">Organization</label>
+                                            <input type="text" class="form-control" id="organization" name="organization" value="<?php echo htmlspecialchars($form['organization']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="supervisor_name">Supervisor Name</label>
+                                            <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" value="<?php echo htmlspecialchars($form['supervisor_name']); ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="supervisor_number">Supervisor Number</label>
+                                            <input type="text" class="form-control" id="supervisor_number" name="supervisor_number" value="<?php echo htmlspecialchars($form['supervisor_number']); ?>" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Form</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
