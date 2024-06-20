@@ -118,380 +118,182 @@ function generateRandomPassword($length = 8) {
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color:#0eacb8"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="admin.php" class="nav-link" style="color:#0eacb8">Home</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <h5><a class="nav-link" href="view_admin.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.navbar -->
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color:#0eacb8"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="admin.php" class="nav-link" style="color:#0eacb8">Home</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <h5><a class="nav-link" href="view_admin.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="admin.php" class="brand-link">
-                <span class="brand-text font-weight-light">Admin Dashboard</span>
-            </a>
-            <div class="sidebar">
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="view_supervisors.php" class="nav-link">
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="admin.php" class="brand-link">
+            <span class="brand-text font-weight-light">Admin Dashboard</span>
+        </a>
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="view_supervisors.php" class="nav-link">
                             <i class="fas fa-user-plus"></i>
-                                <p style="color:#0eacb8;">SUPERVISORS</p>
-                            </a>
-                            <a href="view_regions.php" class="nav-link">
+                            <p style="color:#0eacb8;">SUPERVISORS</p>
+                        </a>
+                        <a href="view_regions.php" class="nav-link">
                             <i class="fas fa-map-marker-alt"></i>
                             <p style="color:#0eacb8;">REGIONS</p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
                     <div class="col-sm-6">
-                            <h1 class="m-0" >Manage Supervisors </h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="admin.php"></a></li>
-                                
-                            </ol>
-                        </div>
+                        <h1 class="m-0">Manage Supervisors</h1>
                     </div>
-                </div>
-            </div>
-
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                       
-                        <div class="col-lg-12 col-6">
-                            <div class="small-box bg-warning">
-                                <div class="inner" style="color:white">
-                                    <h3><?php echo $total_supervisors; ?></h3>
-                                    <p>Supervisors</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-user-plus"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                    
-                        
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Assign Supervisor to Region</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form action="admin.php" method="POST">
-                                        <div class="form-group">
-                                            <label for="supervisor_id">Select Supervisor:</label>
-                                            <select class="form-control" id="supervisor_id" name="supervisor_id" required>
-                                                <?php while ($row = $result_supervisor_options->fetch_assoc()): ?>
-                                                    <option value="<?php echo $row['supervisor_id']; ?>"><?php echo $row['supervisor_email']; ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-    <label for="region_id">Select Region:</label>
-    <select class="form-control" id="region_id" name="region_id" required>
-        <option value="">Select a region</option>
-        <?php while ($row = $result_region_options->fetch_assoc()): ?>
-            <option value="<?php echo $row['region_id']; ?>"><?php echo $row['region_name']; ?></option>
-        <?php endwhile; ?>
-    </select>
-</div>
-<div class="form-group">
-    <label for="district_id">Select District:</label>
-    <select class="form-control" id="district_id" name="district_id" required>
-        <option value="">Select a district</option>
-        <!-- Options will be loaded dynamically -->
-    </select>
-</div>
-
-                                        <button type="submit" class="btn btn-primary" name="assign_supervisor">Assign Supervisor</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Add Supervisor</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form action="admin.php" method="POST">
-                                        <div class="form-group">
-                                            <label for="supervisor_name">Supervisor Name:</label>
-                                            <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="supervisor_email">Supervisor Email:</label>
-                                            <input type="email" class="form-control" id="supervisor_email" name="supervisor_email" required>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="Year">Year:</label>
-                                            <input type="year" class="form-control" id="year" name="year" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Contact">Contact:</label>
-                                            <input type="number" class="form-control" id="contact" name="contact" required>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary" name="add_supervisor">Add Supervisor</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="admin.php"></a></li>
+                        </ol>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-                <div class="float-right d-none d-sm-inline">
-                    <!-- Theme switch toggle button -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="themeSwitch">
-                        <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-6">
+                        <div class="small-box bg-warning">
+                            <div class="inner" style="color:white">
+                                <h3><?php echo $total_supervisors; ?></h3>
+                                <p>Supervisors</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Assign Supervisor to Region</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="assign_supervisor.php" method="POST">
+                                    <div class="form-group">
+                                        <label for="supervisor_id">Select Supervisor:</label>
+                                        <select class="form-control" id="supervisor_id" name="supervisor_id" required>
+                                            <?php while ($row = $result_supervisor_options->fetch_assoc()): ?>
+                                                <option value="<?php echo $row['supervisor_id']; ?>"><?php echo $row['supervisor_email']; ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="region_id">Select Region:</label>
+                                        <select class="form-control" id="region_id" name="region_id" required>
+                                            <option value="">Select a region</option>
+                                            <?php while ($row = $result_region_options->fetch_assoc()): ?>
+                                                <option value="<?php echo $row['region_id']; ?>"><?php echo $row['region_name']; ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="districts">Select Districts:</label>
+                                        <div id="districts"></div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="assign_supervisor">Assign Supervisor</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Add Supervisor</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="admin.php" method="POST">
+                                    <div class="form-group">
+                                        <label for="supervisor_name">Supervisor Name:</label>
+                                        <input type="text" class="form-control" id="supervisor_name" name="supervisor_name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supervisor_email">Supervisor Email:</label>
+                                        <input type="email" class="form-control" id="supervisor_email" name="supervisor_email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Year">Year:</label>
+                                        <input type="year" class="form-control" id="year" name="year" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Contact">Contact:</label>
+                                        <input type="number" class="form-control" id="contact" name="contact" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="add_supervisor">Add Supervisor</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <strong>IPTMS &copy; 2024.</strong> All rights reserved.
-            </footer>
+            </div>
+        </div>
     </div>
-
-    <script>
-        document.getElementById("viewProfileBtn").addEventListener("click", function() {
-            var profileDetails = document.getElementById("profileDetails");
-            if (profileDetails.style.display === "none") {
-                profileDetails.style.display = "block";
-            } else {
-                profileDetails.style.display = "none";
-            }
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-inline">
+            <!-- Theme switch toggle button -->
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="themeSwitch">
+                <label class="form-check-label" for="themeSwitch">Toggle Dark Mode</label>
+            </div>
+        </div>
+    </footer>
+</div>
+<script>
+    $(document).ready(function() {
+        // Toggle dark mode
+        $('#themeSwitch').change(function() {
+            $('body').toggleClass('dark-mode');
         });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const themeSwitch = document.getElementById("themeSwitch");
-            const currentTheme = localStorage.getItem("theme");
-
-            if (currentTheme === "dark") {
-                document.body.classList.add("dark-mode");
-                themeSwitch.checked = true;
-            }
-
-            themeSwitch.addEventListener("change", function() {
-                if (themeSwitch.checked) {
-                    document.body.classList.add("dark-mode");
-                    localStorage.setItem("theme", "dark");
-                } else {
-                    document.body.classList.remove("dark-mode");
-                    localStorage.setItem("theme", "light");
-                }
-            });
-        });
-    </script>
-
-<script>
-$(document).ready(function() {
-    $('#region_id').change(function() {
-        var region_id = $(this).val();
-        if(region_id) {
-            $.ajax({
-                type: 'POST',
-                url: 'fetch_districts.php',
-                data: {region_id: region_id},
-                dataType: 'json',
-                success: function(response) {
-                    var districtDropdown = $('#district_id');
-                    districtDropdown.empty();
-                    districtDropdown.append('<option value="">Select a district</option>');
-                    $.each(response, function(index, district) {
-                        districtDropdown.append('<option value="'+district.district_id+'">'+district.district_name+'</option>');
-                    });
-                }
-            });
-        } else {
-            $('#district_id').empty().append('<option value="">Select a district</option>');
-        }
-    });
-});
-</script>
-
-</body>
-</html>
-<?php
-include 'db.php';
-
-// Check if the form for adding a supervisor is submitted
-if(isset($_POST['add_supervisor'])) {
-    $supervisor_name = $_POST['supervisor_name'];
-    $supervisor_email = $_POST['supervisor_email'];
-    $year = $_POST['year'];
-    $contact = $_POST['contact'];
-    
-    // Check if the supervisor with the same email already exists
-    $check_sql = "SELECT * FROM users WHERE Email = '$supervisor_email'";
-    $check_result = $conn->query($check_sql);
-    if($check_result->num_rows == 0) {
-        // Generate random password
-        $temp_password = generateRandomPassword();
-
-        // Hash the temporary password
-        $hashed_password = password_hash($temp_password, PASSWORD_DEFAULT);
-
-        
-        
-        // Insert the supervisor into the users table with role as supervisor
-        $sql = "INSERT INTO users (Name, Email, Password, Role) VALUES ('$supervisor_name', '$supervisor_email', '$hashed_password', 'supervisor')";
-        if ($conn->query($sql) === TRUE) {
-            // Also insert the supervisor into the supervisors table
-            $sql_supervisor = "INSERT INTO supervisors (supervisor_name, supervisor_email, year, contact) VALUES ('$supervisor_name', '$supervisor_email', '$year', '$contact')";
-            if ($conn->query($sql_supervisor) === TRUE) {
-                // Send email with temporary password
-                $mail = new PHPMailer(true);
-                try {
-                    // Server settings
-                    $mail->isSMTP();
-                    $mail->Host       = 'smtp.gmail.com';
-                    $mail->SMTPAuth   = true;
-                    $mail->Username   = 'your_email@gmail.com'; // SMTP username
-                    $mail->Password   = 'your_password';       // SMTP password
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port       = 587;
-
-                    // Recipient
-                    $mail->setFrom('your_email@gmail.com', 'Admin');
-                    $mail->addAddress($supervisor_email, $supervisor_name);
-
-                    // Content
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Your Temporary Password';
-                    $mail->Body    = 'Hello ' . $supervisor_name . ',<br><br>Your temporary password is: ' . $temp_password . '<br><br>Please login using this password and change it immediately.<br><br>Thank you.';
-
-                    $mail->send();
-                    echo 'Supervisor registered successfully. Temporary password sent to email.';
-                } catch (Exception $e) {
-                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                }
-                
-            } else {
-                echo "Error: " . $sql_supervisor . "<br>" . $conn->error;
-            }
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "<script>alert('Supervisor with this email already exists!');</script>";
-    }
-}
-
-// Check if the form for assigning a supervisor to a region is submitted
-if(isset($_POST['assign_supervisor'])) {
-    $supervisor_id = $_POST['supervisor_id'];
-    $district_id = $_POST['district_id'];
-    
-    // Check if the supervisor is already assigned to the selected district
-    $check_sql = "SELECT * FROM supervisor_districts WHERE supervisor_id = '$supervisor_id' AND district_id = '$district_id'";
-    $check_result = $conn->query($check_sql);
-    if($check_result->num_rows == 0) {
-        // Insert the supervisor's district assignment into the database
-        $sql = "INSERT INTO supervisor_districts (supervisor_id, district_id) VALUES ('$supervisor_id', '$district_id')";
-        if ($conn->query($sql) === TRUE) {
-            echo "Supervisor assigned to district successfully.";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "<script>alert('Supervisor is already assigned to this district!');</script>";
-    }
-}
-
-if(isset($_POST['assign_supervisor'])) {
-    $supervisor_id = $_POST['supervisor_id'];
-    $district_id = $_POST['district_id'];
-    
-    // Check if the assignment already exists
-    $check_sql = "SELECT * FROM supervisor_districts WHERE supervisor_id = ? AND district_id = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("ii", $supervisor_id, $district_id);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
-
-    if($check_result->num_rows == 0) {
-        // Insert assignment
-        $insert_sql = "INSERT INTO supervisor_districts (supervisor_id, district_id) VALUES (?, ?)";
-        $insert_stmt = $conn->prepare($insert_sql);
-        $insert_stmt->bind_param("ii", $supervisor_id, $district_id);
-
-        if ($insert_stmt->execute()) {
-            echo "Supervisor assigned to district successfully.";
-        } else {
-            echo "Error: " . $insert_stmt->error;
-        }
-
-        $insert_stmt->close();
-    } else {
-        echo "<script>alert('Supervisor is already assigned to this district!');</script>";
-    }
-
-    $check_stmt->close();
-}
-
-?>
-
-
-
-
-
-<script>
-        $(document).ready(function(){
-                // Check if the theme preference is stored in local storage
-                var currentTheme = localStorage.getItem('theme');
-
-                // If theme preference exists, apply it
-                if(currentTheme) {
-                    $('body').addClass(currentTheme);
-                    if(currentTheme === 'dark-mode') {
-                        $('#themeSwitch').prop('checked', true);
-                    }
-                }
-
-                // Toggle theme when switch is clicked
-                $('#themeSwitch').change(function() {
-                    if ($(this).is(':checked')) {
-                        $('body').addClass('dark-mode');
-                        localStorage.setItem('theme', 'dark-mode');
-                    } else {
-                        $('body').removeClass('dark-mode');
-                        localStorage.setItem('theme', '');
+        // Fetch districts based on selected region
+        $('#region_id').change(function() {
+            var region_id = $(this).val();
+            if(region_id) {
+                $.ajax({
+                    url: 'fetch_districts.php',
+                    method: 'POST',
+                    data: {region_id: region_id},
+                    success: function(response) {
+                        $('#districts').html(response);
                     }
                 });
-                // Function to fetch and update counts
-      
+            } else {
+                $('#districts').html('');
+            }
+        });
     });
-            
-    </script>
+</script>
+</body>
+</html>
