@@ -51,10 +51,11 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -76,7 +77,7 @@ $conn->close();
             <!-- Brand Logo -->
             <a href="homee.php" class="brand-link">
                 <i class="fas fa-user-graduate"></i>
-                <span class="brand-text font-weight-light">Student Dashboard</span>
+                <span class="brand-text font-weight-light">Home</span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
@@ -145,20 +146,19 @@ $conn->close();
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                  
                                     <?php if ($reportsResult->num_rows > 0): ?>
                                         <ul class="list-group">
-                                            
                                             <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
                                                 <li class="list-group-item">
                                                     <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
                                                     <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
-                                                    class="btn btn-primary btn-sm float-right" download>Download</a>
-                                                    <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
-                                                    <form action="delete_report.php" method="post" class="float-right mr-2">
-                    <input type="hidden" name="report_id" value="<?php echo $reportRow['report_id']; ?>">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</button>
-                </form>
+                                                       class="btn btn-primary btn-sm float-right" download style="margin-right: 90px">Download</a>
+                                                    <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" 
+                                                       class="btn btn-info btn-sm float-right mr-2">View</a>
+                                                    <!-- <form action="delete_report.php" method="post" class="float-right mr-2">
+                                                        <input type="hidden" name="report_id" value="<?php echo $reportRow['report_id']; ?>">
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this report?');">Delete</button>
+                                                    </form> -->
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>
@@ -171,39 +171,6 @@ $conn->close();
                     </div>
                 </div>
             </div>
-            <!-- Existing Code -->
-
-<!-- Add this button to generate the final report -->
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="generate_final_report.php" class="btn btn-success mb-3">Generate Final Report</a>
-                        <?php if ($reportsResult->num_rows > 0): ?>
-    <ul class="list-group">
-        <?php while($reportRow = $reportsResult->fetch_assoc()): ?>
-            <li class="list-group-item">
-                <strong><?php echo htmlspecialchars($reportRow['uploaded_at']); ?></strong>
-                <a href="download_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
-                <a href="see_report.php?report_id=<?php echo $reportRow['report_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
-               
-            </li>
-        <?php endwhile; ?>
-    </ul>
-<?php else: ?>
-    <p>No reports submitted.</p>
-<?php endif; ?>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /.content -->
-
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
@@ -219,5 +186,7 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 </body>
 </html>

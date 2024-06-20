@@ -88,6 +88,59 @@ $conn->close();
 
             <!-- Sidebar -->
             <div class="sidebar">
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="homee.php" class="brand-link">
+                <i class="fas fa-user-graduate"></i>
+                <span class="brand-text font-weight-light">Home</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="forms.php" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
+                            <a href="logbook.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Logbook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>Report</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_form.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_logbook.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Logbooks</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>View Reports</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- /.sidebar -->
+        </aside>
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
@@ -115,13 +168,13 @@ $conn->close();
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="width:fit-content; background-color: #fff;">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Welcome <?php echo $username; ?></h1>
+                            <h1>   </h1>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->

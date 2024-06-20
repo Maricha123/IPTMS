@@ -77,7 +77,7 @@ $userId = $_SESSION['user_id'];
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="homee.php" class="brand-link">
-                <span class="brand-text font-weight-light">Student Dashboard</span>
+                <span class="brand-text font-weight-light">Home</span>
             </a>
 
             <!-- Sidebar -->

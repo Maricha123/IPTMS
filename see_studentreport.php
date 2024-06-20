@@ -89,7 +89,7 @@ $conn->close();
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
+            <a href="iptms.png" class="brand-link">
                 <span class="brand-text font-weight-light">Student Dashboard</span>
             </a>
             <!-- Sidebar -->
@@ -98,35 +98,12 @@ $conn->close();
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="forms.php" class="nav-link">
+                            <a href="view_locations.php" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
-                                <p>Arrival Form</p>
+                                <p>Students Locations</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="logbook.php" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>Logbook</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="report.php" class="nav-link">
-                                <i class="nav-icon fas fa-file-alt"></i>
-                                <p>Report</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="view_logbook.php" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>View Logbooks</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="view_report.php" class="nav-link">
-                                <i class="nav-icon fas fa-file-alt"></i>
-                                <p>View Reports</p>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

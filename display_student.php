@@ -102,16 +102,16 @@ if (isset($_GET['student_id'])) {
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="#" class="brand-link">
-                <span class="brand-text font-weight-light">Supervisor Dashboard</span>
+            <a href="supdash.php" class="brand-link">
+                <span class="brand-text font-weight-light">Home</span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="view_locations.php" class="nav-link">
                                 <i class="nav-icon"></i>
-                                <p> </p>
+                                <p>Students Locations</p>
                             </a>
                         </li>
                         <!-- Add other menu items here -->
@@ -119,6 +119,7 @@ if (isset($_GET['student_id'])) {
                 </nav>
             </div>
         </aside>
+        
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">

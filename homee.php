@@ -29,9 +29,10 @@ if ($result->num_rows > 0) {
     $username = "Guest"; // Default to Guest if user not found
 }
 
-// Fetch messages for the logged-in user
-$messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
-$messagesResult = $conn->query($messageQuery);
+// Fetch unread messages count for the logged-in user
+$messageQuery = "SELECT COUNT(*) AS unread_count FROM messages WHERE UserID = '$userId' AND is_read = 0";
+$messageResult = $conn->query($messageQuery);
+$unreadMessagesCount = $messageResult->fetch_assoc()['unread_count'];
 
 // Fetch the districts assigned to the student from the arrival form
 $districtsQuery = "SELECT district FROM student_form WHERE UserID = '$userId'";
@@ -100,12 +101,12 @@ $conn->close();
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" role="button">
                         <i class="far fa-bell"></i>
-                        <?php if ($messagesResult->num_rows > 0): ?>
-                            <span class="badge badge-warning navbar-badge"><?php echo $messagesResult->num_rows; ?></span>
+                        <?php if ($unreadMessagesCount > 0): ?>
+                            <span class="badge badge-warning navbar-badge"><?php echo $unreadMessagesCount; ?></span>
                         <?php endif; ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header"><?php echo $messagesResult->num_rows; ?> Messages</span>
+                        <span class="dropdown-item dropdown-header"><?php echo $unreadMessagesCount; ?> Unread Messages</span>
                         <div class="dropdown-divider"></div>
                         <a href="view_massage.php" class="dropdown-item dropdown-footer">See All Messages</a>
                     </div>

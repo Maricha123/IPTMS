@@ -50,7 +50,6 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
@@ -71,7 +70,7 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="homee.php" class="brand-link">
-                <span class="brand-text font-weight-light">Student Dashboard</span>
+                <span class="brand-text font-weight-light">Home</span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
@@ -94,7 +93,6 @@ $conn->close();
                                 <p>Report</p>
                             </a>
                         </li>
-                        
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_form.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
@@ -137,19 +135,19 @@ $conn->close();
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="card">
+                           <div class="card">
                                 <div class="card-body">
                                     <?php if ($logbooksResult->num_rows > 0): ?>
                                         <ul class="list-group">
                                             <?php while($logbookRow = $logbooksResult->fetch_assoc()): ?>
                                                 <li class="list-group-item">
                                                     <strong><?php echo htmlspecialchars($logbookRow['uploaded_at']); ?></strong>
-                                                    <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm float-right" download>Download</a>
+                                                    <a href="download_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-primary btn-sm float-right" download style="margin-right: 90px">Download</a>
                                                     <a href="see_logbook.php?logbook_id=<?php echo $logbookRow['logbook_id']; ?>" class="btn btn-info btn-sm float-right mr-2">View</a>
-                                                    <form action="delete_logbook.php" method="post" class="float-right mr-2">
-                    <input type="hidden" name="logbook_id" value="<?php echo $logbookRow['logbook_id']; ?>">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this logbook?');">Delete</button>
-                </form>
+                                                    <!-- <form action="delete_logbook.php" method="post" class="float-right mr-2">
+                                                        <input type="hidden" name="logbook_id" value="<?php echo $logbookRow['logbook_id']; ?>">
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this logbook?');">Delete</button>
+                                                    </form> -->
                                                 </li>
                                             <?php endwhile; ?>
                                         </ul>
@@ -177,6 +175,7 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 </body>
 </html>
