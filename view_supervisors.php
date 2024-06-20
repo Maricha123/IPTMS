@@ -77,7 +77,7 @@ $conn->close();
             </div>
         </aside>
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="background-color: #fff;">
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">

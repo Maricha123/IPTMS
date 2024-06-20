@@ -2,52 +2,53 @@
 session_start();
 include 'db.php';
 
-// Check if the region ID is set in the POST request
-if (isset($_POST['region_id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $region_id = $_POST['region_id'];
 
-    // Start a transaction
+    // Begin transaction
     $conn->begin_transaction();
 
     try {
-        // Delete all districts that reference this region
-        $sql_districts = "DELETE FROM districts WHERE region_id = ?";
-        $stmt_districts = $conn->prepare($sql_districts);
+        // Delete associated districts first (if not using ON DELETE CASCADE)
+        $sql_delete_districts = "DELETE FROM districts WHERE region_id = ?";
+        $stmt_districts = $conn->prepare($sql_delete_districts);
         $stmt_districts->bind_param("i", $region_id);
         $stmt_districts->execute();
         $stmt_districts->close();
 
         // Delete the region
-        $sql_region = "DELETE FROM regions WHERE region_id = ?";
-        $stmt_region = $conn->prepare($sql_region);
+        $sql_delete_region = "DELETE FROM regions WHERE region_id = ?";
+        $stmt_region = $conn->prepare($sql_delete_region);
         $stmt_region->bind_param("i", $region_id);
         $stmt_region->execute();
         $stmt_region->close();
 
-        // Commit the transaction
+        // Commit transaction
         $conn->commit();
 
-        // Redirect back to view_regions.php with a success message
-        $_SESSION['message'] = "Region deleted successfully!";
-        $_SESSION['message_type'] = "success";
+        $_SESSION['message'] = "Region and its associated districts deleted successfully.";
+        $_SESSION['msg_type'] = "success";
+
     } catch (Exception $e) {
-        // Rollback the transaction if anything failed
+        // Rollback transaction if any error occurs
         $conn->rollback();
-
-        // Redirect back to view_regions.php with an error message
-        $_SESSION['message'] = "Error deleting region!";
-        $_SESSION['message_type'] = "danger";
+        
+        $_SESSION['message'] = "Error deleting region: " . $e->getMessage();
+        $_SESSION['msg_type'] = "danger";
     }
+
+    // Close the database connection
+    $conn->close();
+
+    // Redirect back to the regions page
+    header("Location: view_regions.php");
+    exit();
 } else {
-    // Redirect back to view_regions.php with an error message
-    $_SESSION['message'] = "Invalid request!";
-    $_SESSION['message_type'] = "danger";
+    $_SESSION['message'] = "Invalid request method.";
+    $_SESSION['msg_type'] = "danger";
+    
+    // Redirect back to the regions page
+    header("Location: view_regions.php");
+    exit();
 }
-
-// Close the database connection
-$conn->close();
-
-// Redirect back to view_regions.php
-header("Location: view_regions.php");
-exit();
 ?>

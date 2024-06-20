@@ -2,16 +2,10 @@
 session_start();
 include 'db.php';
 
-
-// Fetch regions from the database
-$sql_regions_list = "SELECT * FROM regions";
-$result_regions_list = $conn->query($sql_regions_list);
 // Fetch regions from the database
 $sql_regions = "SELECT * FROM regions";
 $result_regions = $conn->query($sql_regions);
 
-// Close the database connection
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -59,14 +53,14 @@ $conn->close();
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
+                        <li class="nav-item">
                             <a href="view_supervisors.php" class="nav-link">
-                            <i class="fas fa-user-plus"></i>
+                                <i class="fas fa-user-plus"></i>
                                 <p style="color:#0eacb8;">SUPERVISORS</p>
                             </a>
                             <a href="view_regions.php" class="nav-link">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <p style="color:#0eacb8;">REGIONS</p>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p style="color:#0eacb8;">REGIONS</p>
                             </a>
                         </li>
                     </ul>
@@ -102,6 +96,7 @@ $conn->close();
                                             <tr>
                                                 <th>No:</th>
                                                 <th>Region Name:</th>
+                                                <th>Districts:</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -112,6 +107,21 @@ $conn->close();
                                                     <tr>
                                                         <td><?php echo $count++; ?></td>
                                                         <td><?php echo $row['region_name']; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            // Fetch districts for this region
+                                                            $region_id = $row['region_id'];
+                                                            $sql_districts = "SELECT * FROM districts WHERE region_id = $region_id";
+                                                            $result_districts = $conn->query($sql_districts);
+                                                            if ($result_districts->num_rows > 0):
+                                                                while ($district = $result_districts->fetch_assoc()):
+                                                                    echo $district['district_name'] . "<br>";
+                                                                endwhile;
+                                                            else:
+                                                                echo "No districts found";
+                                                            endif;
+                                                            ?>
+                                                        </td>
                                                         <td>
                                                             <form action="delete_regions.php" method="post" style="display:inline;">
                                                                 <input type="hidden" name="region_id" value="<?php echo $row['region_id']; ?>">
@@ -124,7 +134,7 @@ $conn->close();
                                                 <?php endwhile; ?>
                                             <?php else: ?>
                                                 <tr>
-                                                    <td colspan="3">No regions found</td>
+                                                    <td colspan="4">No regions found</td>
                                                 </tr>
                                             <?php endif; ?>
                                         </tbody>
@@ -149,3 +159,8 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 </body>
 </html>
+
+<?php
+// Close the database connection at the end
+$conn->close();
+?>
