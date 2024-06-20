@@ -1,0 +1,46 @@
+
+# Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Gradle
+.gradle
+build/
+
+# Signing files
+signing.properties
+
+# User-specific configurations
+.idea/
+
+# OS-specific files
+.DS_Store
+*.swp
+*.swo
+
+# Firebase
+google-services.json
+
+# Others
+*.log
+*.keystore
+.idea/
+*/.idea/
+*.apk
+*.ap_
+*.db
+*.DS_Store
+*.jks
+*.keystore
+*.properties
+*.log
+*.local
+.local
