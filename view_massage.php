@@ -31,6 +31,10 @@ if ($result->num_rows > 0) {
     $username = "Guest"; // Default to Guest if user not found
 }
 
+// Mark all unread messages as read for the logged-in user
+$updateQuery = "UPDATE messages SET is_read = 1 WHERE UserID = '$userId' AND is_read = 0";
+$conn->query($updateQuery);
+
 // Fetch messages for the logged-in user
 $messageQuery = "SELECT message, sent_at FROM messages WHERE UserID = '$userId' ORDER BY sent_at DESC";
 $messagesResult = $conn->query($messageQuery);
@@ -64,7 +68,7 @@ $conn->close();
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <h5><a class="nav-link" href="#" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
+                    <h5><a class="nav-link" href="view_studentsprofile.php" role="button" style="color:#0eacb8"><?php echo $username; ?></a></h5>
                 </li>
             </ul>
         </nav>
@@ -79,7 +83,49 @@ $conn->close();
             </a>
 
             <!-- Sidebar -->
-            
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="forms.php" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8;margin-top:10px">
+                            <a href="logbook.php" class="nav-link>
+                                                            <i class="nav-icon fas fa-book"></i>
+                                <p>Logbook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>Report</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_form.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Arrival Form</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_logbook.php" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>View Logbooks</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
+                            <a href="view_report.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>View Reports</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             <!-- /.sidebar -->
         </aside>
 
@@ -174,3 +220,4 @@ $conn->close();
     </script>
 </body>
 </html>
+
