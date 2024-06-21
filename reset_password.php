@@ -43,8 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         header("location: index.php");
+        
     } else {
-        echo "Invalid or expired token.";
+        echo "<script>
+        alert('Token expired!');
+        window.location.href = 'forgotPassword.php';
+      </script>";
     }
 
     $stmt->close();

@@ -28,8 +28,17 @@ if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOA
     $stmt->bind_param("iss", $UserID, $fileName, $fileContent);
     $stmt->execute();
     $stmt->close();
-    header("Location: homee.php");
-    exit();
+    echo "<script>
+                alert('submitted successfuly!');
+                window.location.href = 'homee.php';
+              </script>";
+    
+}else{
+    echo "<script>
+    alert('fail to upload the file!');
+    window.location.href = 'homee.php';
+  </script>";
+
 }
 
 // Check if all fields are filled out for the Student Form
@@ -63,7 +72,10 @@ if (isset($_POST['name'], $_POST['regNo'], $_POST['academicYear'], $_POST['regio
         $stmt->bind_param("issssssssss", $UserID, $name, $regNo, $academicYear, $region, $district, $organization, $supervisorName, $supervisorNo, $latitude, $longitude);
         $stmt->execute();
         $stmt->close();
-        header("Location: homee.php");
+        echo "<script>
+        alert('successfully submitted!');
+        window.location.href = 'forms.php';
+      </script>";
         exit();
     }
 
@@ -82,7 +94,10 @@ if (isset($_POST['date'], $_POST['content'])) {
     $stmt->bind_param("iss", $UserID, $date, $content);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Logbook entry submitted successfully.');</script>";
+        echo "<script>
+                alert('submitted successfully!!');
+                window.location.href = 'logbook.php';
+              </script>";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -105,8 +120,10 @@ if (isset($_POST["weekNo"], $_POST["content"]) && !empty($_POST["weekNo"]) && !e
 
     // Execute the statement
     if ($stmt->execute() === TRUE) {
-        echo "Report submitted successfully.";
-        header("Location: homee.php");
+        echo "<script>
+        alert('submitted successfully!');
+        window.location.href = 'report.php';
+      </script>";
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -115,11 +132,11 @@ if (isset($_POST["weekNo"], $_POST["content"]) && !empty($_POST["weekNo"]) && !e
     $stmt->close();
 } else {
     // If any field is not set or empty, display an error message
-    header("Location: homee.php");
+   
     exit();
 }
 
 // If the form is not submitted, redirect to the home page
-header("Location: homee.php");
+
 exit();
 ?>

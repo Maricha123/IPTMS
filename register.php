@@ -53,8 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_register->bind_param("ssss", $name, $email, $hashed_password, $role);
 
         if ($stmt_register->execute()) {
-            // Redirect to the login page
-            header("Location: index.php");
+            echo "<script>
+            alert('successfully Registred!!');
+            window.location.href = 'index.php';
+          </script>";
             exit();
         } else {
             echo "Error: " . $stmt_register->error;

@@ -61,8 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Body    = "Click the link to reset your password: " . $resetLink;
         
             $mail->send();
-            echo 'Message has been sent';
-            header("location: ");
+            echo "<script>
+                alert('massage sent to your email!');
+                window.location.href = 'index.php';
+              </script>";
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }

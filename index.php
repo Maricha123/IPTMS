@@ -64,7 +64,7 @@
 
                 <button type="submit" class="buttons" style="border-radius: 10px;">Login</button>
                 <!-- Inside your existing form in login.html -->
-                <a href="forgot_password.html" class="buttons" style="margin-bottom: 10px; margin-top: 10px;">Forgot your password</a>
+                <a href="forgotPassword.php" class="buttons" style="margin-bottom: 10px; margin-top: 10px;">Forgot your password</a>
                <p style="margin:0">Dont have an account? 
                 <a href="reg.php"  >Register</a>
             </p>
