@@ -173,7 +173,7 @@ $conn->close();
                 $is_ready = $location['is_ready'] ? 'ready' : 'not ready';
                 
                 // Determine marker icon based on readiness status
-                $icon_url = $location['is_ready'] ? 'ready.jpg' : 'not_ready.jpg';
+                $icon_url = $location['is_ready'] ? 'ready.png' : 'not_ready.jpg';
 
                 // Create JavaScript for adding marker with popup
                 echo "var icon = L.icon({iconUrl: '$icon_url', iconSize: [35, 51], iconAnchor: [12, 41]});
