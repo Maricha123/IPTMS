@@ -1,6 +1,18 @@
 <?php
 session_start();
 
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
 // Database connection details
 $servername = "localhost";
 $username = "root";

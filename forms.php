@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +27,6 @@
             margin-bottom: 20px;
         }
         .marquee-header {
-
             background-color: #f8d775;
             padding: 10px;
             text-align: start;
@@ -76,7 +84,6 @@
                                 <p>Report</p>
                             </a>
                         </li>
-                        
                         <li class="nav-item" style="background-color:#0eacb8; margin-top:10px">
                             <a href="view_form.php" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
@@ -113,13 +120,115 @@
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
-            <!--            // Update hidden input fields
+            
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="time-section">
+                        <p id="currentDateTime"></p>
+                    </div>
+                    <h3 style="background-color:#f8d775; color: black; text-align:center"> Student Arrival Form</h3>
+                    <h3 style="color: red">*Remember to fetch the location before submitting the form</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="studentForm" action="submits.php" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="regNo" class="form-label">Registration Number:</label>
+                                    <input type="text" id="regNo" name="regNo" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="academicYear" class="form-label">Academic Year:</label>
+                                    <input type="text" id="academicYear" name="academicYear" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="region" class="form-label">Region:</label>
+                                    <select id="region" name="region" class="form-control" required onchange="fetchDistricts()">
+                                        <option value="" disabled selected>Select Region</option>
+                                        <!-- Populate regions from database -->
+                                        <?php
+                                        include 'db.php'; // Assuming this file connects to your database
+                                        $sql = "SELECT * FROM regions";
+                                        $result = $conn->query($sql);
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='" . $row['region_id'] . "'>" . $row['region_name'] . "</option>";
+                                        }
+                                        $conn->close();
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="district" class="form-label">District:</label>
+                                    <select id="district" name="district" class="form-control" required>
+                                        <option value="" disabled selected>Select District</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="organization" class="form-label">Organization:</label>
+                                    <input type="text" id="organization" name="organization" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="supervisorName" class="form-label">Onsite Supervisor Name:</label>
+                                    <input type="text" id="supervisorName" name="supervisorName" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="supervisorNo" class="form-label">Onsite Supervisor Number:</label>
+                                    <input type="text" id="supervisorNo" name="supervisorNo" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="latitude" class="form-label">Latitude:</label>
+                                    <input type="text" id="latitude" name="latitude" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitude" class="form-label">Longitude:</label>
+                                    <input type="text" id="longitude" name="longitude" class="form-control" readonly>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="getLocation()">Fetch Location</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError, {
+                    enableHighAccuracy: true, 
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;
+
             alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
         }
 
-        // Function to handle errors in geolocation
         function showError(error) {
             switch(error.code) {
                 case error.PERMISSION_DENIED:
@@ -144,207 +253,49 @@
         function updateDateTime() {
             const currentDateTimeElement = document.getElementById('currentDateTime');
             const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi' };
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                timeZone: 'Africa/Nairobi' 
+            };
 
-            // Display the time, date, and day
             const currentDateTime = new Date().toLocaleString('en-US', options);
             currentDateTimeElement.textContent = `${currentDateTime}`;
         }
 
-        // Update current time, date, and day every second
         setInterval(updateDateTime, 1000);
-
-        // Initial update
         updateDateTime();
+
+        function fetchDistricts() {
+            var regionId = document.getElementById("region").value;
+            var districtSelect = document.getElementById("district");
+
+            districtSelect.innerHTML = "<option value='' disabled selected>Loading...</option>";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "get_districts.php?region_id=" + regionId, true);
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    var districts = JSON.parse(xhr.responseText);
+                    districtSelect.innerHTML = "";
+
+                    districts.forEach(function (district) {
+                        var option = document.createElement("option");
+                        option.text = district.district_name;
+                        option.value = district.district_id;
+                        districtSelect.add(option);
+                    });
+                } else {
+                    districtSelect.innerHTML = "<option value='' disabled selected>Error loading districts</option>";
+                }
+            };
+            xhr.send();
+        }
     </script>
-</body>
-</html>
- Main content -->
-            <section class="content" >
-                <div class="container-fluid" >
-                    <div class="time-section" >
-                        <p id="currentDateTime"></p>
-                    </div>
-                    <h3 style="background-color:#f8d775; color: black; text-align:center"> Student Arrival Form</h3>
-                <h3 style="color: red">*Remember to fetch the location before submitting the form</h3>
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="studentForm" action="submits.php" method="post" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="name" class="form-label">Name:</label>
-                                    <input type="text" id="name" name="name" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="regNo" class="form-label">Registration Number:</label>
-                                    <input type="text" id="regNo" name="regNo" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="academicYear" class="form-label">Academic Year:</label>
-                                    <input type="text" id="academicYear" name="academicYear" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-    <label for="region" class="form-label">Region:</label>
-    <select id="region" name="region" class="form-control" required onchange="fetchDistricts()">
-        <option value="" disabled selected>Select Region</option>
-        <?php
-        include 'db.php'; // Assuming this file connects to your database
-        $sql = "SELECT * FROM regions";
-        $result = $conn->query($sql);
-        while ($row = $result->fetch_assoc()) {
-            echo "<option value='" . $row['region_id'] . "'>" . $row['region_name'] . "</option>";
-        }
-        $conn->close();
-        ?>
-    </select>
-</div>
-
-<div class="form-group">
-    <label for="district" class="form-label">District:</label>
-    <select id="district" name="district" class="form-control" required>
-        <option value="" disabled selected>Select District</option>
-    </select>
-</div>
-
-<script>
-    function fetchDistricts() {
-        var regionId = document.getElementById("region").value;
-        var districtSelect = document.getElementById("district");
-
-        // Clear previous options
-        districtSelect.innerHTML = "<option value='' disabled selected>Loading...</option>";
-
-        // Make AJAX request
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "get_districts.php?region_id=" + regionId, true);
-        xhr.onload = function () {
-            if (xhr.status == 200) {
-                var districts = JSON.parse(xhr.responseText);
-
-                // Clear previous options again (in case AJAX was fast)
-                districtSelect.innerHTML = "";
-
-                // Populate districts dropdown
-                districts.forEach(function (district) {
-                    var option = document.createElement("option");
-                    option.text = district.district_name;
-                    option.value = district.district_id;
-                    districtSelect.add(option);
-                });
-            } else {
-                // Handle errors here
-                districtSelect.innerHTML = "<option value='' disabled selected>Error loading districts</option>";
-            }
-        };
-        xhr.send();
-    }
-</script>
-
-                                <div class="form-group">
-                                    <label for="organization" class="form-label">Organization:</label>
-                                    <input type="text" id="organization" name="organization" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="supervisorName" class="form-label">Onsite Supervisor Name:</label>
-                                    <input type="text" id="supervisorName" name="supervisorName" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="supervisorNo" class="form-label">Onsite Supervisor Number:</label>
-                                    <input type="text" id="supervisorNo" name="supervisorNo" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-    <label for="latitude" class="form-label">Latitude:</label>
-    <input type="text" id="latitude" name="latitude" class="form-control" readonly>
-</div>
-<div class="form-group">
-    <label for="longitude" class="form-label">Longitude:</label>
-    <input type="text" id="longitude" name="longitude" class="form-control" readonly>
-</div>
-
-                                <!-- Button to fetch location -->
-                                <button type="button" class="btn btn-primary" onclick="getLocation()">Fetch Location</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
-    </div>
-    <!-- ./wrapper -->
-
-    <!-- REQUIRED SCRIPTS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <script>
-        
-        function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError, {
-            enableHighAccuracy: true, // Request high accuracy
-            timeout: 10000,           
-            maximumAge: 0             
-        });
-    } else {
-        alert("Geolocation is not supported by this browser.");
-    }
-}
-
-function showPosition(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    
-    // Update visible input fields
-    document.getElementById("latitude").value = latitude;
-    document.getElementById("longitude").value = longitude;
-    
-    alert("Location fetched successfully:\nLatitude: " + latitude + "\nLongitude: " + longitude);
-}
-
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            alert("User denied the request for Geolocation.");
-            break;
-        case error.POSITION_UNAVAILABLE:
-            alert("Location information is unavailable.");
-            break;
-        case error.TIMEOUT:
-            alert("The request to get user location timed out.");
-            break;
-        case error.UNKNOWN_ERROR:
-            alert("An unknown error occurred.");
-            break;
-    }
-}
-
-        function goBack() {
-            window.history.back();
-        }
-
-        function updateDateTime() {
-            const currentDateTimeElement = document.getElementById('currentDateTime');
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Africa/Nairobi' };
-
-            // Display the time, date, and day
-            const currentDateTime = new Date().toLocaleString('en-US', options);
-            currentDateTimeElement.textContent = `${currentDateTime}`;
-        }
-
-        // Update current time, date, and day every second
-        setInterval(updateDateTime, 1000);
-
-        // Initial update
-        updateDateTime();
-    </script>
-
-
-
 </body>
 </html>

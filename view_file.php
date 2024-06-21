@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
 include 'db.php';
 
 // Check if the file ID is provided in the URL

@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

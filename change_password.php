@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
 // Check if the user is logged in and needs to change password
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['change_password']) || $_SESSION['change_password'] !== true) {
     header("Location: login.php"); // Redirect to login page if not logged in or not required to change password

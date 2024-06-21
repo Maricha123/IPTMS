@@ -1,57 +1,115 @@
 <?php
 session_start();
+
+// Ensure the user is logged in before accessing the page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
 include 'db.php';
 
-
-if (isset($_POST['add_district'])) {
-    $region_id = $_POST['region_id'];
-    $district_name = $_POST['district_name'];
-// Check if the region already exists
-    $check_sql = "SELECT * FROM districts WHERE district_name = '$district_name'";
-    $check_result = $conn->query($check_sql);
-    if($check_result->num_rows == 0) {
-    
-    // Insert the new district into the database
-    $sql = "INSERT INTO districts (district_name, region_id) VALUES ('$district_name', '$region_id')";
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('succefully');</script>";
-    }else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-} else {
-    echo "<script>alert('District already exists!');</script>";
-}
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $userId = $_SESSION['user_id'];
 
 // Fetch the username from the database based on the user ID
-$sql = "SELECT Name FROM users WHERE UserID = '$userId'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $username = $row["Name"];
-    }
-} else {
-    $username = "Guest"; // Default to Guest if user not found
-}
+$sql = "SELECT Name FROM users WHERE UserID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$username = $result->num_rows > 0 ? $result->fetch_assoc()['Name'] : "Guest";
 
 // Get total number of regions
 $sql_regions = "SELECT COUNT(*) AS total_regions FROM regions";
-$result_regions = $conn->query($sql_regions);
-$row_regions = $result_regions->fetch_assoc();
-$total_regions = $row_regions['total_regions'];
+$total_regions = $conn->query($sql_regions)->fetch_assoc()['total_regions'];
 
+// Get total number of supervisors
+$sql_supervisors = "SELECT COUNT(*) AS total_supervisors FROM supervisors";
+$total_supervisors = $conn->query($sql_supervisors)->fetch_assoc()['total_supervisors'];
 
-// Fetch regions from the database
-$sql_regions_list = "SELECT * FROM regions";
-$result_regions_list = $conn->query($sql_regions_list);
-// Fetch all regions
-$sql_all_regions = "SELECT * FROM regions";
-$result_all_regions = $conn->query($sql_all_regions);
+// Get total number of students
+$sql_total_students = "SELECT COUNT(*) AS total_students FROM users WHERE Role = 'student'";
+$total_students = $conn->query($sql_total_students)->fetch_assoc()['total_students'];
+
+// Fetch regions for selection
+$sql_region_options = "SELECT * FROM regions";
+$result_region_options = $conn->query($sql_region_options);
+
+// Fetch supervisors for selection
+$sql_supervisor_options = "SELECT * FROM supervisors";
+$result_supervisor_options = $conn->query($sql_supervisor_options);
+
+// Function to generate random password
+function generateRandomPassword($length = 8) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $password = '';
+    for ($i = 0; $length > $i; $i++) {
+        $password .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $password;
+}
+
+function sanitize($data) {
+    return htmlspecialchars(strip_tags(trim($data)));
+}
+
+// Handle adding a new district
+if (isset($_POST['add_district'])) {
+    $region_id = sanitize($_POST['region_id']);
+    $district_name = sanitize($_POST['district_name']);
+
+    // Check if the district already exists
+    $check_sql = "SELECT * FROM districts WHERE district_name = ?";
+    $stmt = $conn->prepare($check_sql);
+    $stmt->bind_param('s', $district_name);
+    $stmt->execute();
+    $check_result = $stmt->get_result();
+
+    if($check_result->num_rows == 0) {
+        // Insert the new district into the database
+        $sql = "INSERT INTO districts (district_name, region_id) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('si', $district_name, $region_id);
+        if ($stmt->execute()) {
+            echo "<script>alert('Successfully added district');</script>";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    } else {
+        echo "<script>alert('District already exists!');</script>";
+    }
+}
+
+// Handle adding a new region
+if (isset($_POST['add_region'])) {
+    $region_name = sanitize($_POST['region_name']);
+
+    // Check if the region already exists
+    $check_sql = "SELECT * FROM regions WHERE region_name = ?";
+    $stmt = $conn->prepare($check_sql);
+    $stmt->bind_param('s', $region_name);
+    $stmt->execute();
+    $check_result = $stmt->get_result();
+
+    if($check_result->num_rows == 0) {
+        // Insert the region into the database
+        $sql = "INSERT INTO regions (region_name) VALUES (?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $region_name);
+        if ($stmt->execute()) {
+            echo "<script>alert('Successfully added region');</script>";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    } else {
+        echo "<script>alert('Region already exists!');</script>";
+    }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,48 +250,36 @@ $result_all_regions = $conn->query($sql_all_regions);
                                 </form>
                             </div>
                         </div>
-
-                       
                     </div>
 
                     <div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Manage Districts</h3>
-        </div>
-        <div class="card-body">
-            <form action="manage regions.php" method="POST">
-                <div class="form-group">
-                    <label for="region">Select Region:</label>
-                    <select class="form-control" id="region" name="region_id" required>
-                        <option value="">Select Region</option>
-                        <?php
-                        $sql = "SELECT * FROM regions";
-                        $result = $conn->query($sql);
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<option value="'.$row['region_id'].'">'.$row['region_name'].'</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="district_name">District Name:</label>
-                    <input type="text" class="form-control" id="district_name" name="district_name" required>
-                </div>
-                <button type="submit" class="btn btn-primary" name="add_district">Add District</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-                        
-                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Manage Districts</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="manage regions.php" method="POST">
+                                    <div class="form-group">
+                                        <label for="region">Select Region:</label>
+                                        <select class="form-control" id="region" name="region_id" required>
+                                            <option value="">Select Region</option>
+                                            <?php
+                                            while ($row = $result_region_options->fetch_assoc()) {
+                                                echo '<option value="'.$row['region_id'].'">'.$row['region_name'].'</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="district_name">District Name:</label>
+                                        <input type="text" class="form-control" id="district_name" name="district_name" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="add_district">Add District</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    
                 </div>
-
- 
             </div>
         </div>
     </div>
@@ -242,33 +288,10 @@ $result_all_regions = $conn->query($sql_all_regions);
 <div class="dark-mode-toggle">
     <label class="custom-switch">
         <input type="checkbox" id="darkModeSwitch" class="custom-control-input">
-             <span class="custom-control-label">Dark Mode</span>
-     </label>
+        <span class="custom-control-label">Dark Mode</span>
+    </label>
 </div>
 
-<?php
-include 'db.php';
-
-// Check if the form for adding a region is submitted
-if(isset($_POST['add_region'])) {
-    $region_name = $_POST['region_name'];
-    // Check if the region already exists
-    $check_sql = "SELECT * FROM regions WHERE region_name = '$region_name'";
-    $check_result = $conn->query($check_sql);
-    if($check_result->num_rows == 0) {
-        // Insert the region into the database
-        $sql = "INSERT INTO regions (region_name) VALUES ('$region_name')";
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Successfully!');</script>";
-            
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "<script>alert('Region already exists!');</script>";
-    }
-}
-?>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var darkModeSwitch = document.getElementById('darkModeSwitch');
@@ -298,8 +321,6 @@ if(isset($_POST['add_region'])) {
                 $('#ward').html('<option value="">Select Ward</option>');
             }
         });
-
-       
     });
 </script>
 </body>
