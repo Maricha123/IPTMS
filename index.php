@@ -19,12 +19,14 @@
             <h3 style="text-align: center;">Welcome to <b>IPTMS</b></h3>
             <p>Our aim is to simplify the whole process of supervision.</p>
 
-            <p>This platform enables students to:</p>
+            <p>This platform will enable to:</p>
             <ul>
                 <li>Fill the arrival.</li>
                 <li>Connect students and their respective supervisors.</li>
-                <li>Fill a daily logbook &report for reference.</li>
+                <li>Fill a daily logbook & report for reference.</li>
                 <li>Allow sharing of files (documents and images) between a student and supervisor.</li>
+                <li>Supervisors to see all students details.</li>
+                <li>Admin should be able to assign supervisor the area to supervisor.</li>
             </ul>
 
             <p style="text-align: center;">Thank you!</p>

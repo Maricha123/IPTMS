@@ -90,7 +90,7 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="admin.php" class="brand-link">
-                <span class="brand-text font-weight-light">Admin Dashboard</span>
+                <span class="brand-text font-weight-light">Home</span>
             </a>
 
             <!-- Sidebar -->
@@ -145,7 +145,7 @@ $conn->close();
 
                    <!-- Profile Section -->
 <div class="row">
-    <div class="col-12">
+    <div class="col-12.5">
         <div class="card">
             <div class="card-header"><h3 class="card-title">Your Profile</h3></div>
             <div class="card-body">

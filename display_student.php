@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 include 'db.php';
 
 if (isset($_GET['student_id'])) {

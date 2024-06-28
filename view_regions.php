@@ -50,8 +50,8 @@ $result_regions = $conn->query($sql_regions);
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="" class="brand-link">
-                <span class="brand-text font-weight-light">Regions</span>
+            <a href="admin.php" class="brand-link">
+                <span class="brand-text font-weight-light">Home</span>
             </a>
 
             <!-- Sidebar -->
@@ -94,7 +94,7 @@ $result_regions = $conn->query($sql_regions);
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12.1">
                             <div class="card">
                                 <div class="card-body">
                                     <table class="table">

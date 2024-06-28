@@ -1,12 +1,4 @@
-<?php
-session_start();
 
-// Ensure the user is logged in before accessing the page
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     <title>Student Details</title>
     <link rel="stylesheet" href="display.css"> <!-- Update the CSS file name -->
 </head>
-<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+
 <body>
     
     

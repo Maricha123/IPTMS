@@ -23,10 +23,10 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <h1>Location Details</h1>
     <?php
-        // Retrieve latitude, longitude, and name from the URL parameters
-        $lat = $_GET['lat'];
-        $lng = $_GET['lng'];
-        $name = $_GET['name'];
+        // Retrieve latitude, longitude, and name from the URL parameters and sanitize them
+        $lat = htmlspecialchars($_GET['lat']);
+        $lng = htmlspecialchars($_GET['lng']);
+        $name = htmlspecialchars($_GET['name']);
     ?>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -34,19 +34,19 @@ if (!isset($_SESSION['user_id'])) {
         var map = L.map('map').setView([<?php echo $lat; ?>, <?php echo $lng; ?>], 15);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 20,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         }).addTo(map);
 
         L.marker([<?php echo $lat; ?>, <?php echo $lng; ?>]).addTo(map)
-            .bindPopup('<?php echo htmlspecialchars($name); ?>\'s Location')
+            .bindPopup('<?php echo $name; ?>\'s Location')
             .openPopup();
 
-            function goBack() {
+        function goBack() {
             window.history.back();
         }
     </script>
 
-<button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+    <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
 </body>
 </html>

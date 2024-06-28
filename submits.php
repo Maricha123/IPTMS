@@ -33,12 +33,6 @@ if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOA
                 window.location.href = 'homee.php';
               </script>";
     
-}else{
-    echo "<script>
-    alert('fail to upload the file!');
-    window.location.href = 'homee.php';
-  </script>";
-
 }
 
 // Check if all fields are filled out for the Student Form
@@ -64,7 +58,10 @@ if (isset($_POST['name'], $_POST['regNo'], $_POST['academicYear'], $_POST['regio
 
     if ($checkResult->num_rows > 0) {
         // Registration number already exists, reject the submission
-        echo "Registration number already exists. Please use a different registration number.";
+        echo "<script>
+        alert('Registration Number Already Exist!');
+        window.location.href = 'forms.php';
+      </script>";
     } else {
         // Insert into student_form table
         $insertQuery = "INSERT INTO student_form (UserID, name, registration_number, academic_year, region, district, organization, supervisor_name, supervisor_number, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -77,6 +74,7 @@ if (isset($_POST['name'], $_POST['regNo'], $_POST['academicYear'], $_POST['regio
         window.location.href = 'forms.php';
       </script>";
         exit();
+      
     }
 
     $checkStmt->close();

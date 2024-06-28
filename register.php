@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Ensure the user is logged in before accessing the page
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
-
 $userId = $_SESSION['user_id'];
 
 // Check if there is a message in the session
@@ -37,12 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result_check_email = $stmt_check_email->get_result();
 
     if ($result_check_email->num_rows > 0) {
-        // Set the message
-        $message = 'Email already exists!';
-        $_SESSION['message'] = $message;
-
-        // Redirect to registration page with the message
-        header("Location: reg.php");
+        echo "<script>
+        alert('User Already Exist!!');
+        window.location.href = 'reg.php';
+      </script>";
         exit();
     } else {
         // Determine the role based on the entered email

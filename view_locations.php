@@ -20,8 +20,8 @@ $result_supervisor_info = $stmt_supervisor_info->get_result();
 
 if ($result_supervisor_info->num_rows > 0) {
     $row_supervisor_info = $result_supervisor_info->fetch_assoc();
-    $username = $row_supervisor_info["Name"];
-    $supervisor_email = $row_supervisor_info["Email"];
+    $username = htmlspecialchars($row_supervisor_info["Name"], ENT_QUOTES);
+    $supervisor_email = htmlspecialchars($row_supervisor_info["Email"], ENT_QUOTES);
 
     // Fetch the region assigned to the supervisor based on their email
     $sql_supervisor_region = "SELECT region_id FROM supervisors WHERE supervisor_email = ?";
@@ -65,27 +65,21 @@ $conn->close();
     <title>Student Locations</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        /* Adjust map container size */
         #map { height: 600px; }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0">Student Locations</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.content-header -->
-
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -100,7 +94,8 @@ $conn->close();
                                 <select name="student_id" id="student">
                                     <?php
                                     foreach ($result_students_locations as $student) {
-                                        echo "<option value='{$student['UserID']}'>{$student['name']}</option>";
+                                        $student_name = htmlspecialchars($student['name'], ENT_QUOTES);
+                                        echo "<option value='{$student['UserID']}'>{$student_name}</option>";
                                     }
                                     ?>
                                 </select>
@@ -109,16 +104,18 @@ $conn->close();
                             </form>
 
                             <?php
-                            
                             if (!empty($result_students_locations)) {
                                 echo "<div class='card'>";
                                 echo "<div class='card-header'><h3 class='card-title'>Student Locations</h3></div>";
                                 echo "<div class='card-body p-0'>";
                                 echo "<ul class='products-list product-list-in-card pl-2 pr-2'>";
                                 foreach ($result_students_locations as $location) {
+                                    $student_name = htmlspecialchars($location['name'], ENT_QUOTES);
+                                    $latitude = htmlspecialchars($location['latitude'], ENT_QUOTES);
+                                    $longitude = htmlspecialchars($location['longitude'], ENT_QUOTES);
                                     echo "<li class='item'>";
                                     echo "<div class='product-info'>";
-                                    echo "<a href='view_location.php?lat={$location['latitude']}&lng={$location['longitude']}&name=" . urlencode($location['name']) . "' class='product-title'>{$location['name']}</a>";
+                                    echo "<a href='view_location.php?lat={$latitude}&lng={$longitude}&name=" . urlencode($student_name) . "' class='product-title'>{$student_name}</a>";
                                     echo "</div>";
                                     echo "</li>";
                                 }
@@ -129,34 +126,19 @@ $conn->close();
                                 echo "<p>No student locations found for the assigned region.</p>";
                             }
                             ?>
-                            
                         </div>
                     </div>
-                    <!-- /.row -->
-                </div><!-- /.container-fluid -->
+                </div>
             </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-
-        <!-- Main Footer -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
         <footer class="main-footer">
-       
             <strong>IPTMS &copy; 2024.</strong> All rights reserved.
         </footer>
     </div>
-    <!-- ./wrapper -->
-
-    <!-- REQUIRED SCRIPTS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
+        var map = L.map('map').setView([0, 0], 2);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -164,27 +146,23 @@ $conn->close();
         }).addTo(map);
 
         <?php
-        // Loop through each student location and add a marker with a different color or icon based on readiness status
         if (!empty($result_students_locations)) {
             foreach ($result_students_locations as $location) {
-                $name = htmlspecialchars($location['name'], ENT_QUOTES);
+                $student_name = htmlspecialchars($location['name'], ENT_QUOTES);
                 $latitude = floatval($location['latitude']);
                 $longitude = floatval($location['longitude']);
                 $is_ready = $location['is_ready'] ? 'ready' : 'not ready';
-                
-                // Determine marker icon based on readiness status
                 $icon_url = $location['is_ready'] ? 'ready.png' : 'not_ready.jpg';
 
-                // Create JavaScript for adding marker with popup
                 echo "var icon = L.icon({iconUrl: '$icon_url', iconSize: [35, 51], iconAnchor: [12, 41]});
                       L.marker([$latitude, $longitude], {icon: icon}).addTo(map)
-                      .bindPopup('$name ($is_ready)')
+                      .bindPopup('$student_name ($is_ready)')
                       .openPopup();\n";
             }
         }
         ?>
 
-function goBack() {
+        function goBack() {
             window.history.back();
         }
     </script>

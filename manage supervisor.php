@@ -147,7 +147,7 @@ function generateRandomPassword($length = 8) {
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="admin.php" class="brand-link">
-            <span class="brand-text font-weight-light">Admin Dashboard</span>
+            <span class="brand-text font-weight-light">Home</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">

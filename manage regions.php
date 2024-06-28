@@ -182,7 +182,7 @@ if (isset($_POST['add_region'])) {
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="admin.php" class="brand-link">
-            <span class="brand-text font-weight-light">Admin Dashboard</span>
+            <span class="brand-text font-weight-light">Home</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">

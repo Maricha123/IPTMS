@@ -42,7 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['assign_supervisor'])) 
                 $insert_stmt->bind_param("ii", $supervisor_id, $district_id);
 
                 if ($insert_stmt->execute()) {
-                    echo "<script>alert('Successfully assigned');</script>";
+                    echo "<script>
+                alert('successfuly Assigned!');
+                window.location.href = 'manage supervisor.php';
+              </script>";
                 } else {
                     echo "Error: " . $insert_stmt->error;
                 }
@@ -56,9 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['assign_supervisor'])) 
         }
 
         // Redirect to manage supervisor page
-        header("location: manage supervisor.php");
-        exit();
-
+       
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }

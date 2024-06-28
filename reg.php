@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// Ensure the user is logged in before accessing the page
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +84,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <div id="foot">
-        <p><i>@2024 DIT</i></p>
+    <h3><b><p><i>IPTMS &copy; 2024</i></p></b></h3>
     </div>
 
     <script>

@@ -62,8 +62,8 @@ $conn->close();
         </nav>
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="" class="brand-link">
-                <span class="brand-text font-weight-light">View Supervisors</span>
+            <a href="admin.php" class="brand-link">
+                <span class="brand-text font-weight-light">Home</span>
             </a>
 
             <div class="sidebar">
@@ -98,7 +98,7 @@ $conn->close();
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12.2">
                             <div class="card">
                                 <div class="card-body">
                                     <table class="table">
