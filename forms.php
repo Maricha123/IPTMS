@@ -102,6 +102,12 @@ if (!isset($_SESSION['user_id'])) {
                                 <p>View Reports</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                               <a href="logout.php" class="nav-link">
+                                  <i class="nav-icon fas fa-sign-out-alt"></i>
+                                  <p>Logout</p>
+                               </a>
+                            </li>
                     </ul>
                 </nav>
             </div>

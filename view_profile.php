@@ -101,6 +101,18 @@ $conn->close();
                         <a href="#" class="d-block"><?php echo $username; ?></a>
                     </div>
                 </div>
+                <a href="view_locations.php" class="nav-link">
+            <i class="nav-icon fas fa-map-marked-alt"></i>
+            <p>Students Locations</p>
+        </a>
+    </li>
+    <li class="nav-item">
+                            <a href="logout.php" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+                
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
