@@ -186,11 +186,11 @@ if (!isset($_SESSION['user_id'])) {
                                 </div>
                                 <div class="form-group">
                                     <label for="latitude" class="form-label">Latitude:</label>
-                                    <input type="text" id="latitude" name="latitude" class="form-control" readonly>
+                                    <input type="text" id="latitude" name="latitude" class="form-control" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="longitude" class="form-label">Longitude:</label>
-                                    <input type="text" id="longitude" name="longitude" class="form-control" readonly>
+                                    <input type="text" id="longitude" name="longitude" class="form-control" required readonly>
                                 </div>
                                 <button type="button" class="btn btn-primary" onclick="getLocation()">Fetch Location</button>
                                 <button type="submit" class="btn btn-primary">Submit</button>

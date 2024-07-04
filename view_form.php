@@ -197,7 +197,7 @@ $conn->close();
                                             <?php endwhile; ?>
                                         </ul>
                                     <?php else: ?>
-                                        <p>No report submitted.</p>
+                                        <p>No Arrival form submitted.</p>
                                     <?php endif; ?>
                                 </div>
                             </div>

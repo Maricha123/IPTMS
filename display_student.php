@@ -41,7 +41,11 @@ if (isset($_GET['student_id'])) {
         $messageStmt = $conn->prepare($messageQuery);
         $messageStmt->bind_param("is", $UserID, $message);
         if ($messageStmt->execute()) {
-            echo "<p>Message sent successfully.</p>";
+            echo "<script>
+            alert('submitted successfuly!');
+           
+          </script>";
+
         } else {
             echo "<p>Failed to send message.</p>";
         }
@@ -179,9 +183,7 @@ if (isset($_GET['student_id'])) {
                                     <td>Supervisor Number</td>
                                     <td><?php echo htmlspecialchars($formData['supervisor_number']); ?></td>
                                 </tr>
-                                <tr>
-                                    <td>Location</td>
-                                    <tr>
+                                
     <td>Location</td>
     <td><a href="view_location.php?lat=<?php echo $formData['latitude']; ?>&lng=<?php echo $formData['longitude']; ?>&name=<?php echo urlencode($formData['name']); ?>">View Location</a></td>
 </tr>
