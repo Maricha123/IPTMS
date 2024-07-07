@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 include 'db.php';
 
 if (isset($_GET['student_id'])) {
@@ -9,7 +8,12 @@ if (isset($_GET['student_id'])) {
 
     // Queries to retrieve data from the database
     // Using prepared statements to prevent SQL injection
-    $formQuery = "SELECT * FROM student_form WHERE UserID = ?";
+    $formQuery = "
+        SELECT sf.*, r.region_name, d.district_name 
+        FROM student_form sf
+        LEFT JOIN regions r ON sf.region = r.region_id
+        LEFT JOIN districts d ON sf.district = d.district_id
+        WHERE sf.UserID = ?";
     $formStmt = $conn->prepare($formQuery);
     $formStmt->bind_param("i", $UserID);
     $formStmt->execute();
@@ -43,7 +47,6 @@ if (isset($_GET['student_id'])) {
         if ($messageStmt->execute()) {
             echo "<script>
             alert('submitted successfuly!');
-           
           </script>";
 
         } else {
@@ -165,11 +168,11 @@ if (isset($_GET['student_id'])) {
                                 </tr>
                                 <tr>
                                     <td>Region</td>
-                                    <td><?php echo htmlspecialchars($formData['region']); ?></td>
+                                    <td><?php echo htmlspecialchars($formData['region_name']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>District</td>
-                                    <td><?php echo htmlspecialchars($formData['district']); ?></td>
+                                    <td><?php echo htmlspecialchars($formData['district_name']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Organization</td>
@@ -358,4 +361,3 @@ if (isset($_GET['student_id'])) {
             });
     }
 </script>
-

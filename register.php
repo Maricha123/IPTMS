@@ -1,14 +1,6 @@
 <?php
 session_start();
 
-$userId = $_SESSION['user_id'];
-
-// Check if there is a message in the session
-if (!empty($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    
-}
-
 // Include the database connection
 include 'db.php';
 
@@ -17,9 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $email = $_POST['email'];
     $password = $_POST['password'];
- 
     $name = $_POST['name'];
-
 
     // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -46,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt_register->execute()) {
             echo "<script>
-            alert('successfully Registred!!');
+            alert('Successfully Registered!!');
             window.location.href = 'index.php';
           </script>";
             exit();

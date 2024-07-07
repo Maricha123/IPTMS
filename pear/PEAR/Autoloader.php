@@ -3,7 +3,6 @@
  * Class auto-loader
  *
  * PHP versions 4
-
  *
  * @category   pear
  * @package    PEAR
@@ -19,7 +18,7 @@
 
 if (!extension_loaded("overload")) {
     // die hard without ext/overload
-    die("Rebuild PHP with the `overload' extension to use PEAR_Autoloader");
+    die("Rebuild PHP with the `overload` extension to use PEAR_Autoloader");
 }
 
 /**
@@ -29,19 +28,19 @@ require_once "PEAR.php";
 
 /**
  * This class is for objects where you want to separate the code for
- * some methods into separate classes.  This is useful if you have a
+ * some methods into separate classes. This is useful if you have a
  * class with not-frequently-used methods that contain lots of code
  * that you would like to avoid always parsing.
  *
  * The PEAR_Autoloader class provides autoloading and aggregation.
  * The autoloading lets you set up in which classes the separated
- * methods are found.  Aggregation is the technique used to import new
+ * methods are found. Aggregation is the technique used to import new
  * methods, an instance of each class providing separated methods is
  * stored and called every time the aggregated method is called.
  *
  * @category   pear
  * @package    PEAR
- * @author Stig Bakken <ssb@php.net>
+ * @author     Stig Bakken <ssb@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
  * @version    Release: 1.10.1
@@ -78,7 +77,6 @@ class PEAR_Autoloader extends PEAR
      * Add one or more autoload entries.
      *
      * @param string $method     which method to autoload
-     *
      * @param string $classname  (optional) which class to find the method in.
      *                           If the $method parameter is an array, this
      *                           parameter may be omitted (and will be ignored
@@ -93,7 +91,7 @@ class PEAR_Autoloader extends PEAR
     function addAutoload($method, $classname = null)
     {
         if (is_array($method)) {
-            array_walk($method, create_function('$a,&$b', '$b = strtolower($b);'));
+            array_walk($method, function($a, &$b) { $b = strtolower($b); });
             $this->_autoload_map = array_merge($this->_autoload_map, $method);
         } else {
             $this->_autoload_map[strtolower($method)] = $classname;
@@ -124,9 +122,9 @@ class PEAR_Autoloader extends PEAR
     // {{{ addAggregateObject()
 
     /**
-     * Add an aggregate object to this object.  If the specified class
+     * Add an aggregate object to this object. If the specified class
      * is not defined, loading it will be attempted following PEAR's
-     * file naming scheme.  All the methods in the class will be
+     * file naming scheme. All the methods in the class will be
      * aggregated, except private ones (name starting with an
      * underscore) and constructors.
      *
@@ -146,8 +144,8 @@ class PEAR_Autoloader extends PEAR
         $obj = new $classname;
         $methods = get_class_methods($classname);
         foreach ($methods as $method) {
-            // don't import priviate methods and constructors
-            if ($method{0} != '_' && $method != $classname) {
+            // don't import private methods and constructors
+            if ($method[0] != '_' && $method != $classname) {
                 $this->_method_map[$method] = $obj;
             }
         }
@@ -169,8 +167,7 @@ class PEAR_Autoloader extends PEAR
     {
         $ok = false;
         $classname = strtolower($classname);
-        reset($this->_method_map);
-        while (list($method, $obj) = each($this->_method_map)) {
+        foreach ($this->_method_map as $method => $obj) {
             if (is_a($obj, $classname)) {
                 unset($this->_method_map[$method]);
                 $ok = true;
@@ -184,27 +181,25 @@ class PEAR_Autoloader extends PEAR
 
     /**
      * Overloaded object call handler, called each time an
-     * undefined/aggregated method is invoked.  This method repeats
+     * undefined/aggregated method is invoked. This method repeats
      * the call in the right aggregate object and passes on the return
      * value.
      *
      * @param string $method  which method that was called
-     *
-     * @param string $args    An array of the parameters passed in the
+     * @param array  $args    An array of the parameters passed in the
      *                        original call
      *
      * @return mixed  The return value from the aggregated method, or a PEAR
      *                error if the called method was unknown.
      */
-    function __call($method, $args, &$retval)
+    function __call($method, $args)
     {
         $method = strtolower($method);
         if (empty($this->_method_map[$method]) && isset($this->_autoload_map[$method])) {
             $this->addAggregateObject($this->_autoload_map[$method]);
         }
         if (isset($this->_method_map[$method])) {
-            $retval = call_user_func_array(array($this->_method_map[$method], $method), $args);
-            return true;
+            return call_user_func_array(array($this->_method_map[$method], $method), $args);
         }
         return false;
     }
@@ -212,6 +207,6 @@ class PEAR_Autoloader extends PEAR
     // }}}
 }
 
-overload("PEAR_Autoloader");
+// Removed the obsolete overload function
 
 ?>

@@ -165,18 +165,29 @@ class PEAR_Task_Postinstallscript_rw extends PEAR_Task_Postinstallscript
         if ($default !== null) {
             return
             array(
-                $this->_pkg->getTasksNs().':name' => $name,
-                $this->_pkg->getTasksNs().':prompt' => $prompt,
-                $this->_pkg->getTasksNs().':type' => $type,
-                $this->_pkg->getTasksNs().':default' => $default,
+                self::getTasksNs().':name' => $name,
+                self::getTasksNs().':prompt' => $prompt,
+                self::getTasksNs().':type' => $type,
+                self::getTasksNs().':default' => $default,
             );
         }
 
         return
             array(
-                $this->_pkg->getTasksNs().':name' => $name,
-                $this->_pkg->getTasksNs().':prompt' => $prompt,
-                $this->_pkg->getTasksNs().':type' => $type,
+                self::getTasksNs().':name' => $name,
+                self::getTasksNs().':prompt' => $prompt,
+                self::getTasksNs().':type' => $type,
             );
     }
+
+    /**
+     * Get the namespace for the tasks
+     *
+     * @return string
+     */
+    public static function getTasksNs()
+    {
+        return 'http://pear.php.net/dtd/tasks-1.0';
+    }
 }
+?>
