@@ -103,11 +103,11 @@ if (!isset($_SESSION['user_id'])) {
                             </a>
                         </li>
                         <li class="nav-item">
-                               <a href="logout.php" class="nav-link">
-                                  <i class="nav-icon fas fa-sign-out-alt"></i>
-                                  <p>Logout</p>
-                               </a>
-                            </li>
+                            <a href="logout.php" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -133,7 +133,7 @@ if (!isset($_SESSION['user_id'])) {
                     <div class="time-section">
                         <p id="currentDateTime"></p>
                     </div>
-                    <h3 style="background-color:#f8d775; color: black; text-align:center"> Student Arrival Form</h3>
+                    <h3 style="background-color:#f8d775; color: black; text-align:center">Student Arrival Form</h3>
                     <h3 style="color: red">*Remember to fetch the location before submitting the form</h3>
                     <div class="card">
                         <div class="card-body">

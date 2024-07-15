@@ -179,6 +179,10 @@ $conn->close();
                                     <?php endif; ?>
                                 </div>
                             </div>
+                            <form action="generate_final_report.php" method="post" class="mt-3">
+                                        <button type="submit" class="btn btn-success">Generate Final Report</button>
+                                    </form>
+
                         </div>
                     </div>
                 </div>
