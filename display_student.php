@@ -290,7 +290,6 @@ if (isset($_GET['student_id'])) {
                         <td><?php echo htmlspecialchars($fileRow['file_name']); ?></td>
                         <td><?php echo htmlspecialchars($fileRow['time_submitted']); ?></td>
                         <td>
-                            <a href="see_studentdoc.php?id=<?php echo $fileRow['id']; ?>" class="btn btn-info btn-sm">View</a>
                             <a href="view_file.php?id=<?php echo $fileRow['id']; ?>" class="btn btn-primary btn-sm">Download</a>
                         </td>
                     </tr>
